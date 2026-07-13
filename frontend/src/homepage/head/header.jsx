@@ -8,9 +8,9 @@ function Header(){
     const navigations = ["Home", "Products", "About Us", "Contact"];
 
     return(
-        <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit w-full">
-            <div className='text-center pt-4 pb-4 text-lg text-white bg-green-950'>
-                This is header
+        <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit">
+            <div className='text-center py-2 text-[15px] text-white bg-green-950'>
+                Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between my-4 sm:px-8 lg:px-10 xl:px-15 gap-3'>
                 {/* name of brand */}
