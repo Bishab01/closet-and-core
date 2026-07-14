@@ -29,7 +29,7 @@ function Header(){
                             key={item.name}
                             to={item.path}
                             className={({ isActive }) =>
-                                `button1 ${
+                                `navButton ${
                                     isActive
                                         ? "bg-green-200 text-green-800"
                                         : "text-black hover:bg-gray-200"
