@@ -1,11 +1,15 @@
 import {Search} from 'lucide-react'
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom';
 
 function Header(){
 
-    const [selected, setSelected] = useState("Home");
-
-    const navigations = ["Home", "Products", "About Us", "Contact"];
+    const navigations = [
+        { name: "Home", path: "/home" },
+        { name: "Products", path: "/products" },
+        { name: "About Us", path: "/about" },
+        { name: "Contact", path: "/contact" },
+    ];
 
     return(
         <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit">
@@ -21,18 +25,19 @@ function Header(){
                 {/* navigation */}
                 <div className='flex items-center gap-2 overflow-x-auto scrollbar-none'>
                     {navigations.map((item) => (
-                        <button 
-                            key={item}
-                            onClick={()=>setSelected(item)}
-                            className={`button1
-                                ${
-                                    selected === item
-                                    ? "bg-green-200 text-green-800"
-                                    : "text-black hover:bg-gray-200"
-                                }`}
+                        <NavLink 
+                            key={item.name}
+                            to={item.path}
+                            className={({ isActive }) =>
+                                `navButton ${
+                                    isActive
+                                        ? "bg-green-200 text-green-800"
+                                        : "text-black hover:bg-gray-200"
+                                }`
+                            }
                         >
-                        {item}
-                        </button>
+                        {item.name}
+                        </NavLink>
                     ))}
                 </div>
 
