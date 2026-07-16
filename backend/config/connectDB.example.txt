@@ -4,7 +4,7 @@ Create a file named `connectDB.php` in this folder and replace the placeholder v
 // Connecting to the database
 $host = "127.0.0.1";
 $user = "root";
-$password = "your_mysql_password";
+$password = "your_root_password";
 $dbname = "your_database_name";
 $port = 3307; // Use the port your MySQL server is running on (default is 3306)
 
