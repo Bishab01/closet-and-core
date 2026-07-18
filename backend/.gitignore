@@ -1,6 +1,6 @@
 # Database connection (contains credentials)
 config/connectDB.php
-config/createDB.php
+config/creatingDB.php
 
 # IDE files
 .vscode/
