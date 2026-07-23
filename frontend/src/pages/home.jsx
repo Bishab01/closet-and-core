@@ -1,7 +1,7 @@
 import Productcard from "../components/productCard"
-import tShirt from "../assets/images/t-shirt.jpg"
-import hat from "../assets/images/hat.jpg"
-import shoes from "../assets/images/shoes.jpg"
+import tShirt from "../assets/images/t-shirt.JPG"
+import hat from "../assets/images/hat.JPG"
+import shoes from "../assets/images/shoes.JPG"
 
 function Home(){
     const products = [
