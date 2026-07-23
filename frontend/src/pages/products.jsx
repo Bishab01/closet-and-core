@@ -48,11 +48,11 @@ function Products(){
 
     return(
         <div className="body">
-            <div className="m-10">
+            <div className="responsiveM">
                 <p className="text-2xl font-serif font-bold">Categories</p>
                 <p className="text-[16px] text-gray-600">Everything orgainized to help you find what you need faster.</p>
             </div>
-            <div className="m-10">
+            <div className="responsiveM">
                 {
                     categories.map((category)=>
                     <button
@@ -71,8 +71,8 @@ function Products(){
                     )
                 }
             </div>
-            <div className="m-10">
-                <div className="flex flex-wrap my-6 gap-6">
+            <div className="responsiveM">
+                <div className="flex flex-wrap my-6 gap-3 sm:gap-6">
                     {products.map((product,index)=>
                         <Productcard
                             key={index}
