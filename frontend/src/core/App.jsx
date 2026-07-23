@@ -1,4 +1,4 @@
-import Header from "../homepage/head/header"
+import Header from "../components/header"
 import {Outlet} from "react-router-dom"
 
 function App(){
