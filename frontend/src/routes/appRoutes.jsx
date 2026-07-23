@@ -1,9 +1,9 @@
+import '../styles/index.css'
 import Login from '../auth/login'
 import Signup from '../auth/signUp'
-import Home from "../homepage/body/home"
-import '../styling/index.css'
 import App from '../core/App'
-import Products from '../homepage/body/products'
+import Home from "../pages/home"
+import Products from '../pages/products'
 import { Routes, Route, Navigate} from 'react-router-dom'
 
 function Approutes() {

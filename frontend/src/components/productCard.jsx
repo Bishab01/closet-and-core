@@ -8,9 +8,11 @@ function Productcard({category, productName, image, productPrice }){
                     className="hover:scale-105 duration-400 object-fill h-full w-full"
                 />
             </div>
-            <div className="px-3 py-4 border-gray-300 border-b-2 font-serif">
+            <div className="px-3 py-4 border-gray-300 border-b-2 font-serif ">
                 <p className="text-gray-600 ">{category}</p>
-                <p className="text-lg">{productName}</p>
+                <p className="text-lg whitespace-nowrap overflow-y-auto scrollbar-none">
+                    {productName}
+                </p>
             </div>
             <div className="p-3">
                 <p className="text-lg font-medium font-serif">Rs {productPrice}</p>
