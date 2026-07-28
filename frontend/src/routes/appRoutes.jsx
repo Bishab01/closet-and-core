@@ -4,6 +4,7 @@ import Signup from '../auth/signUp'
 import App from '../core/App'
 import Home from "../pages/home"
 import Products from '../pages/products'
+import Cart from '../pages/cart' //added
 import { Routes, Route, Navigate} from 'react-router-dom'
 
 function Approutes() {
