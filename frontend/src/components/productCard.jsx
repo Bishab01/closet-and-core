@@ -32,21 +32,26 @@ function Productcard({id, category, productName, image, productPrice }){
             </div>
             <div className="p-3 flex flex-col gap-2 flex-1 justify-between">
                 <p className="text-base sm:text-lg font-medium font-serif">Rs {productPrice}</p>
-                <div className="flex items-center gap-2">
-                    {/* UPDATED: added flex-1 so the View button now takes equal
-                        width as Add to Cart, instead of shrinking to fit its content */}
+
+                {/* UPDATED: reduced gap for tighter fit on small cards */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                    {/* UPDATED: added whitespace-nowrap so "View" text never
+                        wraps to a second line; shrank text size (text-xs sm:text-sm)
+                        and padding (px-2) so it fits comfortably next to Add to Cart */}
                     <button
                         onClick={() => setShowView(true)}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-sm sm:text-base font-medium border-2 border-green-900 text-green-900 hover:bg-green-50 duration-300"
+                        className="flex-1 flex items-center justify-center gap-1 sm:gap-2 rounded-xl py-2 px-2 text-xs sm:text-sm font-medium border-2 border-green-900 text-green-900 hover:bg-green-50 duration-300 whitespace-nowrap"
                     >
-                        <Eye className="w-4 h-4" />
-                        {/* UPDATED: removed "hidden sm:inline" — label now always
-                            shows since the button has room now that it's flex-1 */}
+                        <Eye className="w-4 h-4 shrink-0" />
                         <span>View</span>
                     </button>
+
+                    {/* UPDATED: same fix applied here — whitespace-nowrap +
+                        smaller text/padding so "Add to Cart" stays on one line
+                        instead of wrapping and breaking the button's height */}
                     <button
                         onClick={handleAddToCart}
-                        className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 text-sm sm:text-base font-medium duration-300 ${
+                        className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 rounded-xl py-2 px-2 text-xs sm:text-sm font-medium duration-300 whitespace-nowrap ${
                             added
                                 ? 'bg-green-100 text-green-800'
                                 : 'bg-green-900 text-white hover:bg-green-800'
@@ -54,11 +59,11 @@ function Productcard({id, category, productName, image, productPrice }){
                     >
                         {added ? (
                             <>
-                                <Check className="w-4 h-4" /> Added
+                                <Check className="w-4 h-4 shrink-0" /> Added
                             </>
                         ) : (
                             <>
-                                <ShoppingCart className="w-4 h-4" /> Add to Cart
+                                <ShoppingCart className="w-4 h-4 shrink-0" /> Add to Cart
                             </>
                         )}
                     </button>

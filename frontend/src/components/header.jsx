@@ -2,6 +2,9 @@ import {Search, ShoppingCart} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+// UPDATED: imported the brand logo image from assets
+import logo from '../assets/images/logo.png';
+
 
 function Header(){
     const { cartCount } = useCart();
@@ -19,11 +22,17 @@ function Header(){
                 Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between my-4 px-4 sm:px-6 lg:px-10 xl:px-15 gap-2'>
-                {/* name of brand */}
-                <div className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap">
-                    Closet & Core
+            {/* UPDATED: brand name replaced with logo image + text side by side */}
+                <div className="flex items-center gap-2 whitespace-nowrap">
+                    <img
+                        src={logo}
+                        alt="Closet & Core logo"
+                        className="h-8 sm:h-10 w-auto object-contain"
+                    />
+                    <span className="font-bold text-base sm:text-lg lg:text-xl">
+                        Closet & Core
+                    </span>
                 </div>
-
                 {/* navigation */}
                 
                 <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
