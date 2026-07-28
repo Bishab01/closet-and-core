@@ -7,7 +7,6 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem("cart");
-
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -18,7 +17,6 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
-
       if (existing) {
         return prev.map((item) =>
           item.id === product.id
@@ -26,7 +24,6 @@ export const CartProvider = ({ children }) => {
             : item
         );
       }
-
       return [...prev, { ...product, quantity: 1 }];
     });
   };
@@ -38,9 +35,7 @@ export const CartProvider = ({ children }) => {
   const increaseQty = (id) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
@@ -49,8 +44,18 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) =>
       prev
         .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const updateQty = (id, quantity) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
           item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
+            ? { ...item, quantity: Math.max(0, Number(quantity) || 0) }
             : item
         )
         .filter((item) => item.quantity > 0)
@@ -61,6 +66,12 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartTotal = cartItems.reduce(
+    (sum, item) => sum + item.quantity * item.productPrice,
+    0
+  );
+
   return (
     <CartContext.Provider
       value={{
@@ -69,7 +80,10 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         increaseQty,
         decreaseQty,
+        updateQty,
         clearCart,
+        cartCount,
+        cartTotal,
       }}
     >
       {children}
