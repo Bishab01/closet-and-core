@@ -1,17 +1,10 @@
-// ==========================================================
-// UPDATED FILE: src/components/header.jsx
-// Changes:
-//   - Imported useCart to read live cart count
-//   - Added a "Cart (n)" pill button next to the search bar,
-//     linking to the new /cart route
-// ==========================================================
 import {Search, ShoppingCart} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import { useCart } from '../context/CartContext'; // NEW
+import { useCart } from '../context/CartContext';
 
 function Header(){
-    const { cartCount } = useCart(); // NEW: live item count from context
+    const { cartCount } = useCart();
 
     const navigations = [
         { name: "Home", path: "/home" },
@@ -32,7 +25,8 @@ function Header(){
                 </div>
 
                 {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none border-x border-x-gray-300 px-4'>
+                
+                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
                     {navigations.map((item) => (
                         <NavLink 
                             key={item.name}
@@ -48,6 +42,24 @@ function Header(){
                         {item.name}
                         </NavLink>
                     ))}
+
+                    {/* UPDATED: divider line, now placed between Contact and Cart */}
+                    <div className="w-px self-stretch bg-gray-300"></div>
+
+                    {/* cart, grouped with the rest of the nav links */}
+                    <NavLink
+                        to="/cart"
+                        className={({ isActive }) =>
+                            `flex items-center gap-2 rounded-xl px-3 sm:px-4 py-2 text-sm sm:text-base font-medium whitespace-nowrap duration-200 ${
+                                isActive
+                                    ? "bg-green-700 text-white"
+                                    : "bg-green-900 text-white hover:bg-green-800"
+                            }`
+                        }
+                    >
+                        <ShoppingCart className='w-4 h-4'/>
+                        <span>Cart ({cartCount})</span>
+                    </NavLink>
                 </div>
 
                 {/* search */}
@@ -59,21 +71,6 @@ function Header(){
                         placeholder='Search...'
                     />
                 </div>
-
-                {/* NEW: cart button */}
-                <NavLink
-                    to="/cart"
-                    className={({ isActive }) =>
-                        `flex items-center gap-2 rounded-xl px-3 sm:px-4 py-2 text-sm sm:text-base font-medium whitespace-nowrap duration-200 ${
-                            isActive
-                                ? "bg-green-700 text-white"
-                                : "bg-green-900 text-white hover:bg-green-800"
-                        }`
-                    }
-                >
-                    <ShoppingCart className='w-4 h-4'/>
-                    <span>Cart ({cartCount})</span>
-                </NavLink>
         </div>
         </div>
     )
