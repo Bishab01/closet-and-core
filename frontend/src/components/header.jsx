@@ -13,17 +13,17 @@ function Header(){
 
     return(
         <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit">
-            <div className='text-center py-2 text-[15px] text-white bg-green-950'>
+            <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
                 Free shipping for purchase over Rs 2000
             </div>
-            <div className='flex items-center justify-between my-4 sm:px-8 lg:px-10 xl:px-15 gap-3'>
+            <div className='flex items-center justify-between my-4 px-4 sm:px-6 lg:px-10 xl:px-15 gap-2'>
                 {/* name of brand */}
-                <div className="font-bold text-xl whitespace-nowrap">
-                    Brand Name
+                <div className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap">
+                    Closet & Core
                 </div>
 
                 {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none'>
+                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none border-x border-x-gray-300 px-4'>
                     {navigations.map((item) => (
                         <NavLink 
                             key={item.name}
@@ -46,7 +46,7 @@ function Header(){
                     <Search className='w-4 h-4'/>
                     <input 
                         type='text'
-                        className='outline-none'
+                        className='outline-none w-20 sm:w-40 lg:w-50'
                         placeholder='Search...'
                     />
                 </div>
