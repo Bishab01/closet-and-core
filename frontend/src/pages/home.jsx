@@ -17,9 +17,10 @@ function Home(){
                     All Products
                 </h1>
                 <div className="flex flex-wrap my-6 gap-3 sm:gap-6">
-                    {products.map((product,index)=>
+                    {products.map((product)=>
                         <Productcard
-                            key={index}
+                            key={product.id} // addded
+                            id={product.id}
                             category={product.category}
                             productName={product.productName}
                             productPrice={product.productPrice}

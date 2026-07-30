@@ -1,8 +1,13 @@
-import {Search} from 'lucide-react'
+import {Search, ShoppingCart} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+// UPDATED: imported the brand logo image from assets
+import logo from '../assets/images/logo.png';
+
 
 function Header(){
+    const { cartCount } = useCart();
 
     const navigations = [
         { name: "Home", path: "/home" },
@@ -17,13 +22,20 @@ function Header(){
                 Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between my-4 px-4 sm:px-6 lg:px-10 xl:px-15 gap-2'>
-                {/* name of brand */}
-                <div className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap">
-                    Closet & Core
+            {/* UPDATED: brand name replaced with logo image + text side by side */}
+                <div className="flex items-center gap-2 whitespace-nowrap">
+                    <img
+                        src={logo}
+                        alt="Closet & Core logo"
+                        className="h-8 sm:h-10 w-auto object-contain"
+                    />
+                    <span className="font-bold text-base sm:text-lg lg:text-xl">
+                        Closet & Core
+                    </span>
                 </div>
-
                 {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none border-x border-x-gray-300 px-4'>
+                
+                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
                     {navigations.map((item) => (
                         <NavLink 
                             key={item.name}
@@ -39,6 +51,24 @@ function Header(){
                         {item.name}
                         </NavLink>
                     ))}
+
+                    {/* UPDATED: divider line, now placed between Contact and Cart */}
+                    <div className="w-px self-stretch bg-gray-300"></div>
+
+                    {/* cart, grouped with the rest of the nav links */}
+                    <NavLink
+                        to="/cart"
+                        className={({ isActive }) =>
+                            `flex items-center gap-2 rounded-xl px-3 sm:px-4 py-2 text-sm sm:text-base font-medium whitespace-nowrap duration-200 ${
+                                isActive
+                                    ? "bg-green-700 text-white"
+                                    : "bg-green-900 text-white hover:bg-green-800"
+                            }`
+                        }
+                    >
+                        <ShoppingCart className='w-4 h-4'/>
+                        <span>Cart ({cartCount})</span>
+                    </NavLink>
                 </div>
 
                 {/* search */}
