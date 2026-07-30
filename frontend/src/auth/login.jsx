@@ -5,7 +5,56 @@ import { useState } from "react"
 
 function Login(){
 
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+
     const [showPassword, setShowPassword] = useState(false);
+    const [msg, setMsg] = useState("");
+    const [msgType, setMsgType] = useState("") // success or error
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+        try{
+            const response = await fetch("http://localhost/project/onlineStore/backend/api/login.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                setMsg(data.message);
+                setMsgType("success");
+            } 
+            else {
+                setMsg(data.message);
+                setMsgType("error");
+            }
+
+            setFormData({
+                email: "",
+                password: ""
+            });
+        }
+
+        catch(error){
+            console.error(error);
+            setMsg("Failed to connect to the server."); //message for when the fetch doesn't establish connection
+            setMsgType("error");
+        }
+    };
 
     return(
         <div className="h-screen overflow-hidden bg-[#1B4332]/95">
@@ -31,13 +80,18 @@ function Login(){
                     </div>
                 
                     {/* Form */}
-                    <form className="text-[14.5px] font-sans space-y-3">
+                    <form
+                        onSubmit={handleSubmit} 
+                        className="text-[14.5px] font-sans space-y-3"
+                    >
                         <label className="label">
                             Email:
                         </label> 
                         <input
                             type='text' 
                             name='email' 
+                            value={formData.email}
+                            onChange= {handleChange}
                             placeholder="example@gmail.com"
                             className="inputBox"
                         />
@@ -50,6 +104,8 @@ function Login(){
                             <input 
                                 type={showPassword ? "text" : "password"} 
                                 name='password'
+                                value= {formData.password}
+                                onChange={handleChange}
                                 placeholder="Enter your password"
                                 className="h-8 outline-none w-full"
                             />
@@ -64,6 +120,12 @@ function Login(){
                                 }
                            </button>
                         </div>
+
+                        {msg && 
+                            <p className={`pt-2 font-medium ${msgType==='success'?"text-green-500":"text-red-500"}`}>
+                                {msg}
+                            </p>
+                        }
 
                         <div className="flex justify-center w-full">
                             <input 

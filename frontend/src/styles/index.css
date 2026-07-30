@@ -41,3 +41,7 @@
 .label{
     @apply font-medium text-gray-800;
 }
+
+.modal{
+    @apply fixed inset-0 z-50 bg-black/30 flex items-center justify-center;
+}

@@ -1,47 +1,7 @@
 import Productcard from "../components/productCard"
-import tShirt from "../assets/images/t-shirt.JPG"
-import hat from "../assets/images/hat.JPG"
-import shoes from "../assets/images/shoes.JPG"
+import products from "../data/productList"
 
 function Home(){
-    const products = [
-        {
-            category: "Clothing",
-            productName: "Round Neck Cotton T-shirt",
-            productPrice: 450,
-            image: tShirt,
-        },
-        {
-            category: "Headwear",
-            productName: "C Embroidered Baseball Cap",
-            productPrice: 561,
-            image: hat,
-        },
-        {
-            category: "Footwear",
-            productName: "Comfortable White Sneakers",
-            productPrice: 1299,
-            image: shoes,
-        },
-        {
-            category: "Clothing",
-            productName: "Round Neck Cotton T-shirt",
-            productPrice: 450,
-            image: tShirt,
-        },
-        {
-            category: "Clothing",
-            productName: "Round Neck Cotton T-shirt",
-            productPrice: 450,
-            image: tShirt,
-        },
-        {
-            category: "Footwear",
-            productName: "Comfortable White Sneakers",
-            productPrice: 1299,
-            image: shoes,
-        },
-    ];
 
     return(
         <div className="body">

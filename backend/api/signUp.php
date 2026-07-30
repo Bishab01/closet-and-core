@@ -7,7 +7,8 @@
     // read json request body sent from the frontend and decode it into an associative array  
     $data = json_decode(file_get_contents("php://input"),true);
 
-    $fname = trim($data["fname"]); // the parameter inside $data[""] should match the name attribute of the input field in the frontend form
+    // the parameter inside $data[""] should match the key of the object that was json stringify and sent
+    $fname = trim($data["fname"]);
     $lname = trim($data["lname"]);
     $password = $data["password"];
     $email = trim($data["email"]);
