@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logos/displayLogo.png"
+import {Eye, EyeOff} from "lucide-react"
 
 function Signup() {
 
@@ -13,6 +15,7 @@ function Signup() {
 
     const [msg,setMsg]=useState("");
     const [msgType, setMsgType] = useState(""); // success or error
+    const [showPassword, setShowPassword] = useState (false);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const nameRegex = /^[a-zA-Z]+$/;
 
@@ -81,7 +84,7 @@ function Signup() {
 
         try 
         {
-            const response = await fetch("http://localhost/onlineStore/backend/api/signup.php", {
+            const response = await fetch("http://localhost/project/onlineStore/backend/api/signup.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -116,55 +119,130 @@ function Signup() {
     };
 
     return (
-        <div>
-            <h1>Registration Form</h1>
+        
+    <div className="h-screen overflow-hidden bg-[#1B4332]/95">
+        <div className="flex items-center justify-center h-full">
+            
+            {/*Registration Card */}
+            <div className="py-8 px-8 bg-gray-100 rounded-xl min-w-80 max-w-100
+            overflow-y-auto scrollbar-none max-h-full">
+            
+                {/*Logo + Heading */}
+                <div className="flex flex-col w-full items-center">
+                    <div className="w-40 h-30">
+                        <img 
+                            src={logo} 
+                            alt="Closet and Core logo"
+                            className="h-full w-full object-contain"
+                        />
+                    </div>
+                    <div className="flex my-4 items-center w-65 gap-2">
+                        <div className="h-0.5 w-full bg-gray-400"></div>
+                        <h1 className=" text-gray-700 font-medium text-nowrap">Registration Form</h1>
+                        <div className="h-0.5 w-full bg-gray-400"></div>
+                    </div>
+                </div>
+            
+                {/* Form */}
+                <form
+                    onSubmit={handleSubmit} 
+                    className="text-[14.5px] font-sans space-y-3"
+                >
+                    <label className="label">
+                        First Name:
+                    </label> 
+                    <input
+                        type="text"
+                        name="fname"
+                        value={formData.fname}
+                        onChange={handleChange}
+                        placeholder="Enter first name"
+                        className="inputBox"
+                    />
 
-            <form onSubmit={handleSubmit}>
-                First Name:
-                <input
-                    type="text"
-                    name="fname"
-                    value={formData.fname}
-                    onChange={handleChange}
-                /><br/>
+                    <label className="label">
+                        Last Name:
+                    </label> 
+                    <input
+                        type="text"
+                        name="lname"
+                        value={formData.lname}
+                        onChange={handleChange}
+                        placeholder="Enter last name"
+                        className="inputBox"
+                    />
 
-                Last Name:
-                <input
-                    type="text"
-                    name="lname"
-                    value={formData.lname}
-                    onChange={handleChange}
-                /><br/>
+                    <label className="label">
+                        Email:
+                    </label> 
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="example@gmail.com"
+                        className="inputBox"
+                    />
 
-                Email:
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                /><br/>
+                    <label className="font-medium text-gray-800">
+                        Password:
+                    </label> 
 
-                Password:
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                /><br/>
+                    <div className="flex items-center justify-between gap-1 passwordBox">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                            className="h-8 outline-none w-full"
+                        />
+                        <button
+                        type="button"
+                        title={showPassword ? "Hide Password" : "Show Password"}
+                        onClick={()=>setShowPassword(prev => !prev)}
+                        >
+                            {showPassword
+                                ?<EyeOff className="h-4.5 w-4.5 text-black"/>
+                                :<Eye className="h-4.5 w-4.5 text-black"/>
+                            }
+                        </button>
+                    </div>
 
-                {msg && 
-                    <p className={`${msgType==='success'?"text-green-500":"text-red-500"}`}>
-                        {msg}
+                    {msg && 
+                        <p className={`pt-2 font-medium ${msgType==='success'?"text-green-500":"text-red-500"}`}>
+                            {msg}
+                        </p>
+                    }
+
+                    <div className="flex justify-end w-full">
+                        <input 
+                            type='submit' 
+                            value="Register"
+                            className="button bg-[#1B4332] text-white"
+                        />
+                    </div>
+                </form>
+
+                {/* Option */}
+                <div className="w-full flex flex-col items-center">
+                    <div className="flex my-4 items-center w-65 gap-2">
+                        <div className="h-0.5 w-full bg-gray-400"></div>
+                        <h1 className=" text-gray-700 font-medium text-nowrap">OR</h1>
+                        <div className="h-0.5 w-full bg-gray-400"></div>
+                    </div>
+                    <p className="mt-3 text-sm"> 
+                        Already have an account? 
+                        <Link to="/login" className="pl-1 link"> 
+                            Log in
+                        </Link>
                     </p>
-                }
+                </div>
 
-                <input type="submit" value="Register"/><br/>
-            </form>
-
-            <p>
-                Already have an account? <Link to="/login">Log in</Link>
-            </p>
+            </div>
         </div>
+    </div>
+    
     );
 }
 
