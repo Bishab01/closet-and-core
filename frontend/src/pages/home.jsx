@@ -6,43 +6,48 @@ import shoes from "../assets/images/shoes.JPG"
 function Home(){
     const products = [
         {
+            id: "p-tshirt-1",
             category: "Clothing",
             productName: "Round Neck Cotton T-shirt",
             productPrice: 450,
             image: tShirt,
         },
         {
+            id: "p-hat-1",
             category: "Headwear",
             productName: "C Embroidered Baseball Cap",
             productPrice: 561,
             image: hat,
         },
         {
+            id: "p-shoes-1",
             category: "Footwear",
             productName: "Comfortable White Sneakers",
             productPrice: 1299,
             image: shoes,
         },
         {
+            id: "p-tshirt-2",
             category: "Clothing",
             productName: "Round Neck Cotton T-shirt",
             productPrice: 450,
             image: tShirt,
         },
         {
+            id: "p-tshirt-3",
             category: "Clothing",
             productName: "Round Neck Cotton T-shirt",
             productPrice: 450,
             image: tShirt,
         },
         {
+            id: "p-shoes-2",
             category: "Footwear",
             productName: "Comfortable White Sneakers",
             productPrice: 1299,
             image: shoes,
         },
     ];
-
     return(
         <div className="body">
             <div className="flex justify-start items-end responsiveM border-green-800 border-2 rounded-3xl h-60 sm:h-90">
@@ -57,9 +62,10 @@ function Home(){
                     All Products
                 </h1>
                 <div className="flex flex-wrap my-6 gap-3 sm:gap-6">
-                    {products.map((product,index)=>
+                    {products.map((product)=>
                         <Productcard
-                            key={index}
+                            key={product.id} // addded
+                            id={product.id}
                             category={product.category}
                             productName={product.productName}
                             productPrice={product.productPrice}
