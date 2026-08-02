@@ -17,7 +17,7 @@ const products = [
             { name: "Olive Green", hex: "#4b5320" },
         ],
         material: "100% combed cotton, 180 GSM",
-        care: "Machine wash cold, tumble dry low"
+        care: "Machine wash cold, tumble dry low",
     },
     {
         id: 2,
@@ -29,7 +29,7 @@ const products = [
     {
         id: 3,
         category: "Footwear",
-        productName: "Comfortable White Sneakers",
+        productName: " Sneakers",
         productPrice: 1299,
         image: shoes,
     },

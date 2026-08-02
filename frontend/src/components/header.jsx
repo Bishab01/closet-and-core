@@ -2,8 +2,7 @@ import {Search, ShoppingCart} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-// UPDATED: imported the brand logo image from assets
-import logo from '../assets/images/logo.png';
+import logo from '../assets/logos/logo.png'
 
 
 function Header(){
@@ -17,24 +16,26 @@ function Header(){
     ];
 
     return(
-        <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit">
+        <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
             <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
                 Free shipping for purchase over Rs 2000
             </div>
-            <div className='flex items-center justify-between my-4 px-4 sm:px-6 lg:px-10 xl:px-15 gap-2'>
-            {/* UPDATED: brand name replaced with logo image + text side by side */}
-                <div className="flex items-center gap-2 whitespace-nowrap">
-                    <img
-                        src={logo}
-                        alt="Closet & Core logo"
-                        className="h-8 sm:h-10 w-auto object-contain"
-                    />
-                    <span className="font-bold text-base sm:text-lg lg:text-xl">
+            <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
+                {/* Logo + Brand Name */}
+                <div className="flex items-center gap-2.5">
+                    <div className="size-10 md:size-12 shrink-0 overflow-hidden rounded-full border border-green-950 ">
+                        <img
+                            src={logo}
+                            alt="Closet & Core logo"
+                            className="w-full h-full object-contain"
+                        />
+                    </div>
+                    <span className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap uppercase">
                         Closet & Core
                     </span>
                 </div>
+
                 {/* navigation */}
-                
                 <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
                     {navigations.map((item) => (
                         <NavLink 
@@ -51,9 +52,6 @@ function Header(){
                         {item.name}
                         </NavLink>
                     ))}
-
-                    {/* UPDATED: divider line, now placed between Contact and Cart */}
-                    <div className="w-px self-stretch bg-gray-300"></div>
 
                     {/* cart, grouped with the rest of the nav links */}
                     <NavLink
@@ -80,7 +78,7 @@ function Header(){
                         placeholder='Search...'
                     />
                 </div>
-        </div>
+            </div>
         </div>
     )
 }

@@ -15,7 +15,7 @@
 }
 
 .button{
-    @apply px-4 py-1 font-medium rounded-lg mt-2;
+    @apply px-4 py-1.5 font-medium rounded-lg mt-2;
 }
 
 .navButton{
@@ -44,4 +44,12 @@
 
 .modal{
     @apply fixed inset-0 z-50 bg-black/30 flex items-center justify-center;
+}
+
+.gridLayout{
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5 lg:gap-6;
+}
+
+.popUp{
+    @apply fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50;
 }
