@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom"
+import {NavLink} from "react-router-dom"
 import logo from "../assets/logos/displayLogo.png"
 import {Eye, EyeOff} from "lucide-react"
 import { useState } from "react"
@@ -144,19 +144,19 @@ function Login(){
                             <div className="h-0.5 w-full bg-gray-400"></div>
                         </div>
                         <div className="flex justify-center w-full">
-                            <Link to="/home">
+                            <NavLink to="/home">
                                 <button
                                     className="button border border-gray-500 bg-gray-200 text-gray-800"
                                 >
                                     Continue as Guest
                                 </button>
-                            </Link>
+                            </NavLink>
                         </div>
                         <p className="mt-3 text-sm"> 
                             Don't have an account? 
-                            <Link to="/signUp" className="pl-1 link"> 
+                            <NavLink to="/signUp" className="pl-1 link"> 
                                 Register now
-                            </Link>
+                            </NavLink>
                         </p>
                     </div>
                </div>

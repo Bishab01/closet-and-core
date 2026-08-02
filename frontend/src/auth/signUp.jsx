@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../assets/logos/displayLogo.png"
 import {Eye, EyeOff} from "lucide-react"
 
@@ -233,9 +233,9 @@ function Signup() {
                     </div>
                     <p className="mt-3 text-sm"> 
                         Already have an account? 
-                        <Link to="/login" className="pl-1 link"> 
+                        <NavLink to="/login" className="pl-1 link"> 
                             Log in
-                        </Link>
+                        </NavLink>
                     </p>
                 </div>
 
