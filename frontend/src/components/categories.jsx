@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-function Categories(){
+function Categories({selectedCategory, setSelectedCategory}){
     const categories=['All','Clothing','Footwear','Headwear'];
-    const [selectedCategory, setSelectedCategory] = useState("All");
 
     return(
         <div className="responsiveM">
