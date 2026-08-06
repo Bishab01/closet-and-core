@@ -39,8 +39,17 @@ function Header(){
                     </span>
                 </div>
 
-                {/* cart */}
-                <div className='flex items-center gap-2'>
+                {/* search + cart, grouped together on the right */}
+                <div className='flex items-center gap-3'>
+                    <div className='border-black border-2 rounded-lg flex items-center px-2 py-1 gap-2'>
+                        <Search className='w-4 h-4'/>
+                        <input 
+                            type='text'
+                            className='outline-none w-20 sm:w-40 lg:w-50'
+                            placeholder='Search...'
+                        />
+                    </div>
+
                     <NavLink
                         to="/cart"
                         className={({ isActive }) =>
@@ -54,16 +63,6 @@ function Header(){
                         <ShoppingCart className='w-4 h-4'/>
                         <span>Cart ({cartCount})</span>
                     </NavLink>
-                </div>
-
-                {/* search */}
-                <div className='border-black border-2 rounded-lg flex items-center px-2 py-1 gap-2'>
-                    <Search className='w-4 h-4'/>
-                    <input 
-                        type='text'
-                        className='outline-none w-20 sm:w-40 lg:w-50'
-                        placeholder='Search...'
-                    />
                 </div>
             </div>
               {/* Sidebar menu */}
