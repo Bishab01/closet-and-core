@@ -1,4 +1,4 @@
-import {Search, ShoppingCart} from 'lucide-react'
+import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
@@ -8,6 +8,7 @@ import SideMenu from './sidemenu';
 
 function Header(){
     const { cartCount } = useCart();
+    const[menuopen,setMenuOpen] = useState(false);
 
     const navigations = [
         { name: "Home", path: "/home" },
