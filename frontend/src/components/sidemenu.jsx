@@ -39,15 +39,14 @@ function SideMenu({ isOpen, onClose }) {
                 </div>
 
                   
-
-                {/* Categories */}
+                {/* Navigation */}
                 <div className="px-5 pt-2">
-                    <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">CATEGORIES</p>
+                    <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">MENU</p>
                     <nav className="flex flex-col">
-                        {CATEGORIES.map((cat) => (
+                        {NAV_LINKS.map((item) => (
                             <NavLink
-                                key={cat}
-                                to={`/products?category=${cat.toLowerCase()}`}
+                                key={item.name}
+                                to={item.path}
                                 onClick={onClose}
                                 className={({ isActive }) =>
                                     `px-3 py-2 rounded-lg text-sm transition-colors ${
@@ -57,11 +56,13 @@ function SideMenu({ isOpen, onClose }) {
                                     }`
                                 }
                             >
-                                {cat}
+                                {item.name}
                             </NavLink>
                         ))}
                     </nav>
                 </div>
+
+               
             </aside>
 
             
