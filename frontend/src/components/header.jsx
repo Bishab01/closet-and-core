@@ -90,7 +90,7 @@ function Header(){
                     />
                 </div>
             </div>
-              {/* Sidebar menu, as its own component */}
+              {/* Sidebar menu */}
             <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
         </div>
       
