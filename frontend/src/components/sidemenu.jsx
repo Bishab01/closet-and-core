@@ -33,6 +33,24 @@ function SideMenu({ isOpen, onClose }) {
                     </button>
                 </div>
 
+                   {/* Auth buttons */}
+                <div className="flex gap-3 p-5">
+                    <NavLink
+                        to="/login"
+                        onClick={onClose}
+                        className="flex-1 text-center border border-gray-300 rounded-lg py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors"
+                    >
+                        Login
+                    </NavLink>
+                    <NavLink
+                        to="/signup"
+                        onClick={onClose}
+                        className="flex-1 text-center bg-green-950 rounded-lg py-2 text-sm font-medium text-white hover:bg-green-800 transition-colors"
+                    >
+                        Sign Up
+                    </NavLink>
+                </div>
+
                 {/* Categories */}
                 <div className="px-5 pt-2">
                     <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">CATEGORIES</p>
@@ -56,6 +74,8 @@ function SideMenu({ isOpen, onClose }) {
                     </nav>
                 </div>
             </aside>
+
+            
 
         </>
     );
