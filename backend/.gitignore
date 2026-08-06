@@ -1,5 +1,5 @@
-# Database connection (contains credentials)
-config/connectDB.php
+# Environment variables
+.env
 
 # IDE files
 .vscode/
