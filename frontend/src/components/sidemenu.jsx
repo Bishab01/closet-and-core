@@ -38,28 +38,7 @@ function SideMenu({ isOpen, onClose }) {
                             <X size={22} />
                     </button>
                 </div>
-                {/* Navigation */}
-                <div className="px-5 pt-2">
-                    <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">MENU</p>
-                    <nav className="flex flex-col">
-                        {NAV_LINKS.map((item) => (
-                            <NavLink
-                                key={item.name}
-                                to={item.path}
-                                onClick={onClose}
-                                className={({ isActive }) =>
-                                    `px-3 py-2 rounded-lg text-sm transition-colors ${
-                                        isActive
-                                            ? "bg-green-100 text-green-950 font-medium"
-                                            : "text-gray-700 hover:bg-gray-50"
-                                    }`
-                                }
-                            >
-                                {item.name}
-                            </NavLink>
-                        ))}
-                    </nav>
-                </div>
+                
 
             </aside>
         </>
