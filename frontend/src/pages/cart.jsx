@@ -64,7 +64,7 @@ function Cart() {
                         //Item card
                         <div
                             key={item.id}
-                            className="border border-gray-300 shadow-sm rounded-2xl py-5 px-6 flex bg-white/60 gap-3 overflow-hidden"
+                            className="border border-gray-300 shadow-sm rounded-2xl py-5 px-6 flex bg-white/60 gap-3"
                         >
                             {/* Product image */}
                             <div className="size-30 rounded-lg border border-gray-200 shrink-0 overflow-hidden">

@@ -1,6 +1,6 @@
 function OptionsAvailable({values, selectedValue, setSelectedValue}){
     return(
-            <div className="absolute top-full left-0 mt-2 z-50 flex flex-col w-30 rounded-xl overflow-hidden shadow-lg border border-gray-300">
+            <div className="absolute top-full left-0 mt-2 z-100 flex flex-col w-30 rounded-xl overflow-hidden shadow-lg border border-gray-300">
                 {
                     values.map((value)=>(
                         <button
