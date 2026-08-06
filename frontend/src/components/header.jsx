@@ -23,8 +23,17 @@ function Header(){
                 Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
-                {/* Logo + Brand Name */}
+                {/* Hamburger + Logo + Brand Name */}
+
                 <div className="flex items-center gap-2.5">
+                          <button
+                        onClick={() => setMenuOpen(true)}
+                        aria-label="Open menu"
+                        className="p-1 rounded-md hover:bg-gray-100 shrink-0"
+                    >
+                        <Menu className="w-6 h-6 text-green-950" />
+                    </button>
+ 
                     <div className="size-10 md:size-12 shrink-0 overflow-hidden rounded-full border border-green-950 ">
                         <img
                             src={logo}
