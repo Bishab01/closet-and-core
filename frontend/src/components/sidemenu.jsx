@@ -1,7 +1,12 @@
 import { X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
- const CATEGORIES =["ALL", "Headware","Footware","Clothing"]
+ const NAV_LINKS = [
+    { name: "Home", path: "/home" },
+    { name: "Products", path: "/products" },
+    { name: "About Us", path: "/about" },
+    { name: "Contact", path: "/contact" },
+];
 
 function SideMenu({ isOpen, onClose }) {
     return (
