@@ -18,6 +18,20 @@ function SideMenu({ isOpen, onClose }) {
                     ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             ></aside>
 
+             {/* Sidebar header */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                        <span className="font-bold uppercase text-green-950">Closet & Core</span>
+                </div>
+                <button
+                        onClick={onClose}
+                        aria-label="Close menu"
+                        className="text-gray-500 hover:text-gray-800 transition-colors"
+                    >
+                        <X size={22} />
+                </button>
+             </div>
+
 
 
         </>
