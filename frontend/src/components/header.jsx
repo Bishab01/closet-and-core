@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
+import SideMenu from './sidemenu';
 
 
 function Header(){
