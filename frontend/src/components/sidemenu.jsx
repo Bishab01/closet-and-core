@@ -8,7 +8,6 @@ const NAV_LINKS = [
     { name: "Contact", path: "/contact" },
 ];
 
-
 function SideMenu({ isOpen, onClose }) {
     return (
         <>
@@ -38,8 +37,29 @@ function SideMenu({ isOpen, onClose }) {
                             <X size={22} />
                     </button>
                 </div>
-                
 
+                {/* Navigation */}
+                <div className="px-5 pt-4">
+                    <p className="text-xs font-semibold tracking-wide text-gray-400 mb-3">MENU</p>
+                    <nav className="flex flex-col gap-1">
+                        {NAV_LINKS.map((item) => (
+                            <NavLink
+                                key={item.name}
+                                to={item.path}
+                                onClick={onClose}
+                                className={({ isActive }) =>
+                                    `px-4 py-4 rounded-lg text-lg font-medium transition-colors ${
+                                        isActive
+                                            ? "bg-green-100 text-green-950 font-semibold"
+                                            : "text-gray-700 hover:bg-gray-50"
+                                    }`
+                                }
+                            >
+                                {item.name}
+                            </NavLink>
+                        ))}
+                    </nav>
+                </div>
             </aside>
         </>
     );
