@@ -1,6 +1,8 @@
 import { X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+ 
+
 function SideMenu({ isOpen, onClose }) {
     return (
         <>
@@ -32,7 +34,28 @@ function SideMenu({ isOpen, onClose }) {
                 </button>
              </div>
 
-
+              {/* Categories */}
+                <div className="px-5 pt-2">
+                    <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">CATEGORIES</p>
+                    <nav className="flex flex-col">
+                        {CATEGORIES.map((cat) => (
+                            <NavLink
+                                key={cat}
+                                to={`/products?category=${cat.toLowerCase()}`}
+                                onClick={onClose}
+                                className={({ isActive }) =>
+                                    `px-3 py-2 rounded-lg text-sm transition-colors ${
+                                        isActive
+                                            ? "bg-green-100 text-green-950 font-medium"
+                                            : "text-gray-700 hover:bg-gray-50"
+                                    }`
+                                }
+                            >
+                                {cat}
+                            </NavLink>
+                        ))}
+                    </nav>
+               
 
         </>
     );
