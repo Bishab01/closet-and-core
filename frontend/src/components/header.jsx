@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
-import SideMenu from './sidemenu';
+import sidemenu from './sidemenu';
 
 
 function Header(){
     const { cartCount } = useCart();
-    const[menuopen,setMenuOpen] = useState(false);
+    const[menuOpen,setMenuOpen] = useState(false);
 
     const navigations = [
         { name: "Home", path: "/home" },

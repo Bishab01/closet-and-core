@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
- 
+ const CATEGORIES =["ALL", "Headware","Footware","Clothing"]
 
 function SideMenu({ isOpen, onClose }) {
     return (
@@ -55,7 +55,7 @@ function SideMenu({ isOpen, onClose }) {
                             </NavLink>
                         ))}
                     </nav>
-               
+               </div>
 
         </>
     );
