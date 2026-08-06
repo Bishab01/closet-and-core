@@ -10,13 +10,6 @@ function Header(){
     const { cartCount } = useCart();
     const[menuOpen,setMenuOpen] = useState(false);
 
-    const navigations = [
-        { name: "Home", path: "/home" },
-        { name: "Products", path: "/products" },
-        { name: "About Us", path: "/about" },
-        { name: "Contact", path: "/contact" },
-    ];
-
     return(
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
             <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
@@ -46,25 +39,8 @@ function Header(){
                     </span>
                 </div>
 
-                {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
-                    {navigations.map((item) => (
-                        <NavLink 
-                            key={item.name}
-                            to={item.path}
-                            className={({ isActive }) =>
-                                `navButton ${
-                                    isActive
-                                        ? "bg-green-200 text-green-800"
-                                        : "text-black hover:bg-gray-200"
-                                }`
-                            }
-                        >
-                        {item.name}
-                        </NavLink>
-                    ))}
-
-                    {/* cart, grouped with the rest of the nav links */}
+                {/* cart */}
+                <div className='flex items-center gap-2'>
                     <NavLink
                         to="/cart"
                         className={({ isActive }) =>

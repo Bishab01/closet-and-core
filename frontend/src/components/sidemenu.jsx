@@ -1,12 +1,13 @@
 import { X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
- const NAV_LINKS = [
+const NAV_LINKS = [
     { name: "Home", path: "/home" },
     { name: "Products", path: "/products" },
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
 ];
+
 
 function SideMenu({ isOpen, onClose }) {
     return (
@@ -37,8 +38,6 @@ function SideMenu({ isOpen, onClose }) {
                             <X size={22} />
                     </button>
                 </div>
-
-                  
                 {/* Navigation */}
                 <div className="px-5 pt-2">
                     <p className="text-xs font-semibold tracking-wide text-gray-400 mb-2">MENU</p>
@@ -62,11 +61,7 @@ function SideMenu({ isOpen, onClose }) {
                     </nav>
                 </div>
 
-               
             </aside>
-
-            
-
         </>
     );
 }        
