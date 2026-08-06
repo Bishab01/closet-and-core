@@ -26,7 +26,7 @@ function Header(){
                 {/* Hamburger + Logo + Brand Name */}
 
                 <div className="flex items-center gap-2.5">
-                          <button
+                    <button
                         onClick={() => setMenuOpen(true)}
                         aria-label="Open menu"
                         className="p-1 rounded-md hover:bg-gray-100 shrink-0"
@@ -90,7 +90,10 @@ function Header(){
                     />
                 </div>
             </div>
+              {/* Sidebar menu, as its own component */}
+            <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
         </div>
+      
     )
 }
 
