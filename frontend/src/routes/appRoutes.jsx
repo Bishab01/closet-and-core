@@ -4,7 +4,9 @@ import Signup from "../auth/signUp";
 import App from "../core/App";
 import Home from "../pages/home";
 import Products from "../pages/products";
-import Cart from "../pages/cart"; //added
+import Cart from "../pages/cart";
+import About from "../pages/about";
+import Contact from "../pages/contact";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function Approutes() {
@@ -19,7 +21,7 @@ function Approutes() {
       <Route element={<App />}>
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>

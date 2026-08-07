@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import {Search} from 'lucide-react'
-import { useState } from 'react'
-import { NavLink } from 'react-router-dom';
-
-function Header(){
-=======
 import {Search, ShoppingCart} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
@@ -14,7 +7,6 @@ import logo from '../assets/logos/logo.png'
 
 function Header(){
     const { cartCount } = useCart();
->>>>>>> acf332d60928e1570ba374451efaa3b8598bc195
 
     const navigations = [
         { name: "Home", path: "/home" },
@@ -24,20 +16,6 @@ function Header(){
     ];
 
     return(
-<<<<<<< HEAD
-        <div className="flex flex-col border-b-2 border-solid border-gray-200 h-fit">
-            <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
-                Free shipping for purchase over Rs 2000
-            </div>
-            <div className='flex items-center justify-between my-4 px-4 sm:px-6 lg:px-10 xl:px-15 gap-2'>
-                {/* name of brand */}
-                <div className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap">
-                    Closet & Core
-                </div>
-
-                {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none border-x border-x-gray-300 px-4'>
-=======
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
             <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
                 Free shipping for purchase over Rs 2000
@@ -59,7 +37,6 @@ function Header(){
 
                 {/* navigation */}
                 <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
->>>>>>> acf332d60928e1570ba374451efaa3b8598bc195
                     {navigations.map((item) => (
                         <NavLink 
                             key={item.name}
@@ -75,8 +52,6 @@ function Header(){
                         {item.name}
                         </NavLink>
                     ))}
-<<<<<<< HEAD
-=======
 
                     {/* cart, grouped with the rest of the nav links */}
                     <NavLink
@@ -92,7 +67,6 @@ function Header(){
                         <ShoppingCart className='w-4 h-4'/>
                         <span>Cart ({cartCount})</span>
                     </NavLink>
->>>>>>> acf332d60928e1570ba374451efaa3b8598bc195
                 </div>
 
                 {/* search */}
@@ -104,11 +78,7 @@ function Header(){
                         placeholder='Search...'
                     />
                 </div>
-<<<<<<< HEAD
-        </div>
-=======
             </div>
->>>>>>> acf332d60928e1570ba374451efaa3b8598bc195
         </div>
     )
 }

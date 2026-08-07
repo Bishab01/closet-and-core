@@ -54,8 +54,8 @@ function Contact() {
       <div className="m-10 mb-6">
         <h1 className="text-2xl font-serif font-bold">Contact Us</h1>
         <p className="text-gray-600 text-sm sm:text-base mt-1">
-          Questions about an order, sizing, or a product on the shelf —
-          we read every message ourselves.
+          Questions about an order, sizing, or a product on the shelf — we read
+          every message ourselves.
         </p>
       </div>
 
@@ -76,7 +76,7 @@ function Contact() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your full name"
-                className="inputBox !mt-0 !ml-0 w-full px-3 py-2"
+                className="inputBox mt-0! ml-0! w-full px-3 py-2"
               />
             </div>
             <div className="flex flex-col">
@@ -89,7 +89,7 @@ function Contact() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="inputBox !mt-0 !ml-0 w-full px-3 py-2"
+                className="inputBox mt-0! ml-0! w-full px-3 py-2"
               />
             </div>
           </div>
@@ -104,7 +104,7 @@ function Contact() {
               value={formData.subject}
               onChange={handleChange}
               placeholder="Order, sizing, wholesale, other..."
-              className="inputBox !mt-0 !ml-0 w-full px-3 py-2"
+              className="inputBox mt-0! ml-0! w-full px-3 py-2"
             />
           </div>
 
@@ -118,13 +118,11 @@ function Contact() {
               onChange={handleChange}
               placeholder="How can we help?"
               rows={5}
-              className="inputBox !mt-0 !ml-0 w-full px-3 py-2 resize-none"
+              className="inputBox mt-0! ml-0! w-full px-3 py-2 resize-none"
             />
           </div>
 
-          {msg && (
-            <p className="text-sm text-red-600 mt-4">{msg}</p>
-          )}
+          {msg && <p className="text-sm text-red-600 mt-4">{msg}</p>}
 
           <button
             type="submit"
@@ -216,8 +214,8 @@ function Contact() {
               <hr className="my-6 border-green-900/15" />
 
               <p className="text-xs text-gray-500 leading-relaxed">
-                Placeholder contact details — swap these for your real
-                address, number and inbox before launch.
+                Placeholder contact details — swap these for your real address,
+                number and inbox before launch.
               </p>
             </div>
           </div>

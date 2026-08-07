@@ -1,8 +1,8 @@
 import { Layers, Ruler, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
-import tShirt from "../../images/products/t-shirt.jpg";
-import hat from "../../images/products/hat.jpg";
-import shoes from "../../images/products/shoes.jpg";
+import tShirt from "../assets/images/t-shirt.jpg";
+import hat from "../assets/images/hat.jpg";
+import shoes from "../assets/images/shoes.jpg";
 
 function About() {
   const principles = [
@@ -32,7 +32,7 @@ function About() {
           alt="Closet & Core essentials"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-green-950/85 via-green-950/40 to-green-950/10" />
+        <div className="absolute inset-0 bg-linear-to-t from-green-950/85 via-green-950/40 to-green-950/10" />
         <div className="relative h-full flex flex-col justify-end p-8 sm:p-12 text-[#FBF9F4]">
           <p className="text-xs tracking-[0.3em] uppercase text-green-200 mb-3">
             Closet &amp; Core &middot; Since 2026
@@ -96,7 +96,7 @@ function About() {
           {principles.map(({ icon: Icon, title, copy }) => (
             <div
               key={title}
-              className="flex-1 min-w-[260px] border-gray-300 border-2 rounded-2xl p-6 hover:border-green-800 duration-300"
+              className="flex-1 min-w-65 border-gray-300 border-2 rounded-2xl p-6 hover:border-green-800 duration-300"
             >
               <div className="w-11 h-11 rounded-full bg-green-900 flex items-center justify-center mb-4">
                 <Icon className="w-5 h-5 text-white" />
