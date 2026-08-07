@@ -41,9 +41,8 @@ function About() {
             The Basics, Done Properly
           </h1>
           <p className="mt-4 max-w-md text-sm sm:text-base text-gray-200">
-            We make a small, considered range of clothing, headwear and
-            footwear — the pieces that sit at the core of a closet, not the
-            edges of it.
+            We make a small, considered range of clothing, headwear and footwear
+            — the pieces that sit at the core of a closet, not the edges of it.
           </p>
         </div>
       </div>
@@ -53,17 +52,16 @@ function About() {
         <div className="w-full lg:w-1/2">
           <h2 className="text-2xl font-serif font-bold mb-4">Our Story</h2>
           <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
-            Closet &amp; Core started with a short list: a t-shirt that
-            actually holds its shape, a cap that doesn't crease in a bag,
-            and a pair of sneakers you can wear every single day without
-            apologising for them. Everything else came after that list, not
-            before it.
+            Closet &amp; Core started with a short list: a t-shirt that actually
+            holds its shape, a cap that doesn't crease in a bag, and a pair of
+            sneakers you can wear every single day without apologising for them.
+            Everything else came after that list, not before it.
           </p>
           <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-            We're a small team based in Kathmandu, working with local
-            makers and a handful of trusted mills. We keep the catalogue
-            deliberately narrow — every product on this site is one we'd
-            restock ourselves, in our own size, without thinking twice.
+            We're a small team based in Kathmandu, working with local makers and
+            a handful of trusted mills. We keep the catalogue deliberately
+            narrow — every product on this site is one we'd restock ourselves,
+            in our own size, without thinking twice.
           </p>
         </div>
 
@@ -92,8 +90,7 @@ function About() {
           What "Core" Means to Us
         </h2>
         <p className="text-gray-600 text-sm sm:text-base mb-6">
-          Three rules every product has to pass before it's allowed on the
-          site.
+          Three rules every product has to pass before it's allowed on the site.
         </p>
         <div className="flex flex-wrap gap-6">
           {principles.map(({ icon: Icon, title, copy }) => (
@@ -120,7 +117,9 @@ function About() {
               <p className="text-xs tracking-[0.15em] uppercase text-gray-500 mb-1">
                 Founded
               </p>
-              <p className="font-serif text-lg font-bold text-green-900">2023</p>
+              <p className="font-serif text-lg font-bold text-green-900">
+                2023
+              </p>
             </div>
             <div>
               <p className="text-xs tracking-[0.15em] uppercase text-gray-500 mb-1">
