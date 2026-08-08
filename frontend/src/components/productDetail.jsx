@@ -100,13 +100,17 @@ function ProductDetail({click}){
                                         ))}
                                     </div>
 
+                                    <p className="text-sm text-gray-700 mb-5 font-semibold">
+                                        {products[0].stock} pieces currently in stock.
+                                    </p>
+
                                     <hr className="my-5 border-green-900/15" />
 
                                     {/* Material */}
                                     <p className="text-xs tracking-[0.15em] uppercase text-gray-500 font-medium mb-1.5">
                                         Material
                                     </p>
-                                    <p className="text-sm text-gray-700 mb-5">
+                                    <p className="text-sm text-gray-700 mb-5 ">
                                         {products[0].material}.
                                     </p>
                                     

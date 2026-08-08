@@ -16,6 +16,7 @@ const products = [
             { name: "Bone White", hex: "#f2efe9" },
             { name: "Olive Green", hex: "#4b5320" },
         ],
+        stock: 20,
         material: "100% combed cotton, 180 GSM",
         care: "Machine wash cold, tumble dry low",
     },
@@ -39,20 +40,6 @@ const products = [
         productName: "Round Neck Cotton T-shirt",
         productPrice: 450,
         image: tShirt,
-    },
-    {
-        id: 5,
-        category: "Clothing",
-        productName: "Round Neck Cotton T-shirt",
-        productPrice: 450,
-        image: tShirt,
-    },
-    {
-        id: 6,
-        category: "Footwear",
-        productName: "Comfortable White Sneakers",
-        productPrice: 1299,
-        image: shoes,
     },
 ];
 

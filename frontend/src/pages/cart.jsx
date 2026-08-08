@@ -4,14 +4,10 @@ import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import cartItems from "../data/cartItems";
 import QuantitySelector from "../components/quantitySelector";
-import OptionsAvailable from "../components/optionsAvailable";
 
 function Cart() {
     // const { cartItems, removeFromCart, updateQty, cartTotal } = useCart();
     const [qty, setQty] = useState(1);
-    const [selectedColor, setSelectedColor] = useState(cartItems[0].colors[2]);
-    const [selectedSize, setSelectedSize]= useState(cartItems[1].sizes[2]);
-    const [displayColorOptionFor, setDisplayColorOptionFor]= useState(null);
 
     // Message for when cart is empty
     if (cartItems.length === 0) {
@@ -84,47 +80,30 @@ function Cart() {
                                     {item.category}
                                 </p>
                                 <p className="text-sm">
-                                    Rs 5.00
+                                    Rs {item.productPrice}
                                 </p>
 
                                 <div className="md:flex md:flex-rows md:items-center md:gap-2.5">
-                                    {/* Color selector */}
+                                    {/* Selected Color */}
                                     <div className="flex items-center gap-2 mb-2 md:mb-0">
                                         <p className="text-sm text-gray-500">
                                             Color:
                                         </p>
-                                        <div className="relative flex items-center justify-between p-0.5 gap-1.5 border border-gray-300 rounded-lg w-13 h-7 ">
-                                            <div 
-                                                className="flex items-center justify-center w-5 h-4 ml-1"
-                                                style={{backgroundColor: selectedColor.hex}}    
-                                            ></div>
-
-                                            <button onClick={()=>setDisplayColorOptionFor(displayColorOptionFor === item.id ? null : item.id)}>
-                                                <ChevronDown className="size-5"/>
-                                            </button>
-
-                                            {displayColorOptionFor === item.id && 
-                                                <OptionsAvailable
-                                                    values={item.colors}
-                                                    selectedValue={selectedColor}
-                                                    setSelectedValue={setSelectedColor}
-                                                />
-                                            }
+                                        <div 
+                                            className="w-7 h-5 rounded-sm border border-gray-300"
+                                            style={{backgroundColor: item.color.hex}}    
+                                        >
                                         </div>
+                                        <span className="text-sm text-gray-500 line-clamp-1">{item.color.name}</span>
                                     </div>
 
-                                    {/* Size selector */}
+                                    {/* Selected Size */}
                                     <div className="flex items-center gap-2">
                                         <p className="text-sm text-gray-500">
                                             Size:
                                         </p>
-                                        <div className="flex items-center justify-between p-0.5 gap-1 border border-gray-300 rounded-lg text-sm ">
-                                            <div 
-                                                className="flex items-center justify-center w-5 h-4 ml-1"    
-                                            >{selectedSize.name}</div>
-                                            <button onClick={()=>{console.log("button clicked")}}>
-                                                <ChevronDown className="size-5"/>
-                                            </button>
+                                        <div className="flex items-center justify-center px-3 py-0.5 border border-gray-300 rounded-lg text-sm ">
+                                            {item.size.name}
                                         </div>
                                     </div>
                                 </div>
