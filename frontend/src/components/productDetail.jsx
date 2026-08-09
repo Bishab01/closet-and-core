@@ -2,11 +2,34 @@ import { useState } from "react";
 import { ArrowLeft, Minus, Plus, ShoppingCart, ChevronDown } from "lucide-react";
 import products from "../data/productList";
 import QuantitySelector from "./quantitySelector";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import LoginRequest from "./loginRequest";
 
-function ProductDetail({click}){
-    
+function ProductDetail({click}){ 
+    const { loggedIn } = useAuth();
+    const navigate = useNavigate();
+
     const [selectedColor, setSelectedColor] = useState(0);
     const [selectedSize, setSelectedSize] = useState(0);
+    
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false)
+
+    const handleAddtoCartClick = (e) => {
+        if(!loggedIn){
+            e.preventDefault();
+            setShowLoginPrompt(true);
+        }
+    }
+
+    const handleConfirmLogin = () => {
+        setShowLoginPrompt(false);
+        navigate("/login");
+    };
+
+    const handleCancel = () => {
+        setShowLoginPrompt(false);
+    };
 
     return (
         <div className="popUp">
@@ -134,12 +157,19 @@ function ProductDetail({click}){
                                         />
 
                                         <button
+                                            onClick={handleAddtoCartClick}
                                             className="flex items-center justify-center gap-2 whitespace-nowrap
                                             px-3 py-2 bg-green-900 hover:bg-green-950 duration-200 text-white font-medium rounded-lg"
                                         >
                                             <ShoppingCart className="w-4 h-4" />
                                             Add to Cart
                                         </button>
+                                        {showLoginPrompt &&
+                                            <LoginRequest
+                                                onConfirm={handleConfirmLogin}
+                                                onCancel={handleCancel}
+                                            />
+                                        }
                                     </div>
                                 
                 

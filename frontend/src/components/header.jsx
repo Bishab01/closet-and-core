@@ -1,14 +1,36 @@
 import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
-import SideMenu from './SideMenu';
-
+import SideMenu from './sidemenu';
+import { useAuth } from "../context/AuthContext";
+import LoginRequest from './loginRequest';
 
 function Header(){
     const { cartCount } = useCart();
-    const[menuOpen,setMenuOpen] = useState(false);
+    const { loggedIn } = useAuth();
+    
+    const navigate = useNavigate();
+
+    const [menuOpen,setMenuOpen] = useState(false);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false)
+
+    const handleCartClick = (e) => {
+        if(!loggedIn){
+            e.preventDefault();
+            setShowLoginPrompt(true);
+        }
+    }
+
+    const handleConfirmLogin = () => {
+        setShowLoginPrompt(false);
+        navigate("/login");
+    };
+
+    const handleCancel = () => {
+        setShowLoginPrompt(false);
+    };
 
     return(
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
@@ -16,59 +38,76 @@ function Header(){
                 Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
+                
                 {/* Hamburger + Logo + Brand Name */}
-
-                <div className="flex items-center gap-2.5">
+                <div className='flex items-center'>
                     <button
                         onClick={() => setMenuOpen(true)}
                         aria-label="Open menu"
-                        className="p-1 rounded-md hover:bg-gray-100 shrink-0"
+                        className="p-1 rounded-md -ml-2 sm:-ml-3 lg:-ml-5 mr-1.5 sm:mr-2 lg:mr-3 hover:bg-gray-100"
                     >
-                        <Menu className="w-6 h-6 text-green-950" />
+                        <Menu className="size-4 md:size-5 text-green-950" />
                     </button>
- 
-                    <div className="size-10 md:size-12 shrink-0 overflow-hidden rounded-full border border-green-950 ">
-                        <img
-                            src={logo}
-                            alt="Closet & Core logo"
-                            className="w-full h-full object-contain"
-                        />
+                    
+                    <div className="flex items-center gap-2.5">
+                        <div className="size-8.5 md:size-10.5 lg:size-11.5 shrink-0 overflow-hidden rounded-full border border-green-950 ">
+                            <img
+                                src={logo}
+                                alt="Closet & Core logo"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                        <span className="font-bold text-sm md:text-lg whitespace-nowrap uppercase">
+                            Closet & Core
+                        </span>
                     </div>
-                    <span className="font-bold text-base sm:text-lg lg:text-xl whitespace-nowrap uppercase">
-                        Closet & Core
-                    </span>
                 </div>
 
                 {/* search + cart, grouped together on the right */}
-                <div className='flex items-center gap-3'>
-                    <div className='border-black border-2 rounded-lg flex items-center px-2 py-1 gap-2'>
+                <div className='flex items-center gap-2 md:gap-3'>
+                    <div className='border-black border rounded-lg text-sm md:text-[16px] flex items-center px-2 py-1 gap-2'>
                         <Search className='w-4 h-4'/>
                         <input 
                             type='text'
-                            className='outline-none w-20 sm:w-40 lg:w-50'
+                            className='outline-none w-16 md:w-25 lg:w-35'
                             placeholder='Search...'
                         />
                     </div>
 
                     <NavLink
                         to="/cart"
-                        className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-xl px-3 sm:px-4 py-2 text-sm sm:text-base font-medium whitespace-nowrap duration-200 ${
-                                isActive
-                                    ? "bg-green-700 text-white"
-                                    : "bg-green-900 text-white hover:bg-green-800"
-                            }`
-                        }
+                        onClick={handleCartClick}
+                        className="relative text-green-950 text-lg"
                     >
-                        <ShoppingCart className='w-4 h-4'/>
-                        <span>Cart ({cartCount})</span>
+                        <ShoppingCart className="size-5 md:size-5.5" />
+
+                        {cartCount > 0 && (
+                            <span
+                                className="absolute -right-2 -top-2 flex size-4.5
+                                items-center justify-center rounded-full
+                                bg-red-400 px-1 text-[9px] font-semibold text-white"
+                            >
+                                {cartCount}
+                            </span>
+                        )}
                     </NavLink>
                 </div>
             </div>
-              {/* Sidebar menu */}
-            <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+            {/* Sidebar menu */}
+            <SideMenu 
+                isOpen={menuOpen} 
+                onClose={() => setMenuOpen(false)} 
+            />
+
+            {/* Pop up asking to login */}
+            {showLoginPrompt && (
+                <LoginRequest 
+                    onConfirm={handleConfirmLogin} 
+                    onCancel={handleCancel} 
+                />
+            )}
         </div>
-      
     )
 }
 

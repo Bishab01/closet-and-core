@@ -41,6 +41,20 @@ const products = [
         productPrice: 450,
         image: tShirt,
     },
+    {
+        id: 5,
+        category: "Footwear",
+        productName: " Sneakers",
+        productPrice: 1299,
+        image: shoes,
+    },
+    {
+        id: 6,
+        category: "Footwear",
+        productName: " Sneakers",
+        productPrice: 1299,
+        image: shoes,
+    },
 ];
 
 export default products
