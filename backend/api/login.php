@@ -77,7 +77,6 @@
     $_SESSION["lname"]    = $user["lname"];
     $_SESSION["email"]    = $user["email"];
     $_SESSION["role"]     = $user["role"];
-    $_SESSION["is_guest"] = false;
 
     echo json_encode([
         "success" => true,

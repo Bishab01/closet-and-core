@@ -36,6 +36,7 @@ function Login(){
         try{
             const response = await fetch("http://localhost/project/onlineStore/backend/api/login.php", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
