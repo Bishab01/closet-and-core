@@ -24,6 +24,15 @@ function Login(){
     const handleSubmit = async(e) => {
         e.preventDefault();
 
+        if(!formData.email.trim()||!formData.password.trim())
+        {
+            setMsg("All fields are required.");
+            setMsgType("error");
+            return;
+        }
+
+        setMsg("");
+
         try{
             const response = await fetch("http://localhost/project/onlineStore/backend/api/login.php", {
                 method: "POST",
@@ -37,16 +46,17 @@ function Login(){
             if (data.success) {
                 setMsg(data.message);
                 setMsgType("success");
+
+                setFormData({
+                email: "",
+                password: ""
+                });
+                 
             } 
             else {
                 setMsg(data.message);
                 setMsgType("error");
             }
-
-            setFormData({
-                email: "",
-                password: ""
-            });
         }
 
         catch(error){
@@ -122,7 +132,11 @@ function Login(){
                         </div>
 
                         {msg && 
-                            <p className={`pt-2 font-medium ${msgType==='success'?"text-green-500":"text-red-500"}`}>
+                            <p className={`mt-2 font-medium rounded-md text-center px-3 py-1.5
+                                ${msgType==='success'
+                                    ?"text-green-600 bg-green-200"
+                                    :"text-red-500 bg-red-200"}`}
+                            >
                                 {msg}
                             </p>
                         }

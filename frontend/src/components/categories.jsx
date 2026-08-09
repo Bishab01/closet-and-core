@@ -10,7 +10,7 @@ function Categories({selectedCategory, setSelectedCategory}){
                 <button
                     key={category}
                     onClick={()=>setSelectedCategory(category)}
-                    className={`categoryButton uppercase text-sm tracking-wider shadow-xs
+                    className={`categoryButton lowercase text-sm tracking-wider shadow-xs
                         ${
                             selectedCategory === category 
                             ? 'bg-green-900 text-white shadow-green-950'

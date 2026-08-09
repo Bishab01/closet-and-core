@@ -10,11 +10,11 @@ import { Routes, Route, Navigate} from 'react-router-dom'
 function Approutes() {
   return(
     <Routes>
-      <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       
-      {/* <Route path="/login" element={<Login/>}/>
+      <Route path="/login" element={<Login/>}/>
       
-      <Route path="/signUp" element={<Signup/>}/> */}
+      <Route path="/signUp" element={<Signup/>}/>
 
       <Route element={<App />}>
           <Route path="/home" element={<Home />} />

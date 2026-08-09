@@ -1,13 +1,22 @@
 <?php
     include("../config/cors.php"); 
-
+    include("../config/session.php");
     include("../config/connectDB.php"); 
 
     //$data is an associative array of the json sent from frontend
     $data = json_decode(file_get_contents("php://input"),true);
 
+    // guard against malformed/missing JSON body entirely
+    if (!is_array($data)) {
+        echo json_encode([
+            "success" => false, 
+            "message" => "Invalid request body."
+        ]);
+        exit;
+    }
+
     $email = trim($data["email"]);
-    $password = $data["password"];
+    $password = trim($data["password"]);
 
     //check if any field is empty
     if (empty($email) || empty($password)) {
@@ -37,7 +46,7 @@
     }
 
     //check if the email already exists
-    $check = $conn->prepare ("SELECT id, password FROM users WHERE email = ?");
+    $check = $conn->prepare ("SELECT * FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
     $result = $check->get_result(); //will return the colums asked by the query
@@ -60,10 +69,24 @@
         exit;
     }
 
+    // Regenerate session ID on login to prevent session fixation
+    session_regenerate_id(true);
+
+    $_SESSION["uid"]      = $user["uid"];
+    $_SESSION["fname"]    = $user["fname"];
+    $_SESSION["lname"]    = $user["lname"];
+    $_SESSION["email"]    = $user["email"];
+    $_SESSION["role"]     = $user["role"];
+    $_SESSION["is_guest"] = false;
+
     echo json_encode([
         "success" => true,
         "message" => "Login successful",
-        "userId" => $user["id"]
+        "user" => [
+            "uid" => $user["uid"],
+            "email" => $user["email"],
+            "role" => $user["role"]
+        ]
     ]);
 
     $check->close();
