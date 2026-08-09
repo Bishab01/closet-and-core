@@ -1,19 +1,14 @@
-import {Search, ShoppingCart} from 'lucide-react'
+import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
+import SideMenu from './SideMenu';
 
 
 function Header(){
     const { cartCount } = useCart();
-
-    const navigations = [
-        { name: "Home", path: "/home" },
-        { name: "Products", path: "/products" },
-        { name: "About Us", path: "/about" },
-        { name: "Contact", path: "/contact" },
-    ];
+    const[menuOpen,setMenuOpen] = useState(false);
 
     return(
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
@@ -21,8 +16,17 @@ function Header(){
                 Free shipping for purchase over Rs 2000
             </div>
             <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
-                {/* Logo + Brand Name */}
+                {/* Hamburger + Logo + Brand Name */}
+
                 <div className="flex items-center gap-2.5">
+                    <button
+                        onClick={() => setMenuOpen(true)}
+                        aria-label="Open menu"
+                        className="p-1 rounded-md hover:bg-gray-100 shrink-0"
+                    >
+                        <Menu className="w-6 h-6 text-green-950" />
+                    </button>
+ 
                     <div className="size-10 md:size-12 shrink-0 overflow-hidden rounded-full border border-green-950 ">
                         <img
                             src={logo}
@@ -35,25 +39,17 @@ function Header(){
                     </span>
                 </div>
 
-                {/* navigation */}
-                <div className='flex items-center gap-2 overflow-x-auto scrollbar-none px-4'>
-                    {navigations.map((item) => (
-                        <NavLink 
-                            key={item.name}
-                            to={item.path}
-                            className={({ isActive }) =>
-                                `navButton ${
-                                    isActive
-                                        ? "bg-green-200 text-green-800"
-                                        : "text-black hover:bg-gray-200"
-                                }`
-                            }
-                        >
-                        {item.name}
-                        </NavLink>
-                    ))}
+                {/* search + cart, grouped together on the right */}
+                <div className='flex items-center gap-3'>
+                    <div className='border-black border-2 rounded-lg flex items-center px-2 py-1 gap-2'>
+                        <Search className='w-4 h-4'/>
+                        <input 
+                            type='text'
+                            className='outline-none w-20 sm:w-40 lg:w-50'
+                            placeholder='Search...'
+                        />
+                    </div>
 
-                    {/* cart, grouped with the rest of the nav links */}
                     <NavLink
                         to="/cart"
                         className={({ isActive }) =>
@@ -68,18 +64,11 @@ function Header(){
                         <span>Cart ({cartCount})</span>
                     </NavLink>
                 </div>
-
-                {/* search */}
-                <div className='border-black border-2 rounded-lg flex items-center px-2 py-1 gap-2'>
-                    <Search className='w-4 h-4'/>
-                    <input 
-                        type='text'
-                        className='outline-none w-20 sm:w-40 lg:w-50'
-                        placeholder='Search...'
-                    />
-                </div>
             </div>
+              {/* Sidebar menu */}
+            <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
         </div>
+      
     )
 }
 
