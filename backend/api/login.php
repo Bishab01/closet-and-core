@@ -69,7 +69,7 @@
         exit;
     }
 
-    // Regenerate session ID on login to prevent session fixation
+    // Regenerate session ID on login to prevent session fixation i.e new session ID is generated and old session is deleted
     session_regenerate_id(true);
 
     $_SESSION["uid"]      = $user["uid"];
