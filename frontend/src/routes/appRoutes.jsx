@@ -1,11 +1,13 @@
-import '../styles/index.css'
-import Login from '../auth/login'
-import Signup from '../auth/signUp'
-import App from '../core/App'
-import Home from "../pages/home"
-import Products from '../pages/products'
-import Cart from '../pages/cart' //added
-import { Routes, Route, Navigate} from 'react-router-dom'
+import '../styles/index.css';
+import Login from '../auth/login';
+import Signup from '../auth/signUp';
+import App from '../core/App';
+import Home from "../pages/home";
+import Products from '../pages/products';
+import Cart from '../pages/cart';
+import Dashboard from '../pages/retailer/dashboard';
+import { BrowseRoute, CustomerOnlyRoute, RetailerRoute } from './roleGuard';
+import { Routes, Route, Navigate} from 'react-router-dom';
 
 function Approutes() {
   return(
@@ -17,11 +19,17 @@ function Approutes() {
       <Route path="/signUp" element={<Signup/>}/>
 
       <Route element={<App />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} /> */}
+        {/* Open to all*/}
+        <Route path="/home" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        {/* <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} /> */}
+
+        {/* Open to customers */}
+        <Route path="/cart" element={<CustomerOnlyRoute><Cart /></CustomerOnlyRoute>} />
+
+        {/* Open to retailer */}
+        <Route path="/dashboard" element={<RetailerRoute><Dashboard /></RetailerRoute>} />
       </Route>
     </Routes>
   )

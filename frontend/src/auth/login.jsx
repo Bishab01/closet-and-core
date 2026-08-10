@@ -1,9 +1,12 @@
-import {NavLink} from "react-router-dom"
-import logo from "../assets/logos/displayLogo.png"
-import {Eye, EyeOff} from "lucide-react"
-import { useState } from "react"
+import {NavLink} from "react-router-dom";
+import logo from "../assets/logos/displayLogo.png";
+import {Eye, EyeOff} from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function Login(){
+    const navigate = useNavigate();
+    const { checkSession } = useAuth();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -53,6 +56,13 @@ function Login(){
                 password: ""
                 });
                  
+                await checkSession(); // sync AuthContext with the new session/role
+
+                // send retailers to their dashboard, everyone else to the storefront
+                const destination = data.user?.role === "retailer"
+                    ? "/retailer"
+                    : "/home";
+                navigate(destination);
             } 
             else {
                 setMsg(data.message);

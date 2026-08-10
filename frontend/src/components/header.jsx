@@ -9,7 +9,8 @@ import LoginRequest from './loginRequest';
 
 function Header(){
     const { cartCount } = useCart();
-    const { loggedIn } = useAuth();
+    const { loggedIn, user } = useAuth();
+    const isRetailer = user?.role === "retailer";
     
     const navigate = useNavigate();
 
@@ -34,9 +35,11 @@ function Header(){
 
     return(
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
-            <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
-                Free shipping for purchase over Rs 2000
-            </div>
+            {!isRetailer &&(
+                <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
+                    Free shipping for purchase over Rs 2000
+                </div>
+            )}
             <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
                 
                 {/* Hamburger + Logo + Brand Name */}
@@ -74,23 +77,25 @@ function Header(){
                         />
                     </div>
 
-                    <NavLink
-                        to="/cart"
-                        onClick={handleCartClick}
-                        className="relative text-green-950 text-lg"
-                    >
-                        <ShoppingCart className="size-5 md:size-5.5" />
+                    {!isRetailer && (
+                        <NavLink
+                            to="/cart"
+                            onClick={handleCartClick}
+                            className="relative text-green-950 text-lg"
+                        >
+                            <ShoppingCart className="size-5 md:size-5.5" />
 
-                        {cartCount > 0 && (
-                            <span
-                                className="absolute -right-2 -top-2 flex size-4.5
-                                items-center justify-center rounded-full
-                                bg-red-400 px-1 text-[9px] font-semibold text-white"
-                            >
-                                {cartCount}
-                            </span>
-                        )}
-                    </NavLink>
+                            {cartCount > 0 && (
+                                <span
+                                    className="absolute -right-2 -top-2 flex size-4.5
+                                    items-center justify-center rounded-full
+                                    bg-red-400 px-1 text-[9px] font-semibold text-white"
+                                >
+                                    {cartCount}
+                                </span>
+                            )}
+                        </NavLink>
+                    )}
                 </div>
             </div>
 
@@ -111,4 +116,4 @@ function Header(){
     )
 }
 
-export default Header
+export default Header;

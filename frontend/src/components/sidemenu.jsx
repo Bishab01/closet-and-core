@@ -1,11 +1,16 @@
-import { X, House, ShoppingBag, Info, Phone } from "lucide-react";
+import { X, House, ShoppingBag, Info, Phone, ShieldCheck } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-const navigations = [
+const customerNav = [
     { icon: House, name: "Home", path: "/home" },
     { icon: ShoppingBag, name: "Products", path: "/products" },
     { icon: Info, name: "About Us", path: "/about" },
     { icon: Phone, name: "Contact", path: "/contact" },
+];
+
+const retailerNav = [
+    { icon: ShieldCheck, name: "Dashboard", path: "/dashboard" },
+    ...customerNav,
 ];
 
 function SideMenu({ isOpen, onClose }) {
