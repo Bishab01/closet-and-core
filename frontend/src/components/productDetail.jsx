@@ -51,7 +51,7 @@ function ProductDetail({click}){
                     </div>
 
                     {/* Scrollable Content */}
-                    <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start overflow-x-hidden overflow-y-auto mx-4 sm:mx-6 lg-mx-10 p-5 py-16 scrollbar-none">
+                    <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start overflow-x-hidden overflow-y-auto mx-4 sm:mx-6 lg:mx-10 p-5 py-16 scrollbar-none">
                         {/* Product Image */}
                         <div className="w-65 lg:w-90 shrink-0 border-green-800 border-2 rounded-3xl overflow-hidden aspect-8/9">
                             <img

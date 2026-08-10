@@ -1,23 +1,34 @@
-import { X, House, ShoppingBag, Info, Phone, ShieldCheck } from "lucide-react";
+import { X, House, ShoppingBag, Info, Phone, ShieldCheck, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
-
-const customerNav = [
-    { icon: House, name: "Home", path: "/home" },
-    { icon: ShoppingBag, name: "Products", path: "/products" },
-    { icon: Info, name: "About Us", path: "/about" },
-    { icon: Phone, name: "Contact", path: "/contact" },
-];
-
-const retailerNav = [
-    { icon: ShieldCheck, name: "Dashboard", path: "/dashboard" },
-    ...customerNav,
-];
+import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import Setting from "./settings";
 
 function SideMenu({ isOpen, onClose }) {
+    const customerNav = [
+        { icon: House, name: "Home", path: "/home" },
+        { icon: ShoppingBag, name: "Products", path: "/products" },
+        { icon: Info, name: "About Us", path: "/about" },
+        { icon: Phone, name: "Contact", path: "/contact" },
+    ];
+
+    const retailerNav = [
+        { icon: ShieldCheck, name: "Dashboard", path: "/dashboard" },
+        ...customerNav,
+    ];
+
+    const { user, loggedIn } = useAuth();
+    const isRetailer = user?.role === "retailer";
+    const navigations =  isRetailer ? retailerNav : customerNav;
+    const email = user?.email ? user.email : "guest@mail.com";
+    const char = email[0];
+
+    const [showSettings, setShowSettings] = useState(false);
+
     return (
         //Overlay
         <div
-            onClick={onClose}
+            onClick={() => (onClose(), setShowSettings(false))}
             className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${
                 isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             }`}
@@ -25,7 +36,7 @@ function SideMenu({ isOpen, onClose }) {
             {/* Sidebar */}
             <aside
                 className={`fixed top-0 left-0 h-full w-[60vw] min-w-65 max-w-80 bg-white z-50 shadow-2xl
-                    transform transition-transform duration-300 ease-out overflow-y-auto
+                    transform transition-transform duration-300 ease-out overflow-y-auto overflow-x-hidden
                     ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
                 {/* Sidebar header */}
@@ -65,6 +76,40 @@ function SideMenu({ isOpen, onClose }) {
                             </NavLink>
                         ))}
                     </nav>
+                </div>
+
+                {/* Identity */}
+                <div 
+                    onClick={(e)=>e.stopPropagation()}
+                    className="sticky top-[90%] left-0 w-full flex items-center justify-between gap-1.5 p-5 border-t border-gray-100"
+                >
+                    <div className="flex items-center gap-1.5"> 
+                        <div 
+                            className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
+                            ${
+                                isRetailer
+                                ? "bg-red-400"
+                                : loggedIn
+                                ? "bg-blue-950"
+                                : "bg-gray-600"
+
+                            }`}
+                        >
+                            {char}
+                        </div>
+                        <div className="text-gray-500 text-[14.5px] tracking-wide font-medium">
+                            {email}
+                        </div>
+                    </div>
+                    <button 
+                        className="relative"
+                        onClick={()=>setShowSettings(showSettings === false ? true : false)}
+                    >
+                        <Settings className="text-gray-700 size-5 hover:text-gray-950"/>
+                    </button>
+                    {showSettings &&
+                        <Setting/>
+                    }
                 </div>
             </aside>
         </div>

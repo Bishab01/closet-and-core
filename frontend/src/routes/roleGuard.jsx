@@ -1,11 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-// Shown briefly while checkSession() is still resolving (e.g. on page refresh),
-// so a guarded route doesn't flash blank or redirect before the session is known.
-function SessionLoading() {
+// Shown briefly while checkSession() is still resolving (e.g. on page refresh)
+export function LoadingScreen() {
     return (
-        <div className="body flex items-center justify-center">
+        <div  className="fixed inset-0 flex h-full w-full items-center justify-center bg-white/30 backdrop-blur-md">
             <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
         </div>
     );
@@ -15,7 +14,7 @@ function SessionLoading() {
 export function BrowseRoute({ children }) {
     const { loading } = useAuth();
 
-    if (loading) return <SessionLoading />;
+    if (loading) return <LoadingScreen />;
 
     return children;
 }
@@ -25,7 +24,7 @@ export function BrowseRoute({ children }) {
 export function CustomerOnlyRoute({ children }) {
     const { user, loggedIn, loading } = useAuth();
 
-    if (loading) return <SessionLoading />;
+    if (loading) return <LoadingScreen />;
 
     if (!loggedIn) return <Navigate to="/login" replace />;
 
@@ -38,7 +37,7 @@ export function CustomerOnlyRoute({ children }) {
 export function RetailerRoute({ children }) {
     const { user, loggedIn, loading } = useAuth();
 
-    if (loading) return <SessionLoading />;
+    if (loading) return <LoadingScreen />;
 
     if (!loggedIn) return <Navigate to="/login" replace />;
 

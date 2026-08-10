@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import logo from "../assets/logos/displayLogo.png";
 import {Eye, EyeOff} from "lucide-react";
 import { useState } from "react";
@@ -60,7 +60,7 @@ function Login(){
 
                 // send retailers to their dashboard, everyone else to the storefront
                 const destination = data.user?.role === "retailer"
-                    ? "/retailer"
+                    ? "/dashboard"
                     : "/home";
                 navigate(destination);
             } 
