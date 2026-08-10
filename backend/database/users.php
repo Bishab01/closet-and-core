@@ -11,7 +11,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   role ENUM('retailer', 'customer') NOT NULL DEFAULT 'customer',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY email_UNIQUE (email ASC)
+  UNIQUE KEY email_UNIQUE (email)
 )";
 
 if($conn->query($sql) === TRUE){

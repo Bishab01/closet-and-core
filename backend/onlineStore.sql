@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS category (
   cat_id INT AUTO_INCREMENT PRIMARY KEY,
   cat_name VARCHAR(30) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY cat_name_UNIQUE (cat_name ASC)
+  UNIQUE KEY cat_name_UNIQUE (cat_name)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  KEY fk_products_category_idx (cat_id ASC),
   CONSTRAINT fk_products_category
     FOREIGN KEY (cat_id)
     REFERENCES category (cat_id)
@@ -56,7 +55,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   role ENUM('retailer', 'customer') NOT NULL DEFAULT 'customer',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY email_UNIQUE (email ASC)
+  UNIQUE KEY email_UNIQUE (email)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -71,12 +70,12 @@ CREATE TABLE IF NOT EXISTS product_variant (
   size VARCHAR(10) NULL,
   color_hex VARCHAR(10) NULL,
   stock INT NOT NULL DEFAULT 0,
-  KEY fk_variant_products_idx (pid ASC),
   CONSTRAINT fk_variant_products
     FOREIGN KEY (pid)
     REFERENCES products (pid)
     ON DELETE CASCADE
     ON UPDATE CASCADE
+  UNIQUE KEY product_variant_UNIQUE (pid, color, size)
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -88,8 +87,6 @@ CREATE TABLE IF NOT EXISTS cart (
   vid INT NOT NULL,
   quantity INT NOT NULL DEFAULT 1,
   added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  KEY fk_cart_users_idx (uid ASC),
-  KEY fk_cart_variant_idx (vid ASC),
   CONSTRAINT fk_cart_users
     FOREIGN KEY (uid)
     REFERENCES users (uid)
@@ -115,7 +112,6 @@ CREATE TABLE IF NOT EXISTS orders (
   delivery_address VARCHAR(255) NOT NULL,
   contact_number VARCHAR(15) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  KEY fk_orders_users_idx (uid ASC),
   CONSTRAINT fk_orders_users
     FOREIGN KEY (uid)
     REFERENCES users (uid)
@@ -135,8 +131,6 @@ CREATE TABLE IF NOT EXISTS order_items (
   color_snapshot VARCHAR(20) NULL,
   quantity INT NOT NULL,
   price_at_purchase DECIMAL(10,2) NOT NULL,
-  KEY fk_orderItems_orders_idx (oid ASC),
-  KEY fk_orderItems_variant_idx (vid ASC),
   CONSTRAINT fk_orderItems_orders
     FOREIGN KEY (oid)
     REFERENCES orders (oid)

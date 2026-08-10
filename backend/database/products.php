@@ -12,7 +12,6 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
   description TEXT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  KEY fk_products_category_idx (cat_id ASC),
   CONSTRAINT fk_products_category
     FOREIGN KEY (cat_id)
     REFERENCES category (cat_id)

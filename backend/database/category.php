@@ -7,7 +7,7 @@ $sql = "CREATE TABLE IF NOT EXISTS category (
   cat_id INT AUTO_INCREMENT PRIMARY KEY,
   cat_name VARCHAR(30) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY cat_name_UNIQUE (cat_name ASC)
+  UNIQUE KEY cat_name_UNIQUE (cat_name)
 )";
 
 if($conn->query($sql) === TRUE){
