@@ -10,15 +10,6 @@ export function LoadingScreen() {
     );
 }
 
-// Browsing (Home, Products): open to all.
-export function BrowseRoute({ children }) {
-    const { loading } = useAuth();
-
-    if (loading) return <LoadingScreen />;
-
-    return children;
-}
-
 // Browsing cart/checkout: requires a logged-in customer.
 // Guests are sent to log in; retailers are sent to their dashboard.
 export function CustomerOnlyRoute({ children }) {

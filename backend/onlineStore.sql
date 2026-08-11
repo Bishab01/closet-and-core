@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS product_variant (
     FOREIGN KEY (pid)
     REFERENCES products (pid)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
   UNIQUE KEY product_variant_UNIQUE (pid, color, size)
 ) ENGINE = InnoDB;
 

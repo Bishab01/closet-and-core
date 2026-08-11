@@ -1,6 +1,6 @@
 import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
 import SideMenu from './sidemenu';
@@ -15,7 +15,13 @@ function Header(){
     const navigate = useNavigate();
 
     const [menuOpen,setMenuOpen] = useState(false);
-    const [showLoginPrompt, setShowLoginPrompt] = useState(false)
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+    const location = useLocation();
+
+    const showSearch =
+        location.pathname === "/home" ||
+        location.pathname === "/products";
 
     const handleCartClick = (e) => {
         if(!loggedIn){
@@ -37,7 +43,7 @@ function Header(){
         <div className="flex flex-col border-b border-gray-200 shadow-xs h-fit">
             {!isRetailer &&(
                 <div className='text-center py-2 text-xs sm:text-sm lg:text-base text-white bg-green-950'>
-                    Free shipping for purchase over Rs 2000
+                    Discover a range of clothing selected for your everyday style
                 </div>
             )}
             <div className='flex items-center justify-between py-4 px-4 sm:px-5.5 md:px-7 lg:px-8.5 xl:px-10 gap-2'>
@@ -68,14 +74,16 @@ function Header(){
 
                 {/* search + cart, grouped together on the right */}
                 <div className='flex items-center gap-2 md:gap-3'>
-                    <div className='border-black border rounded-lg text-sm md:text-[16px] flex items-center px-2 py-1 gap-2'>
-                        <Search className='w-4 h-4'/>
-                        <input 
-                            type='text'
-                            className='outline-none w-16 md:w-25 lg:w-35'
-                            placeholder='Search...'
-                        />
-                    </div>
+                    {showSearch && 
+                        <div className='border-black border rounded-lg text-sm md:text-[16px] flex items-center px-2 py-1 gap-2'>
+                            <Search className='w-4 h-4'/>
+                            <input 
+                                type='text'
+                                className='outline-none w-20 md:w-25 lg:w-35'
+                                placeholder='Search...'
+                            />
+                        </div>
+                    }
 
                     {!isRetailer && (
                         <NavLink

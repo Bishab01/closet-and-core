@@ -25,7 +25,7 @@ function Setting(){
     return(
         <div 
             onClick={(e)=>e.stopPropagation()}
-            className={`absolute left-[28%] z-50 bg-gray-50 shadow-lg rounded-lg w-50
+            className={`absolute left-[18%] md:left-[28%] z-50 bg-gray-50 shadow-lg rounded-lg w-50
             border border-gray-400/20 ${
                 !loggedIn 
                 ? "-top-8"

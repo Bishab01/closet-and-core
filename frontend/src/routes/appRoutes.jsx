@@ -6,7 +6,7 @@ import Home from "../pages/home";
 import Products from '../pages/products';
 import Cart from '../pages/cart';
 import Dashboard from '../pages/retailer/dashboard';
-import { BrowseRoute, CustomerOnlyRoute, RetailerRoute } from './roleGuard';
+import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
 import { Routes, Route, Navigate} from 'react-router-dom';
 
 function Approutes() {

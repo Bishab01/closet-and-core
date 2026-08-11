@@ -88,7 +88,7 @@ function SideMenu({ isOpen, onClose }) {
                             className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
                             ${
                                 isRetailer
-                                ? "bg-red-400"
+                                ? "bg-red-500"
                                 : loggedIn
                                 ? "bg-blue-950"
                                 : "bg-gray-600"
