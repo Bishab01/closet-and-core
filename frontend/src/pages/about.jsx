@@ -8,18 +8,18 @@ function About() {
   const principles = [
     {
       icon: Layers,
-      title: "Fewer, Better Materials",
-      copy: "Combed cotton, cotton twill, real rubber outsoles. We'd rather cut a piece from one honest fabric than dress it up with three cheap ones.",
+      title: "Easy to Use",
+      copy: "Our system provides a simple and user-friendly interface that allows customers to browse products and navigate through the website easily.",
     },
     {
       icon: Ruler,
-      title: "Fit Before Fashion",
-      copy: "Every pattern gets worn, washed, and re-cut before it's stocked. If it doesn't hold its shape after a season, it doesn't make the rail.",
+      title: "Simple Shopping",
+      copy: "Customers can view product details, add items to their cart, and manage their selections before placing an order.",
     },
     {
       icon: RotateCcw,
-      title: "Built to Be Re-worn",
-      copy: "Not seasonal, not disposable. The pieces in this catalogue are meant to outlast the trend they were bought for.",
+      title: "Efficient Management",
+      copy: "The system helps manage users, products, and orders efficiently while providing a smooth online shopping experience.",
     },
   ];
 
@@ -50,12 +50,14 @@ function About() {
       {/* ---------- Story ---------- */}
       <div className="m-10 flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
         <div className="w-full lg:w-1/2">
-          <h2 className="text-2xl font-serif font-bold mb-4">Our Story</h2>
+          <h2 className="text-2xl font-serif font-bold mb-4">
+            About Our Story
+          </h2>
           <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
-            Closet &amp; Core started with a short list: a t-shirt that actually
-            holds its shape, a cap that doesn't crease in a bag, and a pair of
-            sneakers you can wear every single day without apologising for them.
-            Everything else came after that list, not before it.
+            The system is developed by a three-member team based in Dharan,
+            Nepal. Our goal is to create an efficient online shopping platform
+            that makes product browsing, ordering, and user management easier
+            and more convenient.
           </p>
           <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
             We're a small team based in Kathmandu, working with local makers and
@@ -87,10 +89,11 @@ function About() {
       {/* ---------- Principles ---------- */}
       <div className="m-10">
         <h2 className="text-2xl font-serif font-bold mb-1">
-          What "Core" Means to Us
+          What our system provides
         </h2>
         <p className="text-gray-600 text-sm sm:text-base mb-6">
-          Three rules every product has to pass before it's allowed on the site.
+          Key features designed to provide a simple and convenient online
+          shopping experience.
         </p>
         <div className="flex flex-wrap gap-6">
           {principles.map(({ icon: Icon, title, copy }) => (
@@ -115,10 +118,10 @@ function About() {
           <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div>
               <p className="text-xs tracking-[0.15em] uppercase text-gray-500 mb-1">
-                Founded
+                Team
               </p>
               <p className="font-serif text-lg font-bold text-green-900">
-                2023
+                3 Members
               </p>
             </div>
             <div>
@@ -131,18 +134,18 @@ function About() {
             </div>
             <div>
               <p className="text-xs tracking-[0.15em] uppercase text-gray-500 mb-1">
-                Core Range
+                platform
               </p>
               <p className="font-serif text-lg font-bold text-green-900">
-                3 Categories
+                E-commerce
               </p>
             </div>
             <div>
               <p className="text-xs tracking-[0.15em] uppercase text-gray-500 mb-1">
-                Shipping
+                Type
               </p>
               <p className="font-serif text-lg font-bold text-green-900">
-                Nationwide
+                online system
               </p>
             </div>
           </div>
