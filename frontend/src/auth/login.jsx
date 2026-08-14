@@ -1,9 +1,13 @@
-import {NavLink} from "react-router-dom"
-import logo from "../assets/logos/displayLogo.png"
-import {Eye, EyeOff} from "lucide-react"
-import { useState } from "react"
+import {NavLink, useNavigate} from "react-router-dom";
+import logo from "../assets/logos/displayLogo.png";
+import {Eye, EyeOff} from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function Login(){
+    const apiURL = import.meta.env.VITE_API_URL;
+    const navigate = useNavigate();
+    const { checkSession } = useAuth();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -24,9 +28,19 @@ function Login(){
     const handleSubmit = async(e) => {
         e.preventDefault();
 
+        if(!formData.email.trim()||!formData.password.trim())
+        {
+            setMsg("All fields are required.");
+            setMsgType("error");
+            return;
+        }
+
+        setMsg("");
+
         try{
-            const response = await fetch("http://localhost/project/onlineStore/backend/api/login.php", {
+            const response = await fetch(`${apiURL}login.php`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -37,16 +51,24 @@ function Login(){
             if (data.success) {
                 setMsg(data.message);
                 setMsgType("success");
+
+                setFormData({
+                email: "",
+                password: ""
+                });
+                 
+                await checkSession(); // sync AuthContext with the new session/role
+
+                // send retailers to their dashboard, everyone else to the storefront
+                const destination = data.user?.role === "retailer"
+                    ? "/dashboard"
+                    : "/home";
+                navigate(destination);
             } 
             else {
                 setMsg(data.message);
                 setMsgType("error");
             }
-
-            setFormData({
-                email: "",
-                password: ""
-            });
         }
 
         catch(error){
@@ -122,7 +144,11 @@ function Login(){
                         </div>
 
                         {msg && 
-                            <p className={`pt-2 font-medium ${msgType==='success'?"text-green-500":"text-red-500"}`}>
+                            <p className={`mt-2 font-medium rounded-md text-center px-3 py-1.5
+                                ${msgType==='success'
+                                    ?"text-green-600 bg-green-200"
+                                    :"text-red-500 bg-red-200"}`}
+                            >
                                 {msg}
                             </p>
                         }

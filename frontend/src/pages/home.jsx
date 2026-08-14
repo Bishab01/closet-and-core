@@ -1,7 +1,34 @@
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { ChevronsRight } from "lucide-react";
 import products from "../data/productList";
 import ProductCatalog from "../components/productCatalog";
 
 function Home(){
+    const [productLimit, setProductLimit] = useState(15); 
+    
+     useEffect(() => {
+        const updateProductLimit = () => {
+            if (window.innerWidth < 640) {
+                setProductLimit(6);       // 2 columns × 3 rows
+            } else if (window.innerWidth < 768) {
+                setProductLimit(9);       // 3 columns × 3 rows
+            } else if (window.innerWidth < 1024) {
+                setProductLimit(12);      // 4 columns × 3 rows
+            } else {
+                setProductLimit(15);      // 5 columns × 3 rows
+            }
+        };
+
+        updateProductLimit();
+        window.addEventListener("resize", updateProductLimit);
+
+        return () => {
+            window.removeEventListener("resize", updateProductLimit);
+        };
+    }, []);
+
+    const visibleProducts = products.slice(0, productLimit);
 
     return(
         <div className="body">
@@ -17,8 +44,21 @@ function Home(){
             </h1>
 
             <ProductCatalog
-                products={products}
+                products={visibleProducts}
             />
+
+            <div
+                className="text-gray-500 font-medium flex items-center justify-center
+                -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
+            >
+                <NavLink
+                    to="/products"
+                    className="flex items-center w-fit hover:text-gray-700"
+                >
+                    See more 
+                    <ChevronsRight className="size-5"/>
+                </NavLink>
+            </div>
         </div>
     )
 }
