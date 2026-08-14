@@ -10,7 +10,7 @@ import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
 import { Routes, Route, Navigate} from 'react-router-dom';
 
 function Approutes() {
-  return(
+  return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       
@@ -32,7 +32,7 @@ function Approutes() {
         <Route path="/dashboard" element={<RetailerRoute><Dashboard /></RetailerRoute>} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default Approutes
+export default Approutes;
