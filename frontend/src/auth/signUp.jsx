@@ -4,7 +4,7 @@ import logo from "../assets/logos/displayLogo.png"
 import {Eye, EyeOff} from "lucide-react"
 
 function Signup() {
-
+    const apiURL = import.meta.env.VITE_API_URL;
     //object to hold form data
     const [formData, setFormData] = useState({
         fname: "",
@@ -68,7 +68,7 @@ function Signup() {
 
         try 
         {
-            const response = await fetch("http://localhost/project/onlineStore/backend/api/signUp.php", {
+            const response = await fetch(`${apiURL}signUp.php`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

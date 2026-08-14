@@ -78,7 +78,7 @@ function SideMenu({ isOpen, onClose }) {
                     </nav>
                 </div>
 
-                {/* Identity */}
+                {/* show gmail and settings */}
                 <div 
                     onClick={(e)=>e.stopPropagation()}
                     className="sticky top-[90%] left-0 w-full flex items-center justify-between gap-1.5 p-5 border-t border-gray-100"

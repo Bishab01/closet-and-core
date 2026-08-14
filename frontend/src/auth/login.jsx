@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 function Login(){
+    const apiURL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const { checkSession } = useAuth();
 
@@ -37,7 +38,7 @@ function Login(){
         setMsg("");
 
         try{
-            const response = await fetch("http://localhost/project/onlineStore/backend/api/login.php", {
+            const response = await fetch(`${apiURL}login.php`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
