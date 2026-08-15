@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Mail, Phone, Send, Check, MessageCircle } from "lucide-react";
+import { Send, Check, } from "lucide-react";
+import { contacts } from "../data/contact";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ function Contact() {
         <h1 className="text-2xl font-serif font-bold">Contact Us</h1>
 
         <p className="text-gray-600 text-sm sm:text-base mt-1">
-          Questions about an order, sizing, or a product on the shelf — we read
+          Questions about an order, sizing, or a product on the shelf? Let us know, we read
           every message ourselves.
         </p>
       </div>
@@ -78,7 +79,7 @@ function Contact() {
               value={formData.name}
               onChange={handleChange}
               placeholder="Your full name"
-              className="inputBox w-full px-3 py-2"
+              className="inputBox w-full py-2"
             />
           </div>
 
@@ -93,8 +94,8 @@ function Contact() {
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              placeholder="Order, sizing, wholesale, other..."
-              className="inputBox w-full px-3 py-2"
+              placeholder="Order, sizing, others..."
+              className="inputBox w-full py-2"
             />
           </div>
 
@@ -110,7 +111,8 @@ function Contact() {
               onChange={handleChange}
               placeholder="Share your suggestion or review..."
               rows={5}
-              className="inputBox w-full px-3 py-2 resize-none"
+              className=" border border-gray-400 bg-gray-200 rounded-sm w-full px-2 py-2
+              focus:outline-green-800"
             />
           </div>
 
@@ -146,7 +148,7 @@ function Contact() {
           {/* Success Message */}
           {sent && (
             <p className="text-sm text-green-800 mt-3">
-              Thanks — we'll get back to you within a couple of days.
+              Thank you! We'll get back to you soon.
             </p>
           )}
         </form>
@@ -164,79 +166,33 @@ function Contact() {
               </p>
 
               <h2 className="font-serif text-2xl font-bold leading-snug mt-2 mb-6">
-                Closet &amp; Core
+                Closet & Core
               </h2>
 
-              <div className="flex flex-col gap-5 text-sm">
-                {/* Instagram */}
-                <div className="flex items-start gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-900 mt-0.5 shrink-0"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {contacts.map((contact) => {
+                const Icon = contact.icon;
+
+                return (
+                  <div 
+                    key={contact.id}
+                    className="flex flex-col gap-5 text-sm mb-6"
                   >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle
-                      cx="17.5"
-                      cy="6.5"
-                      r="1"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                  </svg>
+                    <div className="flex items-center gap-3">
+                      {
+                        contact.title === "Instagram" 
+                        ?<Icon/>
+                        :<Icon className="size-5.5 text-green-900 mt-0.5 shrink-0" />
+                      }      
 
-                  <div>
-                    <p className="font-medium">Instagram</p>
+                      <div>
+                        <p className="font-medium">{contact.title}</p>
 
-                    <p className="text-gray-600">@closetandcore</p>
+                        <p className="text-gray-600">{contact.identifier}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+              )})}
 
-                {/* Phone */}
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-green-900 mt-0.5 shrink-0" />
-
-                  <div>
-                    <p className="font-medium">Phone</p>
-
-                    <p className="text-gray-600">+977 9804314464</p>
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-green-900 mt-0.5 shrink-0" />
-
-                  <div>
-                    <p className="font-medium">Email</p>
-
-                    <p className="text-gray-600">hello@closetandcore.com</p>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex items-start gap-3">
-                  <MessageCircle className="w-5 h-5 text-green-900 mt-0.5 shrink-0" />
-
-                  <div>
-                    <p className="font-medium">WhatsApp</p>
-
-                    <p className="text-gray-600">+977 9804314464</p>
-                  </div>
-                </div>
-              </div>
-
-              <hr className="my-6 border-green-900/15" />
-
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Placeholder contact details — swap these for your real
-                Instagram, phone number, email and WhatsApp before launch.
-              </p>
             </div>
           </div>
         </div>

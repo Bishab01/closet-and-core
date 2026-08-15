@@ -6,6 +6,8 @@ import Home from "../pages/home";
 import Products from '../pages/products';
 import Cart from '../pages/cart';
 import Dashboard from '../pages/retailer/dashboard';
+import About from '../pages/about';
+import Contact from '../pages/contact';
 import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
 import { Routes, Route, Navigate} from 'react-router-dom';
 
@@ -22,8 +24,8 @@ function Approutes() {
         {/* Open to all*/}
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={<Products />} />
-        {/* <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Open to customers */}
         <Route path="/cart" element={<CustomerOnlyRoute><Cart /></CustomerOnlyRoute>} />
