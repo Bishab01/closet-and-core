@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS orders (
   uid INT NOT NULL,
   payment_method ENUM('cod', 'eSewa') NOT NULL,
   payment_status ENUM('paid', 'unpaid') NOT NULL DEFAULT 'unpaid',
-  status ENUM('pending', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',
+  status ENUM('pending', 'shipped', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',
   total DECIMAL(10,2) NOT NULL,
   delivery_address VARCHAR(255) NOT NULL,
   contact_number VARCHAR(15) NOT NULL,
@@ -117,6 +117,23 @@ CREATE TABLE IF NOT EXISTS orders (
     REFERENCES users (uid)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table retailer_contacts
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS retailer_contacts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  uid INT NOT NULL,
+  title ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
+  identifier VARCHAR(150) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_retailer_contacts_users
+    FOREIGN KEY (uid) REFERENCES users(uid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  UNIQUE KEY uid_title_UNIQUE (uid, title)
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
