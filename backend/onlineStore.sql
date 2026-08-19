@@ -3,14 +3,6 @@
 -- Cleaned for import via PHP (mysqli / PDO)
 -- =========================================================
 
-CREATE DATABASE IF NOT EXISTS onlinestore
-  DEFAULT CHARACTER SET = utf8mb4
-  DEFAULT COLLATE = utf8mb4_0900_ai_ci;
-
-USE onlinestore;
-
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- -----------------------------------------------------
 -- Table category
 -- -----------------------------------------------------
@@ -21,7 +13,7 @@ CREATE TABLE IF NOT EXISTS category (
   UNIQUE KEY cat_name_UNIQUE (cat_name)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table products
@@ -42,7 +34,7 @@ CREATE TABLE IF NOT EXISTS products (
     ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table users
@@ -56,9 +48,9 @@ CREATE TABLE IF NOT EXISTS users (
   role ENUM('retailer', 'customer') NOT NULL DEFAULT 'customer',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY email_UNIQUE (email)
-) ENGINE = InnoDB
+) ENGINE = InnoDB 
   DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table product_variant
@@ -76,7 +68,9 @@ CREATE TABLE IF NOT EXISTS product_variant (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   UNIQUE KEY product_variant_UNIQUE (pid, color, size)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table cart
@@ -97,7 +91,9 @@ CREATE TABLE IF NOT EXISTS cart (
     REFERENCES product_variant (vid)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table orders
@@ -117,7 +113,9 @@ CREATE TABLE IF NOT EXISTS orders (
     REFERENCES users (uid)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table retailer_contacts
@@ -134,7 +132,9 @@ CREATE TABLE IF NOT EXISTS retailer_contacts (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   UNIQUE KEY uid_title_UNIQUE (uid, title)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table order_items
@@ -158,6 +158,6 @@ CREATE TABLE IF NOT EXISTS order_items (
     REFERENCES product_variant (vid)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
-) ENGINE = InnoDB;
-
-SET FOREIGN_KEY_CHECKS = 1;
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
