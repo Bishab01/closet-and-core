@@ -10,7 +10,7 @@
     // the parameter inside $data[""] should match the key of the object that was json stringify and sent
     $fname = trim($data["fname"]);
     $lname = trim($data["lname"]);
-    $password = $data["password"];
+    $password = trim($data["password"]);
     $email = trim($data["email"]);
 
     //check if any field is empty
@@ -41,7 +41,7 @@
     }
 
     //check if the email already exists
-    $check = $conn->prepare ("SELECT id FROM users WHERE email = ?");
+    $check = $conn->prepare ("SELECT uid FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
     $result = $check->get_result();
@@ -58,10 +58,11 @@
 
     //hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);   
+    $role = 'customer'; //retailer or customer
 
     // Insert user
-    $stmt = $conn->prepare("INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $fname, $lname, $email, $hashedPassword);
+    $stmt = $conn->prepare("INSERT INTO users (fname, lname, email, password, role) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $fname, $lname, $email, $hashedPassword, $role);
 
     //return JSON response
     if ($stmt->execute()) {

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/displayLogo.png"
 import {Eye, EyeOff} from "lucide-react"
 
 function Signup() {
-
+    const apiURL = import.meta.env.VITE_API_URL;
     //object to hold form data
     const [formData, setFormData] = useState({
         fname: "",
@@ -12,6 +12,8 @@ function Signup() {
         email: "",
         password: ""
     });
+
+    const navigate = useNavigate();
 
     const [msg,setMsg]=useState("");
     const [msgType, setMsgType] = useState(""); // success or error
@@ -32,26 +34,8 @@ function Signup() {
         e.preventDefault();
 
         //basic form validation
-        if (!formData.fname.trim()) {
-            setMsg("First name is required.");
-            setMsgType("error");
-            return;
-        }
-
-        if (!formData.lname.trim()) {
-            setMsg("Last name is required.");
-            setMsgType("error");
-            return;
-        }
-
-        if (!formData.email.trim()) {
-            setMsg("Email is required.");
-            setMsgType("error");
-            return;
-        }
-
-        if (!formData.password.trim()) {
-            setMsg("Password is required.");
+        if(!formData.fname.trim()||!formData.lname.trim()||!formData.email.trim()||!formData.password.trim()){
+            setMsg("All fields are required.");
             setMsgType("error");
             return;
         }
@@ -84,7 +68,7 @@ function Signup() {
 
         try 
         {
-            const response = await fetch("http://localhost/project/onlineStore/backend/api/signup.php", {
+            const response = await fetch(`${apiURL}signUp.php`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -96,18 +80,22 @@ function Signup() {
             if (data.success) {
                 setMsg(data.message);
                 setMsgType("success");
+
+                setFormData({
+                fname: "",
+                lname: "",
+                email: "",
+                password: ""
+                });
+            
+                setTimeout(() => {
+                    navigate("/login");
+                }, 500);
             } 
             else {
                 setMsg(data.message);
                 setMsgType("error");
             }
-
-            setFormData({
-                fname: "",
-                lname: "",
-                email: "",
-                password: ""
-            });
 
         } 
         
@@ -210,7 +198,11 @@ function Signup() {
                     </div>
 
                     {msg && 
-                        <p className={`pt-2 font-medium ${msgType==='success'?"text-green-500":"text-red-500"}`}>
+                        <p className={`mt-2 font-medium rounded-md text-center px-3 py-1.5
+                            ${msgType==='success'
+                                ?"text-green-600 bg-green-200"
+                                :"text-red-500 bg-red-200"}`}
+                        >
                             {msg}
                         </p>
                     }

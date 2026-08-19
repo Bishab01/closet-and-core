@@ -1,14 +1,14 @@
-import { Trash2, ShoppingBag, ArrowRight, ArrowLeft, Minus, Plus } from "lucide-react";
+import { Trash2, ShoppingBag, ArrowRight, ArrowLeft, Minus, Plus, ChevronDown } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import cartItems from "../data/cartItems";
 import QuantitySelector from "../components/quantitySelector";
-import DropDown from "../components/dropdown";
 
 function Cart() {
     // const { cartItems, removeFromCart, updateQty, cartTotal } = useCart();
     const [qty, setQty] = useState(1);
+
     // Message for when cart is empty
     if (cartItems.length === 0) {
         return (
@@ -60,7 +60,7 @@ function Cart() {
                         //Item card
                         <div
                             key={item.id}
-                            className="border border-gray-300 shadow-sm rounded-2xl py-5 px-6 flex bg-white/60 gap-3 overflow-hidden"
+                            className="border border-gray-300 shadow-sm rounded-2xl py-5 px-6 flex bg-white/60 gap-3"
                         >
                             {/* Product image */}
                             <div className="size-30 rounded-lg border border-gray-200 shrink-0 overflow-hidden">
@@ -80,31 +80,30 @@ function Cart() {
                                     {item.category}
                                 </p>
                                 <p className="text-sm">
-                                    Rs 5.00
+                                    Rs {item.productPrice}
                                 </p>
 
                                 <div className="md:flex md:flex-rows md:items-center md:gap-2.5">
-                                    {/* Color selector */}
+                                    {/* Selected Color */}
                                     <div className="flex items-center gap-2 mb-2 md:mb-0">
                                         <p className="text-sm text-gray-500">
                                             Color:
                                         </p>
-                                        <div className="border border-gray-300 rounded-lg text-sm ">
-                                            <DropDown
-                                                items={item.colors}
-                                            />
+                                        <div 
+                                            className="w-7 h-5 rounded-sm border border-gray-300"
+                                            style={{backgroundColor: item.color.hex}}    
+                                        >
                                         </div>
+                                        <span className="text-sm text-gray-500 line-clamp-1">{item.color.name}</span>
                                     </div>
 
-                                    {/* Size selector */}
+                                    {/* Selected Size */}
                                     <div className="flex items-center gap-2">
                                         <p className="text-sm text-gray-500">
                                             Size:
                                         </p>
-                                        <div className="border border-gray-300 rounded-lg text-sm ">
-                                            <DropDown
-                                                items={item.sizes}
-                                            />
+                                        <div className="flex items-center justify-center px-3 py-0.5 border border-gray-300 rounded-lg text-sm ">
+                                            {item.size.name}
                                         </div>
                                     </div>
                                 </div>
