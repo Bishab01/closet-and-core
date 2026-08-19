@@ -58,7 +58,7 @@
 
     //hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);   
-    $role = 'customer'; //retailer or customer
+    $role = 'retailer'; //retailer or customer
 
     // Insert user
     $stmt = $conn->prepare("INSERT INTO users (fname, lname, email, password, role) VALUES (?, ?, ?, ?, ?)");
