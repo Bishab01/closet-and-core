@@ -49,7 +49,7 @@
     $check = $conn->prepare ("SELECT * FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
-    $result = $check->get_result(); //will return the colums asked by the query
+    $result = $check->get_result(); //will return the columns asked by the query
 
     if($result->num_rows <= 0){
         echo json_encode([
