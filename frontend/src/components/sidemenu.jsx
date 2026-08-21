@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import Setting from "./settings";
+import { ChangePass } from "./changePass";
 
 function SideMenu({ isOpen, onClose }) {
     const customerNav = [
@@ -24,9 +25,11 @@ function SideMenu({ isOpen, onClose }) {
     const char = email[0];
 
     const [showSettings, setShowSettings] = useState(false);
+    const [showChangePass, setShowChangePass] = useState(false);
 
     return (
-        //Overlay
+        <>
+        {/* Overlay */}
         <div
             onClick={() => (onClose(), setShowSettings(false))}
             className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${
@@ -40,7 +43,7 @@ function SideMenu({ isOpen, onClose }) {
                     ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
                 {/* Sidebar header */}
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <div className="flex items-center justify-between p-5 border-b border-gray-200">
                     <div className="flex flex-col items-start tracking-wide">
                         <p className="font-bold uppercase text-green-950">Closet & Core</p>
                         <p className="font-medium text-xs text-gray-400">Create your core</p>
@@ -81,38 +84,48 @@ function SideMenu({ isOpen, onClose }) {
                 {/* show gmail and settings */}
                 <div 
                     onClick={(e)=>e.stopPropagation()}
-                    className="sticky top-[90%] left-0 w-full flex items-center justify-between gap-1.5 p-5 border-t border-gray-100"
+                    className="sticky top-[90%] left-0 w-full flex flex-col items-end gap-1.5"
                 >
-                    <div className="flex items-center gap-1.5"> 
-                        <div 
-                            className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
-                            ${
-                                isRetailer
-                                ? "bg-red-500"
-                                : loggedIn
-                                ? "bg-blue-950"
-                                : "bg-gray-600"
-
-                            }`}
-                        >
-                            {char}
-                        </div>
-                        <div className="text-gray-500 text-[14.5px] tracking-wide font-medium">
-                            {email}
-                        </div>
-                    </div>
-                    <button 
-                        className="relative"
-                        onClick={()=>setShowSettings(showSettings === false ? true : false)}
-                    >
-                        <Settings className="text-gray-700 size-5 hover:text-gray-950"/>
-                    </button>
                     {showSettings &&
-                        <Setting/>
+                        <Setting
+                            changePass={()=>setShowChangePass(prev=>!prev)}
+                        />
                     }
+                    <div className="w-full flex items-center justify-between gap-1.5 border-t p-5 border-gray-200">
+                        <div className="flex items-center gap-1.5"> 
+                            <div 
+                                className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
+                                ${
+                                    isRetailer
+                                    ? "bg-red-500"
+                                    : loggedIn
+                                    ? "bg-blue-950"
+                                    : "bg-gray-600"
+
+                                }`}
+                            >
+                                {char}
+                            </div>
+                            <div className="text-gray-500 text-[13.5px] md:text-[14.5px] tracking-wide font-medium">
+                                {email}
+                            </div>
+                        </div>
+                        <button 
+                            onClick={()=>setShowSettings(prev=>!prev)}
+                        >
+                            <Settings className="text-gray-700 size-5 hover:text-gray-950"/>
+                        </button>
+                    </div>
                 </div>
             </aside>
         </div>
+
+        {showChangePass &&
+            <ChangePass
+                changePass={()=>setShowChangePass(prev=>!prev)}
+            />
+        }
+        </>
     );
 }        
 export default SideMenu;

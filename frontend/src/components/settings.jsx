@@ -1,10 +1,10 @@
-import { LogIn, LogOut, Trash } from "lucide-react";
+import { KeyRound, LogIn, LogOut, Trash } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../routes/roleGuard";
 import { useState } from "react";
 
-function Setting(){
+function Setting({changePass}){
     const { loggedIn, user, logout } = useAuth();
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const navigate = useNavigate();
@@ -27,38 +27,44 @@ function Setting(){
     return(
         <div 
             onClick={(e)=>e.stopPropagation()}
-            className={`absolute left-19 sm:left-30 z-50 bg-gray-50 shadow-lg rounded-sm overflow-hidden w-45
-            ${
-                !loggedIn || isRetailer
-                ? "-top-8"
-                : "-top-20"
-            }`}
+            className=" bg-gray-500 text-gray-100 shadow-xl rounded-xl overflow-hidden w-45 mx-5 shrink-0"
         >
             {!loggedIn &&
+            <div className="p-1.5">
                 <button 
                     onClick={()=>navigate("/login")}
-                    className="flex w-full items-center text-[14.5px] font-medium px-3 py-2 text-gray-500 gap-2
-                    hover:bg-green-100 hover:text-green-700"
+                    className="flex w-full items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
                 >
                     <LogIn className="size-5"/>
                     Login
                 </button>
+            </div>
             }
 
             {loggedIn && !isRetailer &&
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-0.5 p-1.5">
                 <button 
                     onClick={handleLogout}
-                    className="flex items-center px-3 py-2.5 text-[14.5px] font-medium text-gray-500 gap-2 
-                    hover:bg-gray-200 hover:text-gray-700 rounded-sm "
+                    className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
                 >
                     <LogOut className="size-5"/>
                     Logout
                 </button>
                 
                 <button 
-                    className="flex items-center px-3 py-2.5 text-[14.5px] font-medium gap-2 
-                    hover:bg-red-100 hover:text-red-500 rounded-sm text-red-400"
+                    onClick={changePass}
+                    className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
+                >
+                    <KeyRound className="size-5"/>
+                    Change password
+                </button>
+
+                <button 
+                    className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
                 >
                     <Trash className="size-5"/>
                     Delete account
@@ -67,14 +73,25 @@ function Setting(){
             }
 
             {loggedIn && isRetailer &&
+            <div className="flex flex-col gap-0.5 p-1.5">
                 <button 
                     onClick={handleLogout}
-                    className="flex items-center px-3 py-2.5 text-[14.5px] font-medium text-gray-500 gap-2 
-                    hover:bg-gray-200 hover:text-gray-700 rounded-lg w-full"
+                    className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
                 >
                     <LogOut className="size-5"/>
                     Logout
                 </button>
+
+                <button 
+                    onClick={changePass}
+                    className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
+                    hover:bg-gray-300/30"
+                >
+                    <KeyRound className="size-5"/>
+                    Change password
+                </button>
+            </div>
             }
         </div>
     )
