@@ -1,7 +1,7 @@
 <?php
     $allowedOrigins = [
     "http://localhost:5173",              // local dev
-    "https://closetandcore.vercel.app"         // production — replace with your real Vercel URL
+    "https://closetandcore.infinityfree.io"    // production
     ];
 
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
