@@ -1,10 +1,44 @@
-import products from "../data/productList";
+import { useEffect, useState } from "react";
 import ProductCatalog from "../components/productCatalog";
 import Categories from "../components/categories";
-import { useState } from "react";
+
+const apiURL = import.meta.env.VITE_API_URL;
 
 function Products(){
-    const[selectedCategory, setSelectedCategory] = useState("All");
+    const [products, setProducts] = useState([]);
+    const [categoryNames, setCategoryNames] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
+    useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            try {
+                const [productsRes, categoriesRes] = await Promise.all([
+                    fetch(`${apiURL}getStorefrontProducts.php`),
+                    fetch(`${apiURL}getCategories.php`),
+                ]);
+
+                const productsData = await productsRes.json();
+                const categoriesData = await categoriesRes.json();
+
+                if (productsData.success) {
+                    setProducts(
+                        productsData.products.map((p) => ({ ...p, image: `${apiURL}${p.image}` }))
+                    );
+                }
+                if (categoriesData.success) {
+                    setCategoryNames(categoriesData.categories.map((c) => c.cat_name));
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
+    }, []);
 
     const filteredProducts =
         selectedCategory === "All"
@@ -21,13 +55,20 @@ function Products(){
             </div>
            
             <Categories
+                categories={["All", ...categoryNames]}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
             />
-                        
-            <ProductCatalog
-                products={filteredProducts}
-            />
+
+            {loading ? (
+                <div className="flex justify-center py-16">
+                    <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                </div>
+            ) : (
+                <ProductCatalog
+                    products={filteredProducts}
+                />
+            )}
         </div>
     )
 }

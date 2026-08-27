@@ -1,12 +1,10 @@
-import { useState } from "react";
-
-function Categories({selectedCategory, setSelectedCategory}){
-    const categories=['All','Clothing','Footwear','Headwear'];
+function Categories({ categories, selectedCategory, setSelectedCategory }) {
+    const categoryList = categories && categories.length ? categories : ["All"];
 
     return(
         <div className="responsiveM">
             {
-                categories.map((category)=>
+                categoryList.map((category)=>
                 <button
                     key={category}
                     onClick={()=>setSelectedCategory(category)}

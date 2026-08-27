@@ -5,9 +5,9 @@ import { ShoppingBag } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 function ProductCatalog({products}){
-    const [showProductDetails, setShowProductDetails] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
-    // Message for when cart is empty
+    // Message for when there's nothing to show
     if (products.length === 0) {
         return (
             <div className="body">
@@ -18,16 +18,16 @@ function ProductCatalog({products}){
                     >
                         <ShoppingBag className="w-14 h-14 text-gray-400" />
                         <p className="text-xl sm:text-2xl font-serif font-bold">
-                            No items added yet
+                            No products yet
                         </p>
                         <p className="text-gray-600">
-                            Add new items by clicking on "Add Product" button.
+                            Check back soon — new arrivals are added regularly.
                         </p>
                         <NavLink
                             to="/products"
                             className="button bg-green-800 text-white px-6 hover:bg-green-900"
                         >
-                            Add Product
+                            Browse Products
                         </NavLink>
                     </div>
                 </div>
@@ -46,15 +46,16 @@ function ProductCatalog({products}){
                         productName={product.productName}
                         productPrice={product.productPrice}
                         image={product.image}
-                        click={() => setShowProductDetails(true)}
+                        click={() => setSelectedProductId(product.id)}
                     />
                 )}
             </div>
 
             {/* Product Details */}
-            {showProductDetails &&
+            {selectedProductId !== null &&
                 <ProductDetail
-                    click={() => setShowProductDetails(false)}
+                    pid={selectedProductId}
+                    click={() => setSelectedProductId(null)}
                 />
             }
         </div>
