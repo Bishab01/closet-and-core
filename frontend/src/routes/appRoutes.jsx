@@ -6,6 +6,7 @@ import Home from "../pages/home";
 import Products from '../pages/products';
 import Cart from '../pages/cart';
 import Dashboard from '../pages/retailer/dashboard';
+import AdminProducts from '../pages/retailer/products';
 import About from '../pages/about';
 import Contact from '../pages/contact';
 import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
@@ -32,6 +33,7 @@ function Approutes() {
 
         {/* Open to retailer */}
         <Route path="/dashboard" element={<RetailerRoute><Dashboard /></RetailerRoute>} />
+        <Route path="/dashboard/products" element={<RetailerRoute><AdminProducts /></RetailerRoute>} />
       </Route>
     </Routes>
   );
