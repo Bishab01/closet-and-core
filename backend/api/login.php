@@ -49,7 +49,7 @@
     $check = $conn->prepare ("SELECT * FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
-    $result = $check->get_result(); //will return the colums asked by the query
+    $result = $check->get_result(); //will return the columns asked by the query
 
     if($result->num_rows <= 0){
         echo json_encode([
@@ -72,11 +72,11 @@
     // Regenerate session ID on login to prevent session fixation i.e new session ID is generated and old session is deleted
     session_regenerate_id(true);
 
-    $_SESSION["uid"]      = $user["uid"];
-    $_SESSION["fname"]    = $user["fname"];
-    $_SESSION["lname"]    = $user["lname"];
-    $_SESSION["email"]    = $user["email"];
-    $_SESSION["role"]     = $user["role"];
+    $_SESSION["uid"] = $user["uid"];
+    $_SESSION["fname"] = $user["fname"];
+    $_SESSION["lname"] = $user["lname"];
+    $_SESSION["email"] = $user["email"];
+    $_SESSION["role"]= $user["role"];
 
     echo json_encode([
         "success" => true,

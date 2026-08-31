@@ -1,13 +1,14 @@
-import products from "../data/productList";
 import ProductCatalog from "../components/productCatalog";
 import Categories from "../components/categories";
 import { useState } from "react";
+import { useProducts } from "../hooks/useProducts";
 
 function Products(){
-    const[selectedCategory, setSelectedCategory] = useState("All");
+    const[selectedCategory, setSelectedCategory] = useState("all");
+    const { products, loading, error } = useProducts();
 
     const filteredProducts =
-        selectedCategory === "All"
+        selectedCategory === "all"
             ? products
             : products.filter(
                 (product) => product.category === selectedCategory
@@ -24,10 +25,20 @@ function Products(){
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
             />
-                        
-            <ProductCatalog
-                products={filteredProducts}
-            />
+            {loading ? (
+                <div className="responsiveM py-12 text-center text-gray-500">
+                    Loading products...
+                </div>
+            ) : error ? (
+                <div className="responsiveM py-12 text-center text-red-600">
+                    {error}
+                </div>
+            ) : (
+                <ProductCatalog
+                    products={filteredProducts}
+                />
+            )}        
+            
         </div>
     )
 }

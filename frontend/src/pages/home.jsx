@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronsRight } from "lucide-react";
-import products from "../data/productList";
 import ProductCatalog from "../components/productCatalog";
+import {useProducts} from "../hooks/useProducts";
 
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
-    
-     useEffect(() => {
+    const { products, loading, error } = useProducts();
+
+    useEffect(() => {
         const updateProductLimit = () => {
             if (window.innerWidth < 640) {
                 setProductLimit(6);       // 2 columns × 3 rows
@@ -43,9 +44,19 @@ function Home(){
                 All Products
             </h1>
 
-            <ProductCatalog
-                products={visibleProducts}
-            />
+            {loading ? (
+                <div className="responsiveM py-12 text-center text-gray-500">
+                    Loading products...
+                </div>
+            ) : error ? (
+                <div className="responsiveM py-12 text-center text-red-600">
+                    {error}
+                </div>
+            ) : (
+                <ProductCatalog
+                    products={visibleProducts}
+                />
+            )}
 
             <div
                 className="text-gray-500 font-medium flex items-center justify-center
