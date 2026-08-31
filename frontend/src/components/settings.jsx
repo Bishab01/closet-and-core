@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../routes/roleGuard";
 import { useState } from "react";
 
-function Setting({changePass}){
+function Setting({changePass, deleteAcc}){
     const { loggedIn, user, logout } = useAuth();
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const navigate = useNavigate();
@@ -63,6 +63,7 @@ function Setting({changePass}){
                 </button>
 
                 <button 
+                    onClick={deleteAcc}
                     className="flex items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
                     hover:bg-gray-300/30"
                 >

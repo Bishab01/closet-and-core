@@ -332,17 +332,7 @@ function About() {
 
                 <li className="flex gap-2">
                   <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
-                  Edit product details
-                </li>
-
-                <li className="flex gap-2">
-                  <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
                   Manage orders
-                </li>
-
-                <li className="flex gap-2">
-                  <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
-                  Read customer reviews/suggestions
                 </li>
 
               </ul>
