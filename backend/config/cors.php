@@ -1,7 +1,8 @@
 <?php
     $allowedOrigins = [
     "http://localhost:5173",              // local dev
-    "https://closetandcore.infinityfree.io"    // production
+    "https://closetandcore.infinityfree.io",  //production
+    "http://closetandcore.infinityfree.io"    // production
     ];
 
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
