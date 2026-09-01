@@ -38,7 +38,7 @@ function Categories({selectedCategory, setSelectedCategory}){
                 all
             </button>
             {
-                categories.map((category)=>
+                categoryList.map((category)=>
                 <button
                     key={category.cat_id}
                     onClick={()=>setSelectedCategory(category.cat_name)}

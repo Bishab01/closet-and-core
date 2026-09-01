@@ -24,9 +24,14 @@ function Products(){
             </div>
            
             <Categories
+                categories={["All", ...categoryNames]}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
             />
+
+            {loading ? (
+                <div className="flex justify-center py-16">
+                    <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
             {loading ? (
                 <div className="responsiveM py-12 text-center text-gray-500">
                     Loading products...
@@ -39,6 +44,7 @@ function Products(){
                 <ProductCatalog
                     products={filteredProducts}
                 />
+            )}
             )} 
             </div>       
             

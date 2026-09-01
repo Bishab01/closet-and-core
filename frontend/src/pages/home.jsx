@@ -5,6 +5,8 @@ import ProductCatalog from "../components/productCatalog";
 import {useProducts} from "../hooks/useProducts";
 import Footer from "../components/footer";
 
+const apiURL = import.meta.env.VITE_API_URL;
+
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
     const { products, loading, error } = useProducts();
@@ -30,6 +32,27 @@ function Home(){
         };
     }, []);
 
+    useEffect(() => {
+        const loadProducts = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`${apiURL}getStorefrontProducts.php`);
+                const data = await response.json();
+                if (data.success) {
+                    setProducts(
+                        data.products.map((p) => ({ ...p, image: `${apiURL}${p.image}` }))
+                    );
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProducts();
+    }, []);
+
     const visibleProducts = products.slice(0, productLimit);
 
     return(
@@ -46,6 +69,29 @@ function Home(){
             </h1>
 
             {loading ? (
+                <div className="flex justify-center py-16">
+                    <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                </div>
+            ) : (
+                <>
+                    <ProductCatalog
+                        products={visibleProducts}
+                    />
+
+                    <div
+                        className="text-gray-500 font-medium flex items-center justify-center
+                        -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
+                    >
+                        <NavLink
+                            to="/products"
+                            className="flex items-center w-fit hover:text-gray-700"
+                        >
+                            See more 
+                            <ChevronsRight className="size-5"/>
+                        </NavLink>
+                    </div>
+                </>
+            )}
                 <div className="responsiveM py-12 text-center text-gray-500">
                     Loading products...
                 </div>

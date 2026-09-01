@@ -1,4 +1,4 @@
-import { X, House, ShoppingBag, Info, Phone, Settings } from "lucide-react";
+import { X, House, ShoppingBag, Info, Phone, ShieldCheck, Settings, PackagePlus } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";

@@ -13,6 +13,7 @@ import { useState } from "react";
 
 function ProductDetail({ product, click }) {
     const { loggedIn } = useAuth();
+    const { addToCart } = useCart();
     const navigate = useNavigate();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 

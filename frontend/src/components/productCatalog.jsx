@@ -6,7 +6,7 @@ import { ShoppingBag } from "lucide-react";
 function ProductCatalog({products}){
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    // Message for when cart is empty
+    // Message for when there's nothing to show
     if (products.length === 0) {
         return (
             <div className="body">
