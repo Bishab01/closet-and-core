@@ -4,18 +4,21 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import Setting from "./settings";
 import { ChangePass } from "./changePass";
+import { DeleteAccount } from "./deleteAcc";
 
 function SideMenu({ isOpen, onClose }) {
     const customerNav = [
         { icon: House, name: "Home", path: "/home" },
         { icon: ShoppingBag, name: "Products", path: "/products" },
-        { icon: Info, name: "About Us", path: "/about" },
         { icon: Phone, name: "Contact", path: "/contact" },
+        { icon: Info, name: "About Us", path: "/about" },
     ];
 
     const retailerNav = [
-        { icon: ShieldCheck, name: "Dashboard", path: "/dashboard" },
-        ...customerNav,
+        { icon: House, name: "Dashboard", path: "/dashboard" },
+        { icon: ShoppingBag, name: "Products", path: "/products" },
+        { icon: Phone, name: "Contact", path: "/contact" },
+        { icon: Info, name: "About Us", path: "/about" },
     ];
 
     const { user, loggedIn } = useAuth();
@@ -26,6 +29,7 @@ function SideMenu({ isOpen, onClose }) {
 
     const [showSettings, setShowSettings] = useState(false);
     const [showChangePass, setShowChangePass] = useState(false);
+    const [showDeleteAcc, setShowDeleteAcc] = useState(false);
 
     return (
         <>
@@ -89,6 +93,7 @@ function SideMenu({ isOpen, onClose }) {
                     {showSettings &&
                         <Setting
                             changePass={()=>setShowChangePass(prev=>!prev)}
+                            deleteAcc={()=>setShowDeleteAcc(prev=>!prev)}
                         />
                     }
                     <div className="w-full flex items-center justify-between gap-1.5 border-t p-5 border-gray-200">
@@ -123,6 +128,12 @@ function SideMenu({ isOpen, onClose }) {
         {showChangePass &&
             <ChangePass
                 changePass={()=>setShowChangePass(prev=>!prev)}
+            />
+        }
+
+        {showDeleteAcc &&
+            <DeleteAccount
+                deleteAcc={()=>setShowDeleteAcc(prev=>!prev)}
             />
         }
         </>

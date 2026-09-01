@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronsRight } from "lucide-react";
 import ProductCatalog from "../components/productCatalog";
+import {useProducts} from "../hooks/useProducts";
+import Footer from "../components/footer";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
 function Home(){
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [productLimit, setProductLimit] = useState(15);
+    const [productLimit, setProductLimit] = useState(15); 
+    const { products, loading, error } = useProducts();
 
-     useEffect(() => {
+    useEffect(() => {
         const updateProductLimit = () => {
             if (window.innerWidth < 640) {
                 setProductLimit(6);       // 2 columns × 3 rows
@@ -91,6 +92,32 @@ function Home(){
                     </div>
                 </>
             )}
+                <div className="responsiveM py-12 text-center text-gray-500">
+                    Loading products...
+                </div>
+            ) : error ? (
+                <div className="responsiveM py-12 text-center text-red-600">
+                    {error}
+                </div>
+            ) : (
+                <ProductCatalog
+                    products={visibleProducts}
+                />
+            )}
+
+            <div
+                className="text-gray-500 font-medium flex items-center justify-center
+                -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
+            >
+                <NavLink
+                    to="/products"
+                    className="flex items-center w-fit hover:text-gray-700"
+                >
+                    See more 
+                    <ChevronsRight className="size-5"/>
+                </NavLink>
+            </div>
+            <Footer/>
         </div>
     )
 }

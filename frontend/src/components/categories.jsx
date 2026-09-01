@@ -1,22 +1,56 @@
-function Categories({ categories, selectedCategory, setSelectedCategory }) {
-    const categoryList = categories && categories.length ? categories : ["All"];
+import { useState, useEffect } from "react";
+
+function Categories({selectedCategory, setSelectedCategory}){
+    const apiURL = import.meta.env.VITE_API_URL;
+
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const getCategories = async () => {
+            try {
+                const response = await fetch(`${apiURL}getCategories.php`);
+                const data = await response.json();
+
+                if (data.success) {
+                    setCategories(data.categories);
+                }
+            } 
+            catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        getCategories();
+    }, []);
 
     return(
         <div className="responsiveM">
+            <button
+                onClick={()=>setSelectedCategory("all")}
+                className={`categoryButton lowercase text-sm tracking-wider shadow-xs
+                    ${
+                        selectedCategory === "all"
+                        ? 'bg-green-900 text-white shadow-green-950'
+                        : 'border-gray-300 border bg-white/70 hover:shadow-gray-300 hover:border-gray-400'
+                    }
+                `}
+            >
+                all
+            </button>
             {
                 categoryList.map((category)=>
                 <button
-                    key={category}
-                    onClick={()=>setSelectedCategory(category)}
+                    key={category.cat_id}
+                    onClick={()=>setSelectedCategory(category.cat_name)}
                     className={`categoryButton lowercase text-sm tracking-wider shadow-xs
                         ${
-                            selectedCategory === category 
+                            selectedCategory === category.cat_name 
                             ? 'bg-green-900 text-white shadow-green-950'
                             : 'border-gray-300 border bg-white/70 hover:shadow-gray-300 hover:border-gray-400'
                         }
                     `}
                 >
-                    {category}
+                    {category.cat_name}
                 </button>
                 )
             }

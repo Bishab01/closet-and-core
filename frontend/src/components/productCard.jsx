@@ -1,38 +1,30 @@
-import { ShoppingCart, Check, Eye, X } from "lucide-react";
-import { useState } from "react";
-import { useCart } from "../context/CartContext";
-
 function ProductCard({
-  id,
   category,
   productName,
   image,
   productPrice,
   click,
 }) {
-  const { addToCart } = useCart();
-  const [added, setAdded] = useState(false);
-
-  // const handleAddToCart = (e) => {
-  //     e.stopPropagation();
-  //     addToCart({ id, category, productName, image, productPrice });
-  //     setAdded(true);
-  //     setTimeout(() => setAdded(false), 1200);
-  // };
 
   return (
     <div
       className="flex flex-col rounded-2xl border-gray-400 border bg-white/60
-            overflow-hidden hover:shadow-xl shrink-0 group"
+      overflow-hidden hover:shadow-xl shrink-0 group cursor-pointer"
       onClick={click}
     >
       {/* Product Image */}
       <div className="aspect-8/9 overflow-hidden">
-        <img
-          src={image}
-          alt="image of the product"
-          className="group-hover:scale-105 duration-400 object-cover h-full w-full"
-        />
+        {image ? (
+            <img
+                src={image}
+                alt={productName}
+                className="group-hover:scale-105 duration-400 object-cover h-full w-full"
+            />
+        ) : (
+            <div className="h-full w-full flex items-center justify-center bg-gray-100 text-gray-400">
+                No image
+            </div>
+        )}
       </div>
 
       {/* Product Name & Category */}

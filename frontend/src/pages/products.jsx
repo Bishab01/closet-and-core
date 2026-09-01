@@ -1,47 +1,15 @@
-import { useEffect, useState } from "react";
 import ProductCatalog from "../components/productCatalog";
 import Categories from "../components/categories";
-
-const apiURL = import.meta.env.VITE_API_URL;
+import { useState } from "react";
+import { useProducts } from "../hooks/useProducts";
+import Footer from "../components/footer";
 
 function Products(){
-    const [products, setProducts] = useState([]);
-    const [categoryNames, setCategoryNames] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState("All");
-
-    useEffect(() => {
-        const loadData = async () => {
-            setLoading(true);
-            try {
-                const [productsRes, categoriesRes] = await Promise.all([
-                    fetch(`${apiURL}getStorefrontProducts.php`),
-                    fetch(`${apiURL}getCategories.php`),
-                ]);
-
-                const productsData = await productsRes.json();
-                const categoriesData = await categoriesRes.json();
-
-                if (productsData.success) {
-                    setProducts(
-                        productsData.products.map((p) => ({ ...p, image: `${apiURL}${p.image}` }))
-                    );
-                }
-                if (categoriesData.success) {
-                    setCategoryNames(categoriesData.categories.map((c) => c.cat_name));
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadData();
-    }, []);
+    const[selectedCategory, setSelectedCategory] = useState("all");
+    const { products, loading, error } = useProducts();
 
     const filteredProducts =
-        selectedCategory === "All"
+        selectedCategory === "all"
             ? products
             : products.filter(
                 (product) => product.category === selectedCategory
@@ -49,6 +17,7 @@ function Products(){
 
     return(
         <div className="body">
+            <div>
             <div className="responsiveM">
                 <p className="text-xl md:text-2xl font-serif font-bold">Categories</p>
                 <p className="text-sm text-gray-600">Everything orgainized to help you find what you need faster.</p>
@@ -63,12 +32,23 @@ function Products(){
             {loading ? (
                 <div className="flex justify-center py-16">
                     <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+            {loading ? (
+                <div className="responsiveM py-12 text-center text-gray-500">
+                    Loading products...
+                </div>
+            ) : error ? (
+                <div className="responsiveM py-12 text-center text-red-600">
+                    {error}
                 </div>
             ) : (
                 <ProductCatalog
                     products={filteredProducts}
                 />
             )}
+            )} 
+            </div>       
+            
+            <Footer/>
         </div>
     )
 }

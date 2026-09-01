@@ -2,10 +2,9 @@ import { useState } from "react";
 import ProductDetail from "../components/productDetail";
 import ProductCard from "../components/productCard";
 import { ShoppingBag } from "lucide-react";
-import { NavLink } from "react-router-dom";
 
 function ProductCatalog({products}){
-    const [selectedProductId, setSelectedProductId] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     // Message for when there's nothing to show
     if (products.length === 0) {
@@ -18,17 +17,11 @@ function ProductCatalog({products}){
                     >
                         <ShoppingBag className="w-14 h-14 text-gray-400" />
                         <p className="text-xl sm:text-2xl font-serif font-bold">
-                            No products yet
+                            No products to display
                         </p>
                         <p className="text-gray-600">
-                            Check back soon — new arrivals are added regularly.
+                            Products are yet to be added. They will be added soon.
                         </p>
-                        <NavLink
-                            to="/products"
-                            className="button bg-green-800 text-white px-6 hover:bg-green-900"
-                        >
-                            Browse Products
-                        </NavLink>
                     </div>
                 </div>
             </div>
@@ -41,21 +34,20 @@ function ProductCatalog({products}){
                 {products.map((product)=>
                     <ProductCard
                         key={product.id} 
-                        id={product.id}
                         category={product.category}
                         productName={product.productName}
                         productPrice={product.productPrice}
                         image={product.image}
-                        click={() => setSelectedProductId(product.id)}
+                        click={() => setSelectedProduct(product)}
                     />
                 )}
             </div>
 
             {/* Product Details */}
-            {selectedProductId !== null &&
+            {selectedProduct &&
                 <ProductDetail
-                    pid={selectedProductId}
-                    click={() => setSelectedProductId(null)}
+                    product={selectedProduct}
+                    click={() => setSelectedProduct(null)}
                 />
             }
         </div>

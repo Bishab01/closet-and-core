@@ -73,9 +73,9 @@ CREATE TABLE IF NOT EXISTS product_variant (
   COLLATE = utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
--- Table cart
+-- Table cart_items
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS cart (
+CREATE TABLE IF NOT EXISTS cart_items (
   cid INT AUTO_INCREMENT PRIMARY KEY,
   uid INT NOT NULL,
   vid INT NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS retailer_contacts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   uid INT NOT NULL,
   title ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
-  identifier VARCHAR(150) NULL,
+  detail VARCHAR(150) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_retailer_contacts_users
