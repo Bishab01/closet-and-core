@@ -7,11 +7,13 @@ import {
 } from "lucide-react";
 import { principles, team } from "../data/aboutUs";
 import logo from "../assets/logos/logo2.png";
+import Footer from "../components/footer";
 
 function About() {
   return (
     <div className="body">
 
+      <div>
       {/* HERO */}
       <section className="m-6 sm:m-10">
         <div className="relative overflow-hidden rounded-3xl bg-[#1B4332] min-h-105">
@@ -453,8 +455,6 @@ function About() {
 
       </section>
 
-
-      {/* CTA */}
       <section className="m-6 sm:m-10 lg:mx-20 mb-16">
 
         <div className="rounded-3xl bg-[#FBF9F4] border-2 border-green-900 p-8 sm:p-12 text-center">
@@ -475,7 +475,10 @@ function About() {
         </div>
 
       </section>
-
+      </div>
+      
+      <Footer/>
+      
     </div>
   );
 }

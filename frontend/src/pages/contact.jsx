@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import { Send, Check, } from "lucide-react";
 import { contacts } from "../data/contact";
+import Footer from "../components/footer";
 
 function Contact() {
   // const [formData, setFormData] = useState({
@@ -115,7 +116,7 @@ function Contact() {
                 "
               >
                 {contact.title === "Instagram" ? (
-                  <Icon className="w-6 h-6 text-green-900 transition-colors duration-300" />
+                  <Icon className="text-green-900 transition-colors duration-300" hw="6"/>
                 ) : (
                   <Icon className="w-6 h-6 text-green-900 group-hover:text-white transition-colors duration-300" />
                 )}
@@ -152,6 +153,8 @@ function Contact() {
       </footer>
 
     </div>
+
+    <Footer/>
   </div>
   );
 }

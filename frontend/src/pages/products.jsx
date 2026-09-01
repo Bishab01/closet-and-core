@@ -2,6 +2,7 @@ import ProductCatalog from "../components/productCatalog";
 import Categories from "../components/categories";
 import { useState } from "react";
 import { useProducts } from "../hooks/useProducts";
+import Footer from "../components/footer";
 
 function Products(){
     const[selectedCategory, setSelectedCategory] = useState("all");
@@ -16,6 +17,7 @@ function Products(){
 
     return(
         <div className="body">
+            <div>
             <div className="responsiveM">
                 <p className="text-xl md:text-2xl font-serif font-bold">Categories</p>
                 <p className="text-sm text-gray-600">Everything orgainized to help you find what you need faster.</p>
@@ -37,8 +39,10 @@ function Products(){
                 <ProductCatalog
                     products={filteredProducts}
                 />
-            )}        
+            )} 
+            </div>       
             
+            <Footer/>
         </div>
     )
 }
