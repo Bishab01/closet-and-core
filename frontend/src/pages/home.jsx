@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { ChevronsRight } from "lucide-react";
 import ProductCatalog from "../components/productCatalog";
 import {useProducts} from "../hooks/useProducts";
+import Footer from "../components/footer";
 
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
@@ -70,6 +71,7 @@ function Home(){
                     <ChevronsRight className="size-5"/>
                 </NavLink>
             </div>
+            <Footer/>
         </div>
     )
 }

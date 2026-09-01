@@ -1,7 +1,7 @@
-export function Instagram(){
+export function Instagram({hw}){
     return (
         <svg
-            className="group-hover:text-white size-6.5 text-green-900 mt-0.5 shrink-0"
+            className={`group-hover:text-white size-${hw} text-green-900 mt-0.5 shrink-0`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
