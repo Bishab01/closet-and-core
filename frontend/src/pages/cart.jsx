@@ -2,7 +2,7 @@ import { Trash2, ShoppingBag, ArrowRight, ArrowLeft, Minus, Plus, ChevronDown } 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import cartItems from "../data/cartItems";
+import cartItems from "../api/cartItems";
 import QuantitySelector from "../components/quantitySelector";
 
 function Cart() {

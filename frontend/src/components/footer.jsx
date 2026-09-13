@@ -1,12 +1,20 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logos/logo2.png";
-
-const quickLinks = [
-    { name: "Home", path: "/home" },
-    { name: "Products", path: "/products" },
-];
+import { useAuth } from "../context/AuthContext";
 
 function Footer() {
+    const customerNav = [
+        { name: "Home", path: "/home" },
+        { name: "Products", path: "/products" }
+    ];
+
+    const retailerNav = [
+        { name: "Dashboard", path: "/dashboard" },
+        { name: "Products", path: "/productsRetailer" }
+    ];
+    const { user } = useAuth();
+    const isRetailer = user?.role === "retailer";
+    const quickLinks =  isRetailer ? retailerNav : customerNav;
 
     return (
         <footer className="bg-green-950 text-white mt-auto">
@@ -33,11 +41,11 @@ function Footer() {
                 </div>
 
                 {/* Shop */}
-                <div className="flex flex-col gap-3 items-center">
+                <div className="flex flex-col gap-3 items-start sm:items-center">
                     <p className="text-xs font-semibold tracking-widest text-green-100/60 uppercase">
                         Shop
                     </p>
-                    <nav className="flex flex-col gap-2 items-center">
+                    <nav className="flex flex-col gap-2 items-start sm:items-center">
                         {quickLinks.map((link) => (
                             <NavLink
                                 key={link.name}
@@ -51,11 +59,11 @@ function Footer() {
                 </div>
 
                 {/* Get in touch */}
-                <div className="flex flex-col gap-3 items-center">
+                <div className="flex flex-col gap-3 items-start sm:items-center">
                     <p className="text-xs font-semibold tracking-widest text-green-100/60 uppercase">
                         Get in Touch
                     </p>
-                    <nav className="flex flex-col gap-2 items-center">
+                    <nav className="flex flex-col gap-2 items-start sm:items-center">
                         <NavLink
                             to="/contact"
                             className="text-sm text-green-100/90 hover:text-white transition-colors w-fit"
@@ -66,11 +74,11 @@ function Footer() {
                 </div>
 
                 {/* Info */}
-                <div className="flex flex-col gap-3 items-center">
+                <div className="flex flex-col gap-3 items-start sm:items-center">
                     <p className="text-xs font-semibold tracking-widest text-green-100/60 uppercase">
                         Info
                     </p>
-                    <nav className="flex flex-col gap-2 items-center">
+                    <nav className="flex flex-col gap-2 items-start sm:items-center">
                         <NavLink
                             to="/about"
                             className="text-sm text-green-100/90 hover:text-white transition-colors w-fit"

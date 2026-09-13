@@ -5,8 +5,6 @@ import ProductCatalog from "../components/productCatalog";
 import {useProducts} from "../hooks/useProducts";
 import Footer from "../components/footer";
 
-const apiURL = import.meta.env.VITE_API_URL;
-
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
     const { products, loading, error } = useProducts();
@@ -32,31 +30,11 @@ function Home(){
         };
     }, []);
 
-    useEffect(() => {
-        const loadProducts = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(`${apiURL}getStorefrontProducts.php`);
-                const data = await response.json();
-                if (data.success) {
-                    setProducts(
-                        data.products.map((p) => ({ ...p, image: `${apiURL}${p.image}` }))
-                    );
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadProducts();
-    }, []);
-
     const visibleProducts = products.slice(0, productLimit);
 
     return(
-        <div className="body">
+        <div className="body flex flex-col">
+            <div className="flex-1">
             <div className="flex justify-start items-end responsiveM border-green-800 border-2 rounded-3xl h-60 md:h-90 bg-white/60">
                 <div className="ml-8 mb-8 md:ml-15 md:mb-15 text-xl sm:text-2xl md:text-3xl uppercase leading-8 md:leading-11">
                     New Arrivals <br/>
@@ -70,54 +48,39 @@ function Home(){
 
             {loading ? (
                 <div className="flex justify-center py-16">
-                    <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
-                </div>
-            ) : (
-                <>
-                    <ProductCatalog
-                        products={visibleProducts}
-                    />
-
-                    <div
-                        className="text-gray-500 font-medium flex items-center justify-center
-                        -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
-                    >
-                        <NavLink
-                            to="/products"
-                            className="flex items-center w-fit hover:text-gray-700"
-                        >
-                            See more 
-                            <ChevronsRight className="size-5"/>
-                        </NavLink>
+                    <div className="responsiveM flex items-center gap-2 justify-center py-12 text-gray-500">
+                        <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                        Loading products...
                     </div>
-                </>
-            )}
-                <div className="responsiveM py-12 text-center text-gray-500">
-                    Loading products...
                 </div>
             ) : error ? (
                 <div className="responsiveM py-12 text-center text-red-600">
                     {error}
                 </div>
             ) : (
+                <>
                 <ProductCatalog
                     products={visibleProducts}
                 />
-            )}
 
-            <div
-                className="text-gray-500 font-medium flex items-center justify-center
-                -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
-            >
-                <NavLink
-                    to="/products"
-                    className="flex items-center w-fit hover:text-gray-700"
+                <div
+                    className="text-gray-500 font-medium flex items-center justify-center
+                    -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
                 >
-                    See more 
-                    <ChevronsRight className="size-5"/>
-                </NavLink>
+                    <NavLink
+                        to="/products"
+                        className="flex items-center w-fit hover:text-gray-700"
+                    >
+                        See more 
+                        <ChevronsRight className="size-5"/>
+                    </NavLink>
+                </div>
+                </>
+            )}
             </div>
+
             <Footer/>
+
         </div>
     )
 }

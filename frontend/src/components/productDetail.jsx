@@ -1,6 +1,6 @@
 import {useAuth} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
-import { useProductVariants } from "../hooks/useProductVariants";
+import { useProductDetails } from "../hooks/useProductDetails";
 import { ChevronDown } from "lucide-react";
 import BackButton from "./productDetails/backButton";
 import ProductImage from "./productDetails/productImage";
@@ -13,11 +13,12 @@ import { useState } from "react";
 
 function ProductDetail({ product, click }) {
     const { loggedIn } = useAuth();
-    const { addToCart } = useCart();
+    // const { addToCart } = useCart();
     const navigate = useNavigate();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
     const {
+        description,
         colors, 
         sizes, 
         selectedColor, 
@@ -27,7 +28,7 @@ function ProductDetail({ product, click }) {
         selectedVariant,
         hasVariants, 
         stock,
-    } = useProductVariants(product);
+    } = useProductDetails(product.pid);
 
     const handleAddToCartClick = (e) => {
     if (!loggedIn) {
@@ -43,13 +44,14 @@ function ProductDetail({ product, click }) {
                 <BackButton onClick={click} />
 
                 <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start overflow-x-hidden overflow-y-auto mx-4 sm:mx-6 lg:mx-10 p-5 py-16 scrollbar-none">
-                    <ProductImage src={product.image} alt={product.productName} />
+                    <ProductImage src={product.image} alt={product.pname} />
 
                     <div className="flex-1 min-w-0">
                         <div className="border-2 border-green-800 rounded-3xl bg-[#F5E6A7]/10">
                             <div className="bg-[#FBF9F4] m-4 p-4 sm:p-6 border border-dashed border-green-900/50 rounded-xl">
                                 <ProductInfoCard 
                                     product={product} 
+                                    description={description}
                                 />
                                 <hr className="my-5 border-green-900/15" />
                                 <ColorPicker 

@@ -5,7 +5,7 @@ import VariantRow from "./variantRow";
 const apiURL = import.meta.env.VITE_API_URL;
 const emptyVariant = () => ({ color: "", color_hex: "#1f2421", size: "", stock: "0" });
 
-function ProductForm({ mode = "add", initialProduct, categories, onCategoryAdded, onClose, onSaved }) {
+function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClose, onSaved }) {
     const isEdit = mode === "edit";
 
     const [formData, setFormData] = useState({
@@ -270,7 +270,7 @@ function ProductForm({ mode = "add", initialProduct, categories, onCategoryAdded
                             onChange={handleChange}
                             rows={3}
                             placeholder="Fabric, fit, styling notes..."
-                            className="inputBox h-auto py-2 resize-none"
+                            className="inputBox h-auto! py-2 resize-none"
                         />
                     </div>
 
@@ -286,7 +286,7 @@ function ProductForm({ mode = "add", initialProduct, categories, onCategoryAdded
                                 )}
                             </div>
                             <label className="button border border-gray-400 text-gray-700 hover:bg-gray-100 cursor-pointer text-sm">
-                                Choose File
+                                Choose File (png/jpeg/webp)
                                 <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageChange} className="hidden" />
                             </label>
                         </div>
@@ -305,7 +305,7 @@ function ProductForm({ mode = "add", initialProduct, categories, onCategoryAdded
                             </button>
                         </div>
                         <p className="text-xs text-gray-500 mt-1 mb-2">
-                            Leave color/size blank for a single "one size" product — just set the stock count.
+                            Leave size blank for a single "one size" product — set the stock count and color.
                         </p>
                         <div className="space-y-2">
                             {variants.map((variant, i) => (

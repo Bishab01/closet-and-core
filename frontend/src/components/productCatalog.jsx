@@ -33,10 +33,10 @@ function ProductCatalog({products}){
             <div className="gridLayout my-6 ">
                 {products.map((product)=>
                     <ProductCard
-                        key={product.id} 
-                        category={product.category}
-                        productName={product.productName}
-                        productPrice={product.productPrice}
+                        key={product.pid} 
+                        category={product.cat_name}
+                        pname={product.pname}
+                        price={product.price}
                         image={product.image}
                         click={() => setSelectedProduct(product)}
                     />

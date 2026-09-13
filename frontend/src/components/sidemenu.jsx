@@ -1,4 +1,4 @@
-import { X, House, ShoppingBag, Info, Phone, ShieldCheck, Settings, PackagePlus } from "lucide-react";
+import { X, House, ShoppingBag, Info, Phone, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
@@ -16,7 +16,7 @@ function SideMenu({ isOpen, onClose }) {
 
     const retailerNav = [
         { icon: House, name: "Dashboard", path: "/dashboard" },
-        { icon: ShoppingBag, name: "Products", path: "/products" },
+        { icon: ShoppingBag, name: "Products", path: "/productsRetailer" },
         { icon: Phone, name: "Contact", path: "/contact" },
         { icon: Info, name: "About Us", path: "/about" },
     ];

@@ -4,7 +4,7 @@
     include("../config/connectDB.php"); 
 
     //get categories
-    $stmt = $conn->prepare ("SELECT * FROM category");
+    $stmt = $conn->prepare ("SELECT cat_id, cat_name FROM category");
     $stmt->execute();
     $result = $stmt->get_result(); //will return the columns asked by the query
 

@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
-import { PackagePlus, PackageSearch, Pencil, Trash2, X } from "lucide-react";
-import ProductForm from "../../components/admin/productForm";
+import { useState } from "react";
+import { PackagePlus, X } from "lucide-react";
+import ProductForm from "../../components/retailer/productForm";
+import { useProducts } from "../../hooks/useProducts";
+import ProductList from "../../components/retailer/productList";
+import Footer from "../../components/footer";
+import Categories from "../../components/categories";
+import {useCategories} from "../../hooks/useCategories";
+import { fetchOneProduct } from "../../hooks/fetchOneProduct";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
 function AdminProducts() {
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { products, setProducts, loading, error, loadProducts } = useProducts();
+    const { categories, setCategories } = useCategories();
+    const fetchProduct = fetchOneProduct();
 
     const [showForm, setShowForm] = useState(false);
     const [formMode, setFormMode] = useState("add");
@@ -15,36 +21,16 @@ function AdminProducts() {
 
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [deleting, setDeleting] = useState(false);
+    const[selectedCategory, setSelectedCategory] = useState("all");
 
     const [banner, setBanner] = useState("");
 
-    const loadCategories = async () => {
-        try {
-            const response = await fetch(`${apiURL}getCategories.php`, { credentials: "include" });
-            const data = await response.json();
-            if (data.success) setCategories(data.categories);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const loadProducts = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch(`${apiURL}getProducts.php`, { credentials: "include" });
-            const data = await response.json();
-            if (data.success) setProducts(data.products);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        loadCategories();
-        loadProducts();
-    }, []);
+    const filteredProducts =
+        selectedCategory === "all"
+            ? products
+            : products.filter(
+                (product) => product.cat_name === selectedCategory
+            );
 
     const openAddForm = () => {
         setFormMode("add");
@@ -53,16 +39,11 @@ function AdminProducts() {
     };
 
     const openEditForm = async (pid) => {
-        try {
-            const response = await fetch(`${apiURL}getProduct.php?pid=${pid}`, { credentials: "include" });
-            const data = await response.json();
-            if (data.success) {
-                setEditingProduct(data.product);
-                setFormMode("edit");
-                setShowForm(true);
-            }
-        } catch (error) {
-            console.error(error);
+        const product = await fetchProduct(pid);
+        if (product) {
+            setEditingProduct(product);
+            setFormMode("edit");
+            setShowForm(true);
         }
     };
 
@@ -77,15 +58,10 @@ function AdminProducts() {
         if (!deleteTarget) return;
         setDeleting(true);
         try {
-            const response = await fetch(`${apiURL}deleteProduct.php`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ pid: deleteTarget.pid }),
-            });
             const data = await response.json();
             if (data.success) {
                 setProducts((prev) => prev.filter((p) => p.pid !== deleteTarget.pid));
+                
                 setBanner("Product deleted.");
                 setTimeout(() => setBanner(""), 2500);
             }
@@ -98,7 +74,8 @@ function AdminProducts() {
     };
 
     return (
-        <div className="body">
+        <div className="body flex flex-col">
+            <div className="flex-1">
             <div className="responsiveM">
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
@@ -114,85 +91,42 @@ function AdminProducts() {
                         Add Product
                     </button>
                 </div>
+            
 
                 {banner && (
-                    <p className="mt-4 font-medium rounded-md text-center px-3 py-1.5 text-green-600 bg-green-200 w-fit">
+                    <p className="font-medium rounded-md text-center py-3 text-green-600 w-fit">
                         {banner}
                     </p>
                 )}
-
-                {/* Loading */}
-                {loading && (
-                    <div className="flex justify-center py-16">
-                        <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
-                    </div>
-                )}
-
-                {/* Empty state */}
-                {!loading && products.length === 0 && (
-                    <div className="flex flex-col items-center justify-center text-center p-16 gap-4 mt-6
-                        border border-dashed bg-white/60 rounded-3xl">
-                        <PackageSearch className="w-12 h-12 text-gray-400" />
-                        <p className="text-xl sm:text-2xl font-serif font-bold">No products yet</p>
-                        <p className="text-gray-600 max-w-md">
-                            Add your first product and it'll show up on the storefront right away.
-                        </p>
-                        <button
-                            onClick={openAddForm}
-                            className="button bg-green-800 text-white px-6 hover:bg-green-900"
-                        >
-                            Add Product
-                        </button>
-                    </div>
-                )}
-
-                {/* Product list */}
-                {!loading && products.length > 0 && (
-                    <div className="gridLayout my-6">
-                        {products.map((product) => (
-                            <div
-                                key={product.pid}
-                                className="flex flex-col rounded-2xl border-gray-400 border bg-white/60 overflow-hidden"
-                            >
-                                <div className="aspect-8/9 overflow-hidden bg-gray-100">
-                                    <img
-                                        src={`${apiURL}productImage.php?pid=${product.pid}&v=${product.imageVersion}`}
-                                        alt={product.pname}
-                                        className="object-cover h-full w-full"
-                                    />
-                                </div>
-
-                                <div className="mx-3 my-3 font-serif flex-1">
-                                    <p className="text-gray-600 mb-1 text-sm">{product.cat_name}</p>
-                                    <p className="text-[16px] line-clamp-2">{product.pname}</p>
-                                </div>
-
-                                <div className="mx-3 mb-2 flex items-center justify-between text-sm">
-                                    <span className="font-medium font-serif">Rs {product.price.toLocaleString()}</span>
-                                    <span className={product.stock > 0 ? "text-gray-600" : "text-red-500 font-medium"}>
-                                        {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
-                                    </span>
-                                </div>
-
-                                <div className="border-t border-gray-300 flex divide-x divide-gray-300">
-                                    <button
-                                        onClick={() => openEditForm(product.pid)}
-                                        className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                                    >
-                                        <Pencil className="size-3.5" /> Edit
-                                    </button>
-                                    <button
-                                        onClick={() => setDeleteTarget(product)}
-                                        className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm font-medium text-red-500 hover:bg-red-50"
-                                    >
-                                        <Trash2 className="size-3.5" /> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
             </div>
+
+            <Categories
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                products={products}
+            />
+
+            {loading ? (
+                <div className="flex justify-center py-16">
+                    <div className="responsiveM flex items-center gap-2 justify-center py-12 text-gray-500">
+                        <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                        Loading products...
+                    </div>
+                </div>
+            ) : error ? (
+                <div className="responsiveM py-12 text-center text-red-600">
+                    {error}
+                </div>
+            ) : (
+                <ProductList
+                    products={filteredProducts}
+                    onEdit = {(pid) => openEditForm(pid)}
+                    onDelete={(product) => setDeleteTarget(product)}
+                />
+            )}   
+            </div>
+
+            <Footer/>
 
             {/* Add / Edit form */}
             {showForm && (
@@ -200,8 +134,8 @@ function AdminProducts() {
                     mode={formMode}
                     initialProduct={editingProduct}
                     categories={categories}
-                    onCategoryAdded={(cat) => setCategories((prev) => [...prev, cat])}
-                    onClose={() => setShowForm(false)}
+                    onCategoryAdded={(category) => setCategories((prev) => [...prev, category])}
+                    onClose={() => setShowForm((prev) => !prev)}
                     onSaved={handleSaved}
                 />
             )}
@@ -209,14 +143,9 @@ function AdminProducts() {
             {/* Delete confirmation */}
             {deleteTarget && (
                 <div className="popUp">
-                    <div className="bg-white rounded-xl w-80 p-5 font-sans">
-                        <div className="flex items-center justify-between mb-3">
-                            <h1 className="font-medium text-lg text-gray-800">Delete product?</h1>
-                            <button onClick={() => setDeleteTarget(null)}>
-                                <X className="size-5 text-gray-600 hover:text-gray-800" />
-                            </button>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-5">
+                    <div className="bg-white rounded-xl flex flex-col items-center justify-center w-80 p-5 font-sans">
+                        <h1 className="font-medium text-lg mb-3 text-gray-800">Delete product?</h1>
+                        <p className="text-sm text-gray-600 text-center mb-5">
                             "{deleteTarget.pname}" will be permanently removed from your storefront. This can't be undone.
                         </p>
                         <div className="flex justify-end gap-2">

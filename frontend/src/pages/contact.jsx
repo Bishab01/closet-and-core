@@ -1,6 +1,6 @@
 import { useState } from "react";
 // import { Send, Check, } from "lucide-react";
-import { contacts } from "../data/contact";
+import { contacts } from "../api/contact";
 import Footer from "../components/footer";
 
 function Contact() {
@@ -51,7 +51,7 @@ function Contact() {
   // };
 
   return (
-  <div className="body">
+  <div className="body flex flex-col">
     <div className="flex-1 items-center justify-center responsiveM">
 
       {/* ---------- Header ---------- */}

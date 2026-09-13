@@ -6,7 +6,7 @@ function VariantRow({ variant, onChange, onRemove }) {
     };
 
     return (
-        <div className="grid grid-cols-12 gap-2 items-center bg-white/70 border border-gray-300 rounded-lg p-2">
+        <div className="grid grid-cols-12 gap-1 items-center bg-white/70 border border-gray-300 rounded-lg p-1.5">
             <input
                 type="text"
                 placeholder="Color (e.g. Olive Green)"

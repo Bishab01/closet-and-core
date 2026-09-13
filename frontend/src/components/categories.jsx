@@ -1,27 +1,10 @@
-import { useState, useEffect } from "react";
+import { useCategories } from "../hooks/useCategories";
 
-function Categories({selectedCategory, setSelectedCategory}){
-    const apiURL = import.meta.env.VITE_API_URL;
-
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        const getCategories = async () => {
-            try {
-                const response = await fetch(`${apiURL}getCategories.php`);
-                const data = await response.json();
-
-                if (data.success) {
-                    setCategories(data.categories);
-                }
-            } 
-            catch (error) {
-                console.error("Error fetching categories:", error);
-            }
-        };
-
-        getCategories();
-    }, []);
+function Categories({ selectedCategory, setSelectedCategory, products }) {
+    const { categories } = useCategories();
+    const categoryList = categories.filter(category =>
+        products.some(product => product.cat_id === category.cat_id)
+    );
 
     return(
         <div className="responsiveM">

@@ -33,7 +33,7 @@ function Approutes() {
 
         {/* Open to retailer */}
         <Route path="/dashboard" element={<RetailerRoute><Dashboard /></RetailerRoute>} />
-        <Route path="/dashboard/products" element={<RetailerRoute><AdminProducts /></RetailerRoute>} />
+        <Route path="/productsRetailer" element={<RetailerRoute><AdminProducts /></RetailerRoute>} />
       </Route>
     </Routes>
   );

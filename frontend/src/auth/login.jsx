@@ -1,13 +1,13 @@
 import {NavLink, useNavigate} from "react-router-dom";
 import logo from "../assets/logos/displayLogo.png";
-import {Eye, EyeOff} from "lucide-react";
+import {Eye, EyeOff, ArrowRightIcon} from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 function Login(){
     const apiURL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
-    const { checkSession } = useAuth();
+    const { checkSession, user, loggedIn } = useAuth();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -170,13 +170,25 @@ function Login(){
                             <div className="h-0.5 w-full bg-gray-400"></div>
                         </div>
                         <div className="flex justify-center w-full">
-                            <NavLink to="/home">
-                                <button
+                            {!loggedIn &&
+                                (
+                                <NavLink to="/home"
                                     className="button border border-gray-500 bg-gray-200 text-gray-800"
                                 >
                                     Continue as Guest
-                                </button>
-                            </NavLink>
+                                </NavLink>
+                                )
+                            }
+
+                            {loggedIn && (
+                                <NavLink to={user?.role === "retailer" ? "/dashboard" : "/home"}
+                                    className="flex items-center gap-2 text-white button border bg-[#1B4332]"
+                                >
+                                    <span>Continue</span>
+                                    <ArrowRightIcon className="size-4"/>
+                                </NavLink>
+                            )}
+
                         </div>
                         <p className="mt-3 text-sm"> 
                             Don't have an account? 

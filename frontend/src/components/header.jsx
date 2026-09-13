@@ -21,7 +21,8 @@ function Header(){
 
     const showSearch =
         location.pathname === "/home" ||
-        location.pathname === "/products";
+        location.pathname === "/products" ||
+        location.pathname === "/productsRetailer";
 
     const handleCartClick = (e) => {
         if(!loggedIn){
