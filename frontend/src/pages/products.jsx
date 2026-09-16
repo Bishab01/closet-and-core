@@ -3,17 +3,26 @@ import { useState } from "react";
 import Categories from "../components/categories";
 import { useProducts } from "../hooks/useProducts";
 import Footer from "../components/footer";
+import { useContext } from "react";
+import { SearchContext } from "../core/App";
 
 function Products(){
     const[selectedCategory, setSelectedCategory] = useState("all");
     const { products, loading, error } = useProducts();
+    const { searchTerm } = useContext(SearchContext);
 
-    const filteredProducts =
-        selectedCategory === "all"
-            ? products
-            : products.filter(
-                (product) => product.cat_name === selectedCategory
-            );
+    const filteredProducts = products.filter(product => {
+        const matchesCategory =
+            selectedCategory === "all" ||
+            product.cat_name === selectedCategory;
+
+        const matchesSearch =
+            product.pname
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
 
     return(
         <div className="body flex flex-col">

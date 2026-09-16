@@ -7,6 +7,8 @@ import Footer from "../../components/footer";
 import Categories from "../../components/categories";
 import {useCategories} from "../../hooks/useCategories";
 import { fetchOneProduct } from "../../hooks/fetchOneProduct";
+import { useContext } from "react";
+import { SearchContext } from "../../core/App";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -24,13 +26,20 @@ function AdminProducts() {
     const[selectedCategory, setSelectedCategory] = useState("all");
 
     const [banner, setBanner] = useState("");
+    const {searchTerm} = useContext(SearchContext);
 
-    const filteredProducts =
-        selectedCategory === "all"
-            ? products
-            : products.filter(
-                (product) => product.cat_name === selectedCategory
-            );
+    const filteredProducts = products.filter(product => {
+        const matchesCategory =
+            selectedCategory === "all" ||
+            product.cat_name === selectedCategory;
+
+        const matchesSearch =
+            product.pname
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
 
     const openAddForm = () => {
         setFormMode("add");

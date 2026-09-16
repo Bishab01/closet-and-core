@@ -6,6 +6,8 @@ import logo from '../assets/logos/logo.png'
 import SideMenu from './sidemenu';
 import { useAuth } from "../context/AuthContext";
 import LoginRequest from './loginRequest';
+import { useContext } from 'react';
+import { SearchContext } from '../core/App';
 
 function Header(){
     const { cartCount } = useCart();
@@ -20,9 +22,10 @@ function Header(){
     const location = useLocation();
 
     const showSearch =
-        location.pathname === "/home" ||
         location.pathname === "/products" ||
         location.pathname === "/productsRetailer";
+
+    const {searchTerm, setSearchTerm} = useContext(SearchContext);
 
     const handleCartClick = (e) => {
         if(!loggedIn){
@@ -80,6 +83,8 @@ function Header(){
                             <Search className='w-4 h-4'/>
                             <input 
                                 type='text'
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className='outline-none w-20 md:w-25 lg:w-35'
                                 placeholder='Search...'
                             />
@@ -100,7 +105,7 @@ function Header(){
                                     items-center justify-center rounded-full
                                     bg-red-400 px-1 text-[9px] font-semibold text-white"
                                 >
-                                    {cartCount}
+                                    0
                                 </span>
                             )}
                         </NavLink>

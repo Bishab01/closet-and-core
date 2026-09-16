@@ -5,6 +5,7 @@ function ProductCard({
   pname,
   image,
   price,
+  index,
   click,
 }) {
 
@@ -43,8 +44,8 @@ function ProductCard({
           </p>
           <button
               onClick={click}
-              className="flex items-center gap-1 text-sm text-gray-400/70 hover:text-gray-400 w-fit bg-white
-                  border border-gray-400/70 hover:border-gray-400 rounded-2xl px-1.5"
+              className="flex items-center gap-1 text-sm text-white hover:text-gray-400 w-fit hover:bg-white
+                  border bg-gray-400/70 border-gray-400/70 hover:border-gray-400 rounded-2xl px-1.5"
           >
               <p>View</p>
               <Eye className="size-4" />

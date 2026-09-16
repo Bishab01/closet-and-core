@@ -1,4 +1,4 @@
-import { Eye, PackageSearch, Pencil, Trash2 } from "lucide-react";
+import { PackageSearch, Pencil, Trash2 } from "lucide-react";
 
 function ProductList({products, onDelete, onEdit}) {
     if(products.length === 0) {
@@ -9,7 +9,7 @@ function ProductList({products, onDelete, onEdit}) {
                 <PackageSearch className="w-12 h-12 text-gray-400" />
                 <p className="text-xl sm:text-2xl font-serif font-bold">No products yet</p>
                 <p className="text-gray-600 max-w-md">
-                    Add your first product. It'll show up on the storefront right away.
+                    This product has not been added yet.
                 </p>
             </div>
         )
