@@ -15,13 +15,19 @@ function ProductList({products, onDelete, onEdit}) {
         )
     }
 
+    // Remounting the grid whenever the visible set of products changes (new
+    // search term, category, etc.) makes every card replay its entrance
+    // animation instead of only the ones that are brand new to the DOM.
+    const resultsKey = products.map((product) => product.pid).join(",");
+
     return(
         <div className="responsiveM">
-            <div className="gridLayout my-6 ">
-                {products.map((product)=>
+            <div className="gridLayout my-6" key={resultsKey}>
+                {products.map((product,index)=>
                     <div
-                        className="flex flex-col rounded-2xl border-gray-400 border bg-white/60
+                        className="resultAppear flex flex-col rounded-2xl border-gray-400 border bg-white/60
                         overflow-hidden hover:shadow-xl shrink-0 group cursor-pointer"
+                        style={{ animationDelay: `${Math.min(index ?? 0, 12) * 20}ms` }}
                         key = {product.pid}
                     >
                         {/* Product Image */}

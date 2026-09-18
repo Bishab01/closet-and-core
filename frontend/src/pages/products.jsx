@@ -1,7 +1,8 @@
 import ProductCatalog from "../components/productCatalog";
 import { useState } from "react";
 import Categories from "../components/categories";
-import { useProducts } from "../hooks/useProducts";
+import { useProducts } from "../data/useProducts";
+import { useCategories } from "../data/useCategories";
 import Footer from "../components/footer";
 import { useContext } from "react";
 import { SearchContext } from "../core/App";
@@ -9,6 +10,7 @@ import { SearchContext } from "../core/App";
 function Products(){
     const[selectedCategory, setSelectedCategory] = useState("all");
     const { products, loading, error } = useProducts();
+    const { categories } = useCategories();
     const { searchTerm } = useContext(SearchContext);
 
     const filteredProducts = products.filter(product => {
@@ -36,6 +38,7 @@ function Products(){
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 products={products}
+                categories={categories}
             />
 
             {loading ? (

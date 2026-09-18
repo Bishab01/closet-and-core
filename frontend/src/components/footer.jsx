@@ -92,7 +92,7 @@ function Footer() {
             {/* Bottom bar */}
             <div className="border-t border-white/10 flex justify-center items-center w-full">
                 <div className="responsiveM my-0! py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-green-100/60 text-center sm:text-left w-full">
-                    <p>© 2026 Closet & Core. All rights reserved.</p>
+                    <p>© 2026 Closet & Core.</p>
                     <p>Designed for a simple, everyday shopping experience.</p>
                 </div>
             </div>

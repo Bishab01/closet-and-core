@@ -1,29 +1,47 @@
-import { Mail, Phone, MessageCircle } from "lucide-react";
+import { Mail, PhoneCall, MessageCircle } from "lucide-react";
 import { Instagram } from "../assets/icons/instagram";
 
-export const contacts = [
-  {
-    id: 1,
-    icon: Instagram,
-    title: "Instagram",
-    identifier: "@closetandcore",
-  },
-  {
-    id: 2,
-    icon: Phone,
-    title: "Phone",
-    identifier: "+977 9800000000",
-  },
-  {
-    id: 3,
-    icon: Mail,
-    title: "Email",
-    identifier: "closetandcore@gmail.com",
-  },
-  {
-    id: 4,
-    icon: MessageCircle,
-    title: "WhatsApp",
-    identifier: "+977 9800000000",
-  },
-];
+const apiURL = import.meta.env.VITE_API_URL;
+const respectiveIcon = [
+  {platform:"instagram", icon: Instagram},
+  {platform:"phone", icon: PhoneCall},
+  {platform:"whatsapp", icon: MessageCircle},
+  {platform:"email", icon: Mail},
+]
+
+export async function saveContactDetails(formData) {
+    const response = await fetch(`${apiURL}addContacts.php`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+    return data;
+}
+
+export async function getContacts() {
+    const response = await fetch(`${apiURL}getContacts.php`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch contact details.");
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch contact details.");
+    }
+
+    return data.contacts.map(contact => {
+      const match = respectiveIcon.find(item => item.platform === contact.platform);
+      const icon = match ? match.icon : null;
+      return { ...contact, icon };
+    });
+}

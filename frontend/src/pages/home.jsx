@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronsRight } from "lucide-react";
 import ProductCatalog from "../components/productCatalog";
-import {useProducts} from "../hooks/useProducts";
+import {useProducts} from "../data/useProducts";
 import Footer from "../components/footer";
 
 function Home(){

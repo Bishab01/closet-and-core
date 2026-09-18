@@ -123,15 +123,15 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS retailer_contacts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   uid INT NOT NULL,
-  title ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
-  detail VARCHAR(150) NULL,
+  platform ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
+  handle VARCHAR(150) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_retailer_contacts_users
     FOREIGN KEY (uid) REFERENCES users(uid)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  UNIQUE KEY uid_title_UNIQUE (uid, title)
+  UNIQUE KEY uid_title_UNIQUE (uid, platform)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;

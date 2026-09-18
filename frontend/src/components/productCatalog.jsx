@@ -26,16 +26,22 @@ function ProductCatalog({products}){
         );
     }
 
+    // Remounting the grid whenever the visible set of products changes (new
+    // search term, category, etc.) makes every card replay its entrance
+    // animation instead of only the ones that are brand new to the DOM.
+    const resultsKey = products.map((product) => product.pid).join(",");
+
     return (
         <div className="responsiveM">
-            <div className="gridLayout my-6 ">
-                {products.map((product)=>
+            <div className="gridLayout my-6" key={resultsKey}>
+                {products.map((product,index)=>
                     <ProductCard
                         key={product.pid} 
                         category={product.cat_name}
                         pname={product.pname}
                         price={product.price}
                         image={product.image}
+                        index={index}
                         click={() => setSelectedProduct(product)}
                     />
                 )}

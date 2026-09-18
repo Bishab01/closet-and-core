@@ -156,7 +156,7 @@ function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClos
         } finally {
             setSubmitting(false);
         }
-    };
+    }
 
     return (
         <div className="popUp p-4">

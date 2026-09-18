@@ -1,7 +1,10 @@
 import { useState } from "react";
 // import { Send, Check, } from "lucide-react";
-import { contacts } from "../api/contact";
+import { useContacts } from "../data/contactDetails";
 import Footer from "../components/footer";
+import { useAuth } from "../context/AuthContext";
+import { Plus, Phone } from "lucide-react";
+import ContactDetails from "../components/retailer/contactDetailsForm";
 
 function Contact() {
   // const [formData, setFormData] = useState({
@@ -49,47 +52,108 @@ function Contact() {
   //     setSent(false);
   //   }, 3500);
   // };
+  const { user } = useAuth();
+  const isRetailer = user?.role === "retailer";
 
+  const { contacts, fetchContacts } = useContacts();
+
+  const [showForm, setShowForm] = useState(false);
+
+  const handleSave = () => {
+    setShowForm(prev => !prev );
+    fetchContacts();
+  }
+  
   return (
   <div className="body flex flex-col">
     <div className="flex-1 items-center justify-center responsiveM">
 
       {/* ---------- Header ---------- */}
       <header className="text-center pt-2">
-        <p className="text-xs tracking-[0.2em] uppercase text-green-900 font-semibold mb-3">
-          Get in Touch
-        </p>
+        {isRetailer && (
+          <div className="max-w-xl mx-auto mb-6 md:mb-8 border border-green-900/20 bg-green-50/80 rounded-2xl px-6 py-5 shadow-sm">
+            <div className="flex flex-col items-center text-center">
+
+              {/* Icon */}
+              <div className="w-11 h-11 rounded-full bg-green-900/10 flex items-center justify-center mb-3">
+                <Phone className="size-5 text-green-900" />
+              </div>
+
+              {/* Heading */}
+              <p className="text-xs tracking-[0.2em] uppercase text-green-900 font-semibold">
+                Connect with your customers
+              </p>
+
+              {/* Description */}
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-md mt-2">
+                Add your shop's contact details so customers can reach you directly
+                with questions, support, or inquiries.
+              </p>
+
+              {/* Action */}
+              <button
+                onClick={()=>setShowForm(prev=>!prev)}
+                className="
+                  mt-4
+                  button rounded-xl! py-2.5! px-5!
+                  text-sm!
+                  flex items-center justify-center gap-2
+                  bg-green-800 text-white
+                  hover:bg-green-900
+                  transition-colors duration-200
+                "
+              >
+                <Plus className="size-4" />
+                Add Contact Details
+              </button>
+
+            </div>
+          </div>
+        )}
+
+        {!isRetailer && 
+          <p className="text-xs tracking-[0.2em] uppercase text-green-900 font-semibold mb-4">
+            GET IN TOUCH
+          </p>
+        }
 
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900">
           Contact Us
         </h1>
 
-        <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto mt-4 leading-relaxed">
-          Have a question or want to connect? Reach out to us through any of
-          the channels below.
-        </p>
+        {!isRetailer && 
+          <p className="text-sm sm:text-base text-gray-600 max-w-lg mx-auto mt-4 leading-relaxed">
+            Have a question or want to connect? Reach out to us through any of
+            the channels below.
+          </p>
+        }
+
       </header>
 
       {/* ---------- Contact Information ---------- */}
-      <section className="mt-10 sm:mt-14 flex items-center justify-center">
+      <section className="mt-10 md:mt-12 flex items-center justify-center">
         <div className="max-w-220 w-full grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {contacts.map((contact) => {
+        {contacts.map((contact, index) => {
           const Icon = contact.icon;
-
+          const isAlone = contacts.length % 2 !== 0 && index === contacts.length-1;
           return (
           <div
             key={contact.id}
-            className="
+            className={`
               group
               bg-[#FBF9F4]
               border-2 border-green-900/40
               rounded-3xl
               p-3
+              w-full
               shadow-sm
               hover:shadow-md
               hover:-translate-y-1
               transition-all duration-300
-            "
+              ${
+                isAlone? "sm:col-span-2 sm:max-w-[calc(50%-0.625rem)] sm:mx-auto" : ""
+              }
+            `}
           >
             <div
               className="
@@ -115,21 +179,26 @@ function Contact() {
                   transition-colors duration-300
                 "
               >
-                {contact.title === "Instagram" ? (
+                {contact.platform === "instagram" ? (
                   <Icon className="text-green-900 transition-colors duration-300" hw="6"/>
                 ) : (
-                  <Icon className="w-6 h-6 text-green-900 group-hover:text-white transition-colors duration-300" />
+                  <Icon className="size-5.5 text-green-900 group-hover:text-white transition-colors duration-300" />
                 )}
               </div>
 
-              {/* Contact title */}
+              {/* Contact platform */}
               <p className="font-semibold text-gray-900">
-                {contact.title}
+                {contact.platform}
               </p>
 
               {/* Contact information */}
               <p className="text-sm text-gray-600 mt-1 break-all">
-                {contact.identifier}
+                {contact.platform === "instagram" 
+                  ? "@"+contact.handle
+                  : contact.platform === "whatsapp" || contact.platform === "phone"
+                  ? "+977 "+contact.handle
+                  : contact.handle
+                }
               </p>
             </div>
           </div>
@@ -155,6 +224,13 @@ function Contact() {
     </div>
 
     <Footer/>
+
+    {showForm && 
+      <ContactDetails
+        onClose={()=>setShowForm(prev=>!prev)}
+        onSaved={handleSave}
+      />
+    }
   </div>
   );
 }

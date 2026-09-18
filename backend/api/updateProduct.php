@@ -93,8 +93,8 @@
                 "INSERT INTO product_variant (pid, color, size, color_hex, stock) VALUES (?, ?, ?, ?, ?)"
             );
             foreach ($variants as $v) {
-                $color = isset($v["color"]) && $v["color"] !== "" ? trim($v["color"]) : null;
-                $size = isset($v["size"]) && $v["size"] !== "" ? trim($v["size"]) : null;
+                $color = isset($v["color"]) && $v["color"] !== "" ? strtolower(trim($v["color"])) : null;
+                $size  = isset($v["size"])  && $v["size"]  !== "" ? strtoupper(trim($v["size"]))  : null;
                 $colorHex = isset($v["color_hex"]) && $v["color_hex"] !== "" ? trim($v["color_hex"]) : null;
                 $stock = isset($v["stock"]) ? (int)$v["stock"] : 0;
 

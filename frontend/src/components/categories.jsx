@@ -1,7 +1,4 @@
-import { useCategories } from "../hooks/useCategories";
-
-function Categories({ selectedCategory, setSelectedCategory, products }) {
-    const { categories } = useCategories();
+function Categories({ selectedCategory, setSelectedCategory, products, categories }) {
     const categoryList = categories.filter(category =>
         products.some(product => product.cat_id === category.cat_id)
     );

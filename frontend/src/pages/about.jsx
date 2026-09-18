@@ -336,6 +336,11 @@ function About() {
                   Manage orders
                 </li>
 
+                <li className="flex gap-2">
+                  <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
+                  Add Contact Information
+                </li>
+
               </ul>
 
             </div>

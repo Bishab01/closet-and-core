@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { PackagePlus, X } from "lucide-react";
 import ProductForm from "../../components/retailer/productForm";
-import { useProducts } from "../../hooks/useProducts";
+import { useProducts } from "../../data/useProducts";
 import ProductList from "../../components/retailer/productList";
 import Footer from "../../components/footer";
 import Categories from "../../components/categories";
-import {useCategories} from "../../hooks/useCategories";
-import { fetchOneProduct } from "../../hooks/fetchOneProduct";
+import {useCategories} from "../../data/useCategories";
+import { fetchOneProduct } from "../../data/fetchOneProduct";
 import { useContext } from "react";
+import { deleteProduct } from "../../api/productsApi";
 import { SearchContext } from "../../core/App";
 
 const apiURL = import.meta.env.VITE_API_URL;
@@ -26,6 +27,7 @@ function AdminProducts() {
     const[selectedCategory, setSelectedCategory] = useState("all");
 
     const [banner, setBanner] = useState("");
+    const [bannerType, setBannerType] = useState("success"); //success or error
     const {searchTerm} = useContext(SearchContext);
 
     const filteredProducts = products.filter(product => {
@@ -58,6 +60,7 @@ function AdminProducts() {
 
     const handleSaved = () => {
         setShowForm(false);
+        setBannerType("success");
         setBanner(formMode === "edit" ? "Product updated." : "Product added.");
         loadProducts();
         setTimeout(() => setBanner(""), 2500);
@@ -67,15 +70,17 @@ function AdminProducts() {
         if (!deleteTarget) return;
         setDeleting(true);
         try {
-            const data = await response.json();
-            if (data.success) {
-                setProducts((prev) => prev.filter((p) => p.pid !== deleteTarget.pid));
-                
-                setBanner("Product deleted.");
-                setTimeout(() => setBanner(""), 2500);
-            }
+            await deleteProduct(deleteTarget.pid);
+
+            setProducts((prev) => prev.filter((p) => p.pid !== deleteTarget.pid));
+            setBannerType("success");
+            setBanner("Product deleted.");
+            setTimeout(() => setBanner(""), 2500);
         } catch (error) {
             console.error(error);
+            setBannerType("error");
+            setBanner(error.message || "Failed to delete product");
+            setTimeout(() => setBanner(""), 2500);
         } finally {
             setDeleting(false);
             setDeleteTarget(null);
@@ -103,7 +108,7 @@ function AdminProducts() {
             
 
                 {banner && (
-                    <p className="font-medium rounded-md text-center py-3 text-green-600 w-fit">
+                    <p className={`font-medium rounded-md text-center py-3 w-fit ${bannerType === "error" ? "text-red-600" : "text-green-600"}`}>
                         {banner}
                     </p>
                 )}
@@ -113,6 +118,7 @@ function AdminProducts() {
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 products={products}
+                categories={categories}
             />
 
             {loading ? (

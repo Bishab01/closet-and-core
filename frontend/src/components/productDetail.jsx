@@ -1,6 +1,6 @@
 import {useAuth} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
-import { useProductDetails } from "../hooks/useProductDetails";
+import { useProductDetails } from "../data/useProductDetails";
 import { ChevronDown } from "lucide-react";
 import BackButton from "./productDetails/backButton";
 import ProductImage from "./productDetails/productImage";

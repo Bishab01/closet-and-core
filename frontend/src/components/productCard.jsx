@@ -11,8 +11,9 @@ function ProductCard({
 
   return (
     <div
-      className="flex flex-col rounded-2xl border-gray-400 border bg-white/60
+      className="resultAppear flex flex-col rounded-2xl border-gray-400 border bg-white/60
       overflow-hidden hover:shadow-xl shrink-0 group cursor-pointer"
+      style={{ animationDelay: `${Math.min(index ?? 0, 12) * 20}ms` }}
     >
       {/* Product Image */}
       <div className="aspect-8/9 overflow-hidden">
@@ -45,7 +46,7 @@ function ProductCard({
           <button
               onClick={click}
               className="flex items-center gap-1 text-sm text-white hover:text-gray-400 w-fit hover:bg-white
-                  border bg-gray-400/70 border-gray-400/70 hover:border-gray-400 rounded-2xl px-1.5"
+                  border bg-gray-400/90 border-gray-400/90 hover:border-gray-400 rounded-2xl px-1.5"
           >
               <p>View</p>
               <Eye className="size-4" />
