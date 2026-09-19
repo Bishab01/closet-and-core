@@ -9,7 +9,7 @@ import {useCategories} from "../../data/useCategories";
 import { fetchOneProduct } from "../../data/fetchOneProduct";
 import { useContext } from "react";
 import { deleteProduct } from "../../api/productsApi";
-import { SearchContext } from "../../core/App";
+import { SearchContext } from "../../context/SearchContext";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -166,6 +166,7 @@ function AdminProducts() {
                         <div className="flex justify-end gap-2">
                             <button
                                 onClick={() => setDeleteTarget(null)}
+                                disabled={deleting}
                                 className="button border border-gray-400 text-gray-700 hover:bg-gray-100"
                             >
                                 Cancel

@@ -18,6 +18,7 @@
     }
 
     // guard against missing keys in an otherwise-valid JSON body
+    $id = isset($data["id"]) ? (int)$data["id"] : "";
     $platform = isset($data["platform"]) ? strtolower(trim($data["platform"])) : "";
     $handle   = isset($data["handle"]) ? trim($data["handle"]) : "";
 
@@ -25,17 +26,6 @@
         echo json_encode([
             "success" => false,
             "message" => "All fields are required."
-        ]);
-        exit;
-    }
-
-    // get the logged-in retailer's user id from the session
-    $uid = $_SESSION['uid'] ?? null;
-
-    if (!$uid) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Unauthorized user."
         ]);
         exit;
     }
@@ -82,29 +72,29 @@
     }
 
     try {
-        $stmt = $conn->prepare("INSERT INTO retailer_contacts (uid, platform, handle) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $uid, $platform, $handle);
+        $stmt = $conn->prepare("UPDATE retailer_contacts SET platform = ?, handle = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $platform, $handle, $id);
         $stmt->execute();
 
         echo json_encode([
             "success" => true,
-            "message" => "Contact details saved successfully."
+            "message" => "Contact details updated successfully."
         ]);
-    } catch (mysqli_sql_exception $e) {
-        if ($e->getCode() === 1062) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Contact details for this platform already exists."
-            ]);
-        } else {
-            error_log($e->getMessage());
-            echo json_encode([
-                "success" => false,
-                "message" => "Failed to save contact details."
-            ]);
-        }
-    } finally {
-        $stmt->close();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Contact details for this platform already exists."
+                ]);
+            } else {
+                error_log($e->getMessage());
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Failed to update contact details."
+                ]);
+            }
+        } finally {
+            $stmt->close();
     }
     $conn->close();
 ?>

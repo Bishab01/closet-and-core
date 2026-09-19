@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 
-function QuantitySelector({ px, py, textSize }) {
-    const [qty, setQty] = useState(1);
-
+function QuantitySelector({ qty, setQty, px, py, textSize }) {
     return (
         <div className="flex items-center border border-gray-300 rounded-lg w-fit">
             <button

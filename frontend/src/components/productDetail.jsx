@@ -1,7 +1,7 @@
 import {useAuth} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import { useProductDetails } from "../data/useProductDetails";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Check, X } from "lucide-react";
 import BackButton from "./productDetails/backButton";
 import ProductImage from "./productDetails/productImage";
 import ProductInfoCard from "./productDetails/productInfoCard";
@@ -10,12 +10,16 @@ import SizePicker from "./productDetails/sizePicker";
 import StockStatus from "./productDetails/stockStatus";
 import AddToCart from "./productDetails/addToCart";
 import { useState } from "react";
+import { addCartItem } from "../api/cartOperations";
 
 function ProductDetail({ product, click }) {
     const { loggedIn } = useAuth();
-    // const { addToCart } = useCart();
     const navigate = useNavigate();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [msg, setMsg] = useState("");
+    const [msgType, setMsgType] = useState("success"); // success or error
+    const [qty, setQty] = useState(1);
+    const [showMessage, setShowMessage] = useState(false);
 
     const {
         description,
@@ -30,11 +34,31 @@ function ProductDetail({ product, click }) {
         stock,
     } = useProductDetails(product.pid);
 
-    const handleAddToCartClick = (e) => {
-    if (!loggedIn) {
+    const handleAddToCartClick = async(e) => {
         e.preventDefault();
-        setShowLoginPrompt(true);
-    }
+        if (!loggedIn) {
+            setShowLoginPrompt(true);
+        }
+        if (loggedIn) {
+            try{
+                const data = await addCartItem(selectedVariant.vid, qty);
+    
+                if (data.success) {
+                    window.dispatchEvent(new Event("cart-updated"));
+                    setMsg(data.message);
+                    setMsgType("success");
+                } else {
+                    setMsg(data.message);
+                    setMsgType("error");
+                }
+            }
+            catch(error){
+                console.error(error);
+                setMsg("Failed to connect to the server.");
+                setMsgType("error");
+            }      
+        }
+        setShowMessage(prev=>!prev);
     };
 
     return (
@@ -71,6 +95,8 @@ function ProductDetail({ product, click }) {
                                 />
                                 <hr className="my-5 border-green-900/15" />
                                 <AddToCart
+                                    qty={qty}
+                                    setQty={setQty}
                                     disabled={hasVariants && (!selectedVariant || stock <= 0)}
                                     onAddToCart={handleAddToCartClick}
                                     showLoginPrompt={showLoginPrompt}
@@ -88,6 +114,36 @@ function ProductDetail({ product, click }) {
                 />
             </div>
         </div>
+        
+        {showMessage &&
+            <div className="popUp">
+                <div className="bg-white rounded-xl flex flex-col items-center space-y-2.5 justify-center w-80 p-5 font-sans">
+                    <div className={`rounded-full text-white p-1.5
+                        ${msgType === "success" ? "bg-green-600" : "bg-red-500"}`}>
+                        {
+                            msgType === "success" 
+                            ? <Check className="size-7"/>
+                            : <X className="size-7"/>
+                        }
+                    </div>
+                    
+                    <p
+                        className={`font-medium text-lg text-center px-3 py-1.5 ${
+                            msgType === "success" ? "text-green-600" : "text-red-500"
+                        }`}
+                    >
+                        {msg}
+                    </p>
+                    <button
+                        onClick={() => setShowMessage(prev => !prev)}
+                        className="button border border-gray-400 text-gray-700 hover:bg-gray-100"
+                    >
+                        Close
+                    </button>
+                    
+                </div>
+            </div>
+        }
     </div>
     );
 }

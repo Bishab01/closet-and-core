@@ -23,6 +23,20 @@ export async function saveContactDetails(formData) {
     return data;
 }
 
+export async function editContactDetails(formData) {
+    const response = await fetch(`${apiURL}updateContacts.php`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+    return data;
+}
+
 export async function getContacts() {
     const response = await fetch(`${apiURL}getContacts.php`, {
         method: "GET",
@@ -44,4 +58,16 @@ export async function getContacts() {
       const icon = match ? match.icon : null;
       return { ...contact, icon };
     });
+}
+
+export async function deleteContact(id) {
+    const response = await fetch(`${apiURL}deleteContact.php`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+    });
+
+    const data = await response.json();
+    return data;
 }

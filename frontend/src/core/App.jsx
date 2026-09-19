@@ -1,8 +1,7 @@
 import Header from "../components/header"
 import {Outlet} from "react-router-dom"
-import { useState, createContext } from "react"
-
-export const SearchContext = createContext();
+import { SearchContext } from "../context/SearchContext";
+import { useState } from "react";
 
 function App(){
     const [searchTerm, setSearchTerm] = useState("");

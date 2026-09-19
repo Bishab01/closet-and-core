@@ -18,5 +18,5 @@ export function useContacts() {
         fetchContacts();
     }, []);
 
-    return { contacts , fetchContacts};
+    return { contacts , setContacts, fetchContacts};
 }

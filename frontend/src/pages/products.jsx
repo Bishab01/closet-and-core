@@ -5,7 +5,7 @@ import { useProducts } from "../data/useProducts";
 import { useCategories } from "../data/useCategories";
 import Footer from "../components/footer";
 import { useContext } from "react";
-import { SearchContext } from "../core/App";
+import { SearchContext } from "../context/SearchContext";
 
 function Products(){
     const[selectedCategory, setSelectedCategory] = useState("all");

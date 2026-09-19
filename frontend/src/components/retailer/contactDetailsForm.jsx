@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { X, ChevronDown, CircleFadingPlus } from "lucide-react";
-import { saveContactDetails } from "../../api/contact";
+import { saveContactDetails, editContactDetails } from "../../api/contact";
 
-function ContactDetails({onClose, onSaved}) {
+function ContactDetails({mode, initialDetails, onClose, onSaved}) {
+    const isEdit = mode === "edit";
+
     const [formData, setFormData] = useState({
-        platform:"",
-        handle:"",
+        platform: initialDetails?.platform || "",
+        handle: initialDetails?.handle || "",
     });
   
     const [msg, setMsg] = useState("");
@@ -17,10 +19,10 @@ function ContactDetails({onClose, onSaved}) {
     };
 
     const platforms = [
-        {id:1, name: "Instagram"},
-        {id:2, name: "WhatsApp"},
-        {id:3, name: "Phone"},
-        {id:4, name: "Email"},
+        {id:1, value:"instagram", label: "Instagram"},
+        {id:2, value:"whatsapp", label: "WhatsApp"},
+        {id:3, value:"phone", label: "Phone"},
+        {id:4, value:"email", label: "Email"},
     ]
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,7 +39,7 @@ function ContactDetails({onClose, onSaved}) {
             return;
         }
 
-        if(formData.platform === "Instagram")
+        if(formData.platform === "instagram")
         {
             if(!usernameInsta.test(formData.handle))
             {
@@ -47,7 +49,7 @@ function ContactDetails({onClose, onSaved}) {
             }
         }
 
-        if(formData.platform === "WhatsApp" || formData.platform === "Phone")
+        if(formData.platform === "whatsapp" || formData.platform === "phone")
         {
             if(!contactNum.test(formData.handle))
             {
@@ -57,7 +59,7 @@ function ContactDetails({onClose, onSaved}) {
             }
         }
 
-        if(formData.platform === "Email")
+        if(formData.platform === "email")
         {
             if(!emailRegex.test(formData.handle))
             {
@@ -69,7 +71,16 @@ function ContactDetails({onClose, onSaved}) {
 
         setSubmitting(true);
         try{
-            const data = await saveContactDetails(formData);
+            let data; 
+            
+            if (isEdit){
+                data = await editContactDetails({ ...formData, id: initialDetails.id });
+            }
+
+            if(!isEdit){
+                data = await saveContactDetails(formData);
+            }
+
             if (data.success) {
                 setMsg(data.message);
                 setMsgType("success");
@@ -100,7 +111,7 @@ function ContactDetails({onClose, onSaved}) {
                 <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 sticky top-0 bg-white z-10">
                     <div className="flex items-center gap-2 text-[15px]">
                         <CircleFadingPlus className="size-4 shrink-0"/>
-                        <span>Contact Details</span>
+                        <span>{isEdit ? "Edit" : "Add"} Contact Details</span>
                     </div>
                     <button type="button" onClick={onClose}>
                         <X className="size-5 text-gray-600 hover:text-gray-800" />
@@ -123,8 +134,8 @@ function ContactDetails({onClose, onSaved}) {
                                 >
                                     <option value="" disabled>Select category</option>
                                     {platforms.map((platform) => (
-                                        <option key={platform.id} value={platform.name}>
-                                            {platform.name}
+                                        <option key={platform.id} value={platform.value}>
+                                            {platform.label}
                                         </option>
                                     ))}
                                 </select>
@@ -141,11 +152,11 @@ function ContactDetails({onClose, onSaved}) {
                             name="handle"
                             value={formData.handle}
                             onChange={handleChange}
-                            placeholder={formData.platform==="Instagram"
+                            placeholder={formData.platform==="instagram"
                                 ? "closet.core" 
-                                : formData.platform === "WhatsApp" || formData.platform === "Phone"
+                                : formData.platform === "whatsapp" || formData.platform === "phone"
                                 ? "9xxxxxxxxx"
-                                : formData.platform === "Email"
+                                : formData.platform === "email"
                                 ? "example@email.com"
                                 : "Select platform first"
                             }
@@ -174,7 +185,7 @@ function ContactDetails({onClose, onSaved}) {
                         <input
                             type="submit"
                             disabled={submitting}
-                            value={submitting ? "Saving..." : "Save Details" }
+                            value={submitting ? "Saving..." : isEdit? "Save Changes" : "Save Details" }
                             className="button bg-green-800 text-white hover:bg-green-900 disabled:opacity-60 cursor-pointer"
                         />
                     </div>

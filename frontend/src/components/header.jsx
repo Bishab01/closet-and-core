@@ -1,19 +1,18 @@
 import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
 import SideMenu from './sidemenu';
 import { useAuth } from "../context/AuthContext";
 import LoginRequest from './loginRequest';
 import { useContext } from 'react';
-import { SearchContext } from '../core/App';
+import { SearchContext } from '../context/SearchContext';
+import { useCartItems } from '../data/useCartItems';
 
 function Header(){
-    const { cartCount } = useCart();
     const { loggedIn, user } = useAuth();
     const isRetailer = user?.role === "retailer";
-    
+    const {cartCount} = useCartItems();
     const navigate = useNavigate();
 
     const [menuOpen,setMenuOpen] = useState(false);
@@ -105,7 +104,7 @@ function Header(){
                                     items-center justify-center rounded-full
                                     bg-red-400 px-1 text-[9px] font-semibold text-white"
                                 >
-                                    0
+                                    {cartCount}
                                 </span>
                             )}
                         </NavLink>
