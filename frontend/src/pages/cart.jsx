@@ -1,5 +1,5 @@
 import { Trash2, ShoppingBag, ArrowRight, ArrowLeft, Minus, Plus, Check, X} from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCartItems } from "../data/useCartItems";
 import { deleteCartItem, updateCartItem } from "../api/cartOperations";
 import { useState } from "react";
@@ -14,6 +14,8 @@ function Cart() {
     const [confirmation, setConfirmation] = useState("");
     const [ctype, setCType] = useState("success");
     const [deleting, setDeleting] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleRemove = async(id) => {
         if (!deleteTarget) return;
@@ -212,7 +214,7 @@ function Cart() {
                         </p>
                     </div>
                     <button
-                        // onClick={() => navigate("/checkout")}
+                        onClick={() => navigate("/checkout")}
                         className="flex items-center justify-center gap-2 bg-green-900 text-white rounded-xl px-6 py-3 font-medium hover:bg-green-800 duration-200"
                     >
                         Checkout
