@@ -5,12 +5,14 @@ import { useAuth } from "../context/AuthContext";
 function Footer() {
     const customerNav = [
         { name: "Home", path: "/home" },
-        { name: "Products", path: "/products" }
+        { name: "Products", path: "/products" },
+        { name: "Orders", path: "/orders" }
     ];
 
     const retailerNav = [
         { name: "Dashboard", path: "/dashboard" },
-        { name: "Products", path: "/productsRetailer" }
+        { name: "Products", path: "/productsRetailer" },
+        { name: "Orders", path: "/orders" }
     ];
     const { user } = useAuth();
     const isRetailer = user?.role === "retailer";

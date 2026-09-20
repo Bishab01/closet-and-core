@@ -36,6 +36,14 @@
  
     $newQuantity = $existing ? $existing["quantity"] + $quantity : $quantity;
  
+    if ((int)$variant["stock"] === 0) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Item out of stock."
+        ]);
+        exit;
+    }
+
     if ($newQuantity > $variant["stock"]) {
         echo json_encode([
             "success" => false,

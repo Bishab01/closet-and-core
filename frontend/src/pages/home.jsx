@@ -4,6 +4,7 @@ import { ChevronsRight } from "lucide-react";
 import ProductCatalog from "../components/productCatalog";
 import {useProducts} from "../data/useProducts";
 import Footer from "../components/footer";
+import banner from "../assets/images/banner.jpg";
 
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
@@ -35,10 +36,16 @@ function Home(){
     return(
         <div className="body flex flex-col">
             <div className="flex-1">
-            <div className="flex justify-start items-end responsiveM border-green-800 border-2 rounded-3xl h-60 md:h-90 bg-white/60">
-                <div className="ml-8 mb-8 md:ml-15 md:mb-15 text-xl sm:text-2xl md:text-3xl uppercase leading-8 md:leading-11">
-                    New Arrivals <br/>
-                    Summer 2026
+            <div 
+                style={{ backgroundImage: `url(${banner})` }}
+                className="responsiveM overflow-hidden border-green-700 border-2 rounded-3xl h-60 md:h-90 bg-white/60 bg-cover bg-center bg-no-repeat"
+            >
+                <div className="flex justify-start items-end h-full w-full bg-black/30">
+                    <div className="ml-8 mb-8 md:ml-15 md:mb-15 text-xl text-white/90 font-medium sm:text-2xl md:text-3xl 
+                     uppercase leading-8 md:leading-11">
+                        New Arrivals <br/>
+                        Summer 2026
+                    </div>
                 </div>
             </div>
 

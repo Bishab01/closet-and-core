@@ -12,6 +12,7 @@ import Contact from '../pages/contact';
 import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
 import { Routes, Route, Navigate} from 'react-router-dom';
 import Checkout from '../pages/checkout';
+import Orders from '../pages/orders';
 
 function Approutes() {
   return (
@@ -28,6 +29,7 @@ function Approutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/orders" element={<Orders />} />
 
         {/* Open to customers */}
         <Route path="/cart" element={<CustomerOnlyRoute><Cart /></CustomerOnlyRoute>} />

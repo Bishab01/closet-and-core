@@ -128,9 +128,7 @@ function ProductDetail({ product, click }) {
                     </div>
                     
                     <p
-                        className={`font-medium text-lg text-center px-3 py-1.5 ${
-                            msgType === "success" ? "text-green-600" : "text-red-500"
-                        }`}
+                        className="font-medium text-lg text-center px-3 py-1.5 text-gray-700" 
                     >
                         {msg}
                     </p>

@@ -58,3 +58,20 @@ export async function updateCartItem(cid, quantity) {
 
     return await response.json();
 }
+
+export async function placeOrder({ phone, address, paymentMethod, paymentStatus, status }) {
+    const response = await fetch(`${apiURL}placeOrder.php`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            contact_number: phone,
+            delivery_address: address,
+            payment_method: paymentMethod,
+            payment_status: paymentStatus,
+            status: status,
+        })
+    });
+
+    return await response.json();
+}

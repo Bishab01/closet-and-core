@@ -5,7 +5,7 @@ import { deleteCartItem, updateCartItem } from "../api/cartOperations";
 import { useState } from "react";
 
 function Cart() {
-    const {cartItems, fetchCartItems} = useCartItems();
+    const {cartItems, fetchCartItems, cartCount} = useCartItems();
     const cartTotal = cartItems.reduce(
         (sum, item) => sum + item.quantity * item.price,
         0
@@ -215,6 +215,7 @@ function Cart() {
                     </div>
                     <button
                         onClick={() => navigate("/checkout")}
+                        disabled={cartCount===0}
                         className="flex items-center justify-center gap-2 bg-green-900 text-white rounded-xl px-6 py-3 font-medium hover:bg-green-800 duration-200"
                     >
                         Checkout
@@ -265,9 +266,7 @@ function Cart() {
                     </div>
                     
                     <p
-                        className={`font-medium text-lg text-center px-3 py-1.5 ${
-                            ctype === "success" ? "text-green-600" : "text-red-500"
-                        }`}
+                        className="font-medium text-lg text-center px-3 py-1.5 text-gray-700" 
                     >
                         {confirmation}
                     </p>

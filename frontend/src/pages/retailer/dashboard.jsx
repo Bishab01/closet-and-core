@@ -1,25 +1,26 @@
 import { ShieldCheck, Package, Clock, AlertTriangle, CheckCircle, ChevronRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import Footer from "../../components/footer";
-import { quickActions, statusStyles } from "../../data/dashboard";
+import { quickActions, statusStyles, paymentStatusStyles } from "../../data/dashboard";
+import { useOrders } from "../../data/useOrders";
+import { useDashboardStats } from "../../data/dashboard";
 
 function Dashboard() {
 
+    const { orders } = useOrders();
+    const {stats: counts} = useDashboardStats();
+    const orderCode = (oid) => {
+        const scrambled = (oid * 40503) % 65536; // odd multiplier => every id gets a different value
+        return scrambled.toString(16).toUpperCase().padStart(4, "0");
+    }
+
+    const count = (key) => (counts ? counts[key] : "-");
+
     const stats = [
-        { label: "Total Products", value: "84", icon: Package, color: "text-green-800", bg: "bg-green-50" },
-        { label: "Pending Orders", value: "12", icon: Clock, color: "text-amber-700", bg: "bg-amber-50" },
-        { label: "Low Stock Items", value: "5", icon: AlertTriangle, color: "text-red-700", bg: "bg-red-50" },
-        { label: "Completed Orders", value: "231", icon: CheckCircle, color: "text-emerald-700", bg: "bg-emerald-50" },
-    ];
-
-    const OrderStatus = "pending" | "processing" | "completed" | "cancelled";
-
-    const recentOrders = [
-        { id: "#ORD-1042", customer: "Margaret Osei", status: "pending", date: "Sep 12, 2026", amount: "$34.00" },
-        { id: "#ORD-1041", customer: "Daniel Ferreira", status: "processing", date: "Sep 12, 2026", amount: "$89.50" },
-        { id: "#ORD-1040", customer: "Aisha Kamara", status: "completed", date: "Sep 11, 2026", amount: "$120.00" },
-        { id: "#ORD-1039", customer: "James Whitfield", status: "pending", date: "Sep 10, 2026", amount: "$47.25" },
-        { id: "#ORD-1038", customer: "Priya Nair", status: "cancelled", date: "Sep 10, 2026", amount: "$62.00" },
+        { label: "Total Products", value: count("totalProducts"), icon: Package, color: "text-green-800", bg: "bg-green-50" },
+        { label: "Pending Orders", value: count("pendingOrders"), icon: Clock, color: "text-amber-700", bg: "bg-amber-50" },
+        { label: "Low Stock Items (stock <=5)", value: count("lowStockItems"), icon: AlertTriangle, color: "text-red-700", bg: "bg-red-50" },
+        { label: "Completed Orders", value: count("completedOrders"), icon: CheckCircle, color: "text-emerald-700", bg: "bg-emerald-50" },
     ];
 
     return (
@@ -57,26 +58,70 @@ function Dashboard() {
                 <div className="bg-white rounded-2xl border border-gray-200 mb-8 overflow-hidden">
                     <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
                     <p className="font-semibold text-gray-900 text-sm">Recent Orders</p>
-                    <button className="text-xs text-green-800 font-medium flex items-center gap-0.5 hover:underline">
+                    <NavLink to="/orders" className="text-xs text-green-800 font-medium flex items-center gap-0.5 hover:underline">
                         View all <ChevronRight className="size-3.5" />
-                    </button>
+                    </NavLink>
                     </div>
-                    <div className="divide-y divide-gray-50">
-                    {recentOrders.map((order) => (
-                        <div key={order.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-gray-50 transition-colors duration-150">
-                        <div className="flex items-center gap-4 min-w-0">
-                            <span className="text-sm font-mono text-gray-400 shrink-0">{order.id}</span>
-                            <span className="text-sm text-gray-800 truncate">{order.customer}</span>
-                        </div>
-                        <div className="flex items-center gap-4 shrink-0 ml-4">
-                            <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusStyles[order.status]}`}>
-                            {order.status}
-                            </span>
-                            <span className="text-xs text-gray-400 hidden sm:block">{order.date}</span>
-                            <span className="text-sm font-medium text-gray-700">{order.amount}</span>
-                        </div>
-                        </div>
-                    ))}
+
+                    <div className="w-full overflow-x-auto">
+                        <table className="min-w-full table-auto">
+                            <thead>
+                                <tr className="bg-gray-50 border-b border-gray-200">
+                                    <th className="px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap">
+                                        Order ID
+                                    </th>
+                                    <th className="hidden sm:table-cell px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap">
+                                        Contact
+                                    </th>
+                                    <th className="px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap">
+                                        Status
+                                    </th>
+                                    <th className="px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap turncate">
+                                        Paid/Unpaid
+                                    </th>
+                                    <th className="hidden sm:table-cell px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap">
+                                        Date
+                                    </th>
+                                    <th className="px-3 sm:px-4 md:px-6 py-3 text-left text-gray-600 font-medium text-sm whitespace-nowrap">
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+    
+                            <tbody>
+                            {orders.slice(0,8).map((order) => (
+                                <tr
+                                    key={order.oid}
+                                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                                >
+                                    <td className="px-3 sm:px-4 md:px-6 py-3 text-gray-600 text-sm whitespace-nowrap">
+                                        <span className="block font-mono">ORD_{orderCode(order.oid)}</span>
+                                        {/* phones have no room for a Contact column, so the number sits under the id */}
+                                        <span className="block sm:hidden text-xs text-gray-500">{order.contact_number}</span>
+                                    </td>
+                                    <td className="hidden sm:table-cell px-3 sm:px-4 md:px-6 py-3 text-gray-600 text-sm whitespace-nowrap">
+                                        {order.contact_number}
+                                    </td>
+                                    <td className="px-3 sm:px-4 md:px-6 py-3 text-sm whitespace-nowrap">
+                                        <span className={`inline-block text-xs font-medium px-2.5 py-0.5 rounded-full ${statusStyles[order.status] || "bg-gray-100 text-gray-700"}`}>
+                                            {order.status}
+                                        </span>
+                                    </td>
+                                    <td className="px-3 sm:px-4 md:px-6 py-3 text-sm whitespace-nowrap">
+                                        <span className={`inline-block text-xs font-medium px-2.5 py-0.5 rounded-full ${paymentStatusStyles[order.payment_status] || "bg-gray-100 text-gray-700"}`}>
+                                            {order.payment_status}
+                                        </span>
+                                    </td>
+                                    <td className="hidden sm:table-cell px-3 sm:px-4 md:px-6 py-3 text-gray-600 text-sm whitespace-nowrap">
+                                        {order.created_at.slice(0, 10)}
+                                    </td>
+                                    <td className="px-3 sm:px-4 md:px-6 py-3 text-gray-600 text-sm whitespace-nowrap">
+                                        Rs {order.total}
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

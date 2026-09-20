@@ -2,6 +2,7 @@ import { Mail, PhoneCall, MessageCircle } from "lucide-react";
 import { Instagram } from "../assets/icons/instagram";
 
 const apiURL = import.meta.env.VITE_API_URL;
+
 const respectiveIcon = [
   {platform:"instagram", icon: Instagram},
   {platform:"phone", icon: PhoneCall},
