@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS retailer_contacts (
 CREATE TABLE IF NOT EXISTS order_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   oid INT NOT NULL,
-  vid INT NOT NULL,
+  vid INT NULL,
   pname_snapshot VARCHAR(40) NOT NULL,
   size_snapshot VARCHAR(10) NULL,
   color_snapshot VARCHAR(20) NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   CONSTRAINT fk_orderItems_variant
     FOREIGN KEY (vid)
     REFERENCES product_variant (vid)
-    ON DELETE RESTRICT
+    ON DELETE SET NULL
     ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4

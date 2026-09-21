@@ -224,8 +224,12 @@ function Checkout() {
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium truncate">{item.pname}</p>
                                     <p className="text-xs text-gray-500 flex items-center gap-1">
-                                        <span>{item.color}</span>
-                                        <span className="mx-2 h-3 border-l border-gray-300"></span>
+                                        {item.color && (
+                                        <>
+                                            <span>{item.color}</span>
+                                            <span className="mx-2 h-3 border-l border-gray-300"></span>
+                                        </>
+                                        )}
                                         <span>{item.size||"One Size"}</span>
                                         <span className="mx-2 h-3 border-l border-gray-300"></span>
                                         <span>Qty: {item.quantity}</span>

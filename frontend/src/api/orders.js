@@ -37,3 +37,16 @@ export async function getOrderItems(oid) {
 
     return data.items;
 }
+
+export async function changeStatus(oid, oStatus) {
+    const response = await fetch(`${apiURL}changeOrderStatus.php`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ oid, oStatus })
+    });
+ 
+    return await response.json();
+}

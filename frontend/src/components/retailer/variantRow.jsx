@@ -1,12 +1,16 @@
 import { Trash2 } from "lucide-react";
 
-function VariantRow({ variant, onChange, onRemove }) {
+function VariantRow({ variant, onChange, onRemove, isDuplicate }) {
     const handleField = (field, value) => {
         onChange({ ...variant, [field]: value });
     };
 
     return (
-        <div className="grid grid-cols-12 gap-1 items-center bg-white/70 border border-gray-300 rounded-lg p-1.5">
+        <div
+            className={`grid grid-cols-12 gap-1 items-center bg-white/70 border rounded-lg p-1.5 ${
+                isDuplicate ? "border-red-400 bg-red-50" : "border-gray-300"
+            }`}
+        >
             <input
                 type="text"
                 placeholder="Color (e.g. Olive Green)"
@@ -26,6 +30,7 @@ function VariantRow({ variant, onChange, onRemove }) {
             <input
                 type="text"
                 placeholder="Size (e.g. M)"
+                maxLength={5}
                 value={variant.size}
                 onChange={(e) => handleField("size", e.target.value)}
                 className="col-span-3 h-8 px-2 rounded-sm border border-gray-300 outline-none text-sm focus:border-green-800"

@@ -5,6 +5,35 @@ import VariantRow from "./variantRow";
 const apiURL = import.meta.env.VITE_API_URL;
 const emptyVariant = () => ({ color: "", color_hex: "#1f2421", size: "", stock: "0" });
 
+const normColor = (c) => c.trim().replace(/\s+/g, " ").toLowerCase();
+const normSize = (s) => s.trim().toUpperCase();
+
+const isValidSize = (s) => {
+    const size = normSize(s);
+    return size === "" || [...size].length <= 2 || /^(X{1,4}[SL]|[2-9]X[SL])$/.test(size);
+};
+
+// Rows with nothing filled in are dropped on submit, so they are ignored here too
+const isKept = (v) => v.color.trim() || v.size.trim() || Number(v.stock) > 0;
+
+// A (color, size) pair may only appear once per product. Color, size or stock
+// on their own can repeat. Returns the indexes of every row involved in a clash.
+function findDuplicateRows(variants) {
+    const firstSeen = new Map();
+    const duplicates = new Set();
+    variants.forEach((v, i) => {
+        if (!isKept(v)) return;
+        const key = `${normColor(v.color)}|${normSize(v.size)}`;
+        if (firstSeen.has(key)) {
+            duplicates.add(i);
+            duplicates.add(firstSeen.get(key));
+        } else {
+            firstSeen.set(key, i);
+        }
+    });
+    return duplicates;
+}
+
 function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClose, onSaved }) {
     const isEdit = mode === "edit";
 
@@ -40,6 +69,8 @@ function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClos
     const [msg, setMsg] = useState("");
     const [msgType, setMsgType] = useState("");
     const [submitting, setSubmitting] = useState(false);
+
+    const duplicateRows = findDuplicateRows(variants);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -109,6 +140,19 @@ function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClos
 
         if (!isEdit && !imageFile) {
             setMsg("Please choose a product image.");
+            setMsgType("error");
+            return;
+        }
+
+        const badSize = variants.find((v) => !isValidSize(v.size));
+        if (badSize) {
+            setMsg(`Invalid size "${badSize.size.trim()}". Use a standard size (XS, S, M, L, XL, XXL, XXXL, 2XL...) or a short size like 34.`);
+            setMsgType("error");
+            return;
+        }
+
+        if (duplicateRows.size > 0) {
+            setMsg("Two variants have the same color and size. Change the color or the size of the highlighted rows.");
             setMsgType("error");
             return;
         }
@@ -306,12 +350,14 @@ function ProductForm({ mode, initialProduct, categories, onCategoryAdded, onClos
                         </div>
                         <p className="text-xs text-gray-500 mt-1 mb-2">
                             Leave size blank for a single "one size" product — set the stock count and color.
+                            Size examples: S, M, L, XL, XXL, XXXL, 2XL, or a number like 34. Each color + size combination can only be used once.
                         </p>
                         <div className="space-y-2">
                             {variants.map((variant, i) => (
                                 <VariantRow
                                     key={i}
                                     variant={variant}
+                                    isDuplicate={duplicateRows.has(i)}
                                     onChange={(updated) => updateVariant(i, updated)}
                                     onRemove={() => removeVariant(i)}
                                 />

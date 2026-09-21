@@ -37,7 +37,8 @@ function ProductDetail({ product, click }) {
     const handleAddToCartClick = async(e) => {
         e.preventDefault();
         if (!loggedIn) {
-            setShowLoginPrompt(true);
+            setShowLoginPrompt(prev=>!prev);
+            return;
         }
         if (loggedIn) {
             try{

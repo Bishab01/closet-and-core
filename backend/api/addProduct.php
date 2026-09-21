@@ -3,6 +3,7 @@
     include("../config/session.php");
     include("../config/connectDB.php");
     include("../config/requireRole.php");
+    include("../config/variantValidation.php");
 
     requireRole(["retailer"]);
 
@@ -33,6 +34,13 @@
         $variants = [];
     }
 
+    //no two variants with the same color + size
+    [$variants, $variantError] = cleanVariants($variants);
+    if ($variantError !== null) {
+        echo json_encode(["success" => false, "message" => $variantError]);
+        exit;
+    }
+
     // Image is required for a new product
     if (!isset($_FILES["image"]) || $_FILES["image"]["error"] !== UPLOAD_ERR_OK) {
         echo json_encode(["success" => false, "message" => "A product image is required."]);
@@ -55,6 +63,7 @@
     }
 
     $imageData = file_get_contents($_FILES["image"]["tmp_name"]);
+    $imageHash = hash("sha256", $imageData);
 
     // Make sure the category actually exists
     $catCheck = $conn->prepare("SELECT cat_id FROM category WHERE cat_id = ?");
@@ -65,6 +74,28 @@
         exit;
     }
     $catCheck->close();
+
+    // Check 1: product name must be unique
+    $nameStmt = $conn->prepare("SELECT pid FROM products WHERE pname = ? LIMIT 1");
+    $nameStmt->bind_param("s", $pname);
+    $nameStmt->execute();
+    if ($nameStmt->get_result()->num_rows > 0) {
+        $nameStmt->close();
+        echo json_encode(["success" => false, "message" => "A product with this name already exists."]);
+        exit;
+    }
+    $nameStmt->close();
+
+    // Check 2: product image must be unique
+    $imgStmt = $conn->prepare("SELECT pid FROM products WHERE SHA2(pimg, 256) = ? LIMIT 1");
+    $imgStmt->bind_param("s", $imageHash);
+    $imgStmt->execute();
+    if ($imgStmt->get_result()->num_rows > 0) {
+        $imgStmt->close();
+        echo json_encode(["success" => false, "message" => "This image is already used by another product."]);
+        exit;
+    }
+    $imgStmt->close();
 
     $conn->begin_transaction();
 
@@ -99,10 +130,11 @@
                 "INSERT INTO product_variant (pid, color, size, color_hex, stock) VALUES (?, ?, ?, ?, ?)"
             );
             foreach ($variants as $v) {
-                $color = isset($v["color"]) && $v["color"] !== "" ? strtolower(trim($v["color"])) : null;
-                $size  = isset($v["size"])  && $v["size"]  !== "" ? strtoupper(trim($v["size"]))  : null;
-                $colorHex = isset($v["color_hex"]) && $v["color_hex"] !== "" ? trim($v["color_hex"]) : null;
-                $stock = isset($v["stock"]) ? (int)$v["stock"] : 0;
+                 // already trimmed / normalised / validated by cleanVariants()
+                $color = $v["color"];
+                $size = $v["size"];
+                $colorHex = $v["color_hex"];
+                $stock = $v["stock"];
 
                 $vStmt->bind_param("isssi", $pid, $color, $size, $colorHex, $stock);
                 if (!$vStmt->execute()) {

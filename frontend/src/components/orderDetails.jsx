@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import {
   ArrowLeft,
   MapPin,
@@ -7,13 +8,21 @@ import { getFname } from "../data/getFullName";
 import { paymentStatusStyles, statusStyles } from "../data/dashboard";
 import { NavLink } from "react-router-dom";
 import { useOrderItems } from "../data/useOrderItems";
+import { useAuth } from "../context/AuthContext";
+import { changeStatus } from "../api/orders";
 
 const fallbackPill = "bg-gray-100 text-gray-700";
 
-function OrderDetail({ order, onBack }) {
-  
+function OrderDetail({ order, onBack, onStatusChange }) {
+
+  const { user, loggedIn } = useAuth();
+  const isRetailer = user?.role === "retailer";
   const fullName = getFname();
   const { items } = useOrderItems(order.oid);
+
+  const [busy, setBusy] = useState(false);
+  const inFlight = useRef(false); // blocks a second click even before the page re-renders
+  const [message, setMessage] = useState("");
 
   const subTotal = items.reduce((sum, item) => sum + item.quantity * item.price, 0);
   const deliveryFee = 100;
@@ -21,6 +30,38 @@ function OrderDetail({ order, onBack }) {
   const orderCode = (oid) => {
       const scrambled = (oid * 40503) % 65536; // odd multiplier => every id gets a different value
       return scrambled.toString(16).toUpperCase().padStart(4, "0");
+  }
+
+  const handleClick = async () => {
+    if(!loggedIn || inFlight.current) return;
+    if(isRetailer){
+      if(order.status === 'cancelled' || order.status === 'delivered') return;
+    }
+    if(!isRetailer){
+      if(order.status !== 'pending') return;
+    }
+
+    inFlight.current = true;
+    setBusy(true);
+    setMessage("");
+    try {
+      // changeStatus is async: without await, "result" would be a Promise and result.message undefined
+      const result = await changeStatus(order.oid, order.status);
+      if (result.success) {
+        // tell the Orders page so the list and this page show the new status
+        onStatusChange?.(order.oid, result.status);
+      } else {
+        setMessage(result.message || "Failed to update status.");
+        setTimeout(()=>setMessage(""),1000);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Something went wrong. Please try again.");
+      setTimeout(()=>setMessage(""),1000);
+    } finally {
+      inFlight.current = false;
+      setBusy(false);
+    }
   }
 
   return (
@@ -42,8 +83,9 @@ function OrderDetail({ order, onBack }) {
             className="border border-gray-300 shadow-sm bg-white rounded-2xl px-5 py-6 sm:px-8 sm:py-8"
           >
             {/* Header */}
-            <div className="flex flex-col items-start gap-1 pb-5 border-b border-gray-300">
-              <div className="font-serif font-bold text-xl text-green-900">
+            <div className=" flex justify-between items-center gap-2 pb-5 border-b border-gray-300">
+              <div className="flex flex-col gap-1 flex-start">
+                <div className="font-serif font-bold text-xl text-green-900">
                 Order Summary
               </div>
               <p className="text-sm text-gray-600">
@@ -56,7 +98,39 @@ function OrderDetail({ order, onBack }) {
                   {order.created_at.slice(0, 10)}
                 </span>
               </p>
+              </div>
+              {loggedIn && !isRetailer && order.status === 'pending' &&
+              <button 
+                onClick = {handleClick}
+                disabled={busy}
+                className="button bg-red-500/80 text-white mt-4 hover:bg-red-500 disabled:opacity-60"
+              >
+                Cancel
+              </button>
+              }
+
+              {loggedIn && isRetailer && (order.status === 'pending' || order.status === 'processing') &&
+              <button 
+                onClick = {handleClick}
+                disabled={busy}
+                className={`button aspect-3/2 disabled:opacity-60
+                  ${order.status === 'pending'
+                    ? "bg-blue-500/80 text-white hover:bg-blue-500"
+                    : "bg-green-500/80 text-white hover:bg-green-500"
+                  }
+                  `}
+              >
+                {order.status === "pending"? "Accept" : "Complete"}
+              </button>
+              }
             </div>
+
+            {/* message from the server when the status could not be changed */}
+            {message && (
+              <p className="text-sm text-red-600 pt-3" role="alert">
+                {message}
+              </p>
+            )}
 
             {/* Customer + payment/status */}
             <div className="grid sm:grid-cols-2 gap-6 py-5 border-b border-gray-300">
@@ -99,19 +173,22 @@ function OrderDetail({ order, onBack }) {
               </div>
             </div>
 
-            <p className="text-xs tracking-[0.15em] uppercase text-gray-500 font-medium mt-5 -mb-2">
+            <p className="text-xs tracking-[0.15em] uppercase text-gray-500 font-medium mt-3 -mb-2">
               Order Items
             </p>
 
-            {/* Items: the page itself scrolls, so no scroll box inside the card */}
-            <div className="py-5 flex flex-col divide-y divide-gray-200">
+            <div className="py-5 flex flex-col">
               {items.map((item) => (
                 <div key={item.id} className="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium wrap-break-word">{item.pname}</p>
                     <p className="text-xs text-gray-500 flex flex-wrap items-center gap-y-0.5 mt-0.5">
-                        <span>{item.color}</span>
-                        <span className="mx-2 h-3 border-l border-gray-300"></span>
+                        {item.color && (
+                          <>
+                            <span>{item.color}</span>
+                            <span className="mx-2 h-3 border-l border-gray-300"></span>
+                          </>
+                        )}
                         <span>{item.size||"One Size"}</span>
                         <span className="mx-2 h-3 border-l border-gray-300"></span>
                         <span>Qty: {item.quantity}</span>
@@ -149,7 +226,7 @@ function OrderDetail({ order, onBack }) {
               </div>
             </div>
 
-            <p className="text-center text-xs text-gray-500 mt-8 pt-4 border-t border-gray-200">
+            <p className="text-center text-xs text-gray-500 mt-5 pt-4 border-t border-gray-200">
               Thank you for shopping with Closet & Core. For questions about this
               order, <NavLink to="/contact" className="text-blue-600">Contact us</NavLink>
             </p>
@@ -161,4 +238,3 @@ function OrderDetail({ order, onBack }) {
 }
 
 export default OrderDetail;
- 

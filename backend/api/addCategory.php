@@ -39,16 +39,23 @@
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO category (cat_name) VALUES (?)");
+    $stmt = $conn->prepare("INSERT INTO category (cat_name) VALUES (LOWER(?))");
     $stmt->bind_param("s", $catName);
 
     if ($stmt->execute()) {
+        $newId = $stmt->insert_id;
+        $fetch = $conn->prepare("SELECT cat_id, cat_name FROM category WHERE cat_id = ?");
+        $fetch->bind_param("i", $newId);
+        $fetch->execute();
+        $created = $fetch->get_result()->fetch_assoc();
+        $fetch->close();
+
         echo json_encode([
             "success" => true,
             "message" => "Category added.",
             "category" => [
-                "cat_id" => $stmt->insert_id,
-                "cat_name" => $catName
+                "cat_id" => (int)$created["cat_id"],
+                "cat_name" => $created["cat_name"]
             ]
         ]);
     } else {

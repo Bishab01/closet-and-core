@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import OrderDetail from "../components/orderDetails";
 
 function Orders(){
-    const { orders } = useOrders();
+    const { orders, setOrders } = useOrders();
     const {user, loggedIn} = useAuth();
     const [showOrderDetails, setShowOrderDetails] = useState(null);
 
@@ -26,12 +26,20 @@ function Orders(){
 
     const isRetailer = user?.role === "retailer";
 
+    // called by OrderDetail after the server accepted a status change:
+    // update the list and the open order without reloading
+    const handleStatusChange = (oid, newStatus) => {
+        setOrders((prev) => prev.map((o) => (o.oid === oid ? { ...o, status: newStatus } : o)));
+        setShowOrderDetails((prev) => (prev && prev.oid === oid ? { ...prev, status: newStatus } : prev));
+    };
+
     // show the selected order on its own instead of below the list
     if (showOrderDetails) {
         return (
             <OrderDetail
                 order={showOrderDetails}
                 onBack={() => setShowOrderDetails(null)}
+                onStatusChange={handleStatusChange}
             />
         );
     }

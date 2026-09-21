@@ -3,7 +3,8 @@
     include("../config/session.php");
     include("../config/connectDB.php");
     include("../config/requireRole.php");
-
+    include("../config/variantValidation.php");
+    
     requireRole(["retailer"]);
 
     // multipart/form-data because the image is optional-but-possible on edit
@@ -24,12 +25,26 @@
         exit;
     }
 
+    if (strlen($pname) > 40) {
+        echo json_encode(["success" => false, "message" => "Product name must be 40 characters or fewer."]);
+        exit;
+    }
+
     $variants = json_decode($variantsRaw, true);
     if (!is_array($variants)) {
         $variants = [];
     }
 
+    // Valid sizes only, and no two variants with the same color + size
+    [$variants, $variantError] = cleanVariants($variants);
+    if ($variantError !== null) {
+        echo json_encode(["success" => false, "message" => $variantError]);
+        exit;
+    }
+
+    $pid = (int)$pid;
     $newImageData = null;
+    $imageHash = null;
 
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
         $allowedTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -48,6 +63,32 @@
         }
 
         $newImageData = file_get_contents($_FILES["image"]["tmp_name"]);
+        $imageHash = hash("sha256", $newImageData);
+    }
+
+    
+    // Check 1: the name must not belong to a DIFFERENT product (keeping this product's own name is fine)
+    $nameStmt = $conn->prepare("SELECT pid FROM products WHERE pname = ? AND pid <> ? LIMIT 1");
+    $nameStmt->bind_param("si", $pname, $pid);
+    $nameStmt->execute();
+    if ($nameStmt->get_result()->num_rows > 0) {
+        $nameStmt->close();
+        echo json_encode(["success" => false, "message" => "A product with this name already exists."]);
+        exit;
+    }
+    $nameStmt->close();
+
+    // Check 2: a replacement image must not already be used by a DIFFERENT product
+    if ($imageHash !== null) {
+        $imgStmt = $conn->prepare("SELECT pid FROM products WHERE SHA2(pimg, 256) = ? AND pid <> ? LIMIT 1");
+        $imgStmt->bind_param("si", $imageHash, $pid);
+        $imgStmt->execute();
+        if ($imgStmt->get_result()->num_rows > 0) {
+            $imgStmt->close();
+            echo json_encode(["success" => false, "message" => "This image is already used by another product."]);
+            exit;
+        }
+        $imgStmt->close();
     }
 
     $conn->begin_transaction();
@@ -93,10 +134,11 @@
                 "INSERT INTO product_variant (pid, color, size, color_hex, stock) VALUES (?, ?, ?, ?, ?)"
             );
             foreach ($variants as $v) {
-                $color = isset($v["color"]) && $v["color"] !== "" ? strtolower(trim($v["color"])) : null;
-                $size  = isset($v["size"])  && $v["size"]  !== "" ? strtoupper(trim($v["size"]))  : null;
-                $colorHex = isset($v["color_hex"]) && $v["color_hex"] !== "" ? trim($v["color_hex"]) : null;
-                $stock = isset($v["stock"]) ? (int)$v["stock"] : 0;
+                // already trimmed / normalised / validated by cleanVariants()
+                $color = $v["color"];
+                $size = $v["size"];
+                $colorHex = $v["color_hex"];
+                $stock = $v["stock"];
 
                 $vStmt->bind_param("isssi", $pid, $color, $size, $colorHex, $stock);
                 if (!$vStmt->execute()) {

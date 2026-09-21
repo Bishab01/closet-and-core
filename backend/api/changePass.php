@@ -49,7 +49,7 @@
     if (!password_verify($oldPass, $user["password"])) {
         echo json_encode([
             "success" => false,
-            "message" => "Incorrect password"
+            "message" => "Old password is incorrect"
         ]);
         exit;
     }
@@ -79,5 +79,4 @@
 
     $stmt->close();
     $conn->close();
-
 ?>
