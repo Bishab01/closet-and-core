@@ -12,18 +12,23 @@
     if ($role === "customer") {
         // a customer only sees their own orders
         $stmt = $conn->prepare(
-            "SELECT oid, payment_method, payment_status, status, total, delivery_address, contact_number, created_at
-            FROM orders
-            WHERE uid = ?
-            ORDER BY oid DESC"
+            "SELECT o.oid, o.payment_method, o.payment_status, o.status, o.total, o.delivery_address,
+                o.contact_number, o.created_at, CONCAT(u.fname, ' ', u.lname) AS customer_name
+            FROM orders o
+            LEFT JOIN users u ON u.uid = o.uid
+            WHERE o.uid = ?
+            ORDER BY o.oid DESC"
         );
         $stmt->bind_param("i", $uid);
     } else {
         // retailer sees every order: this query has no ? placeholder, so there is nothing to bind
+        // customer_name is the name of the customer who placed the order (not the logged-in retailer)
         $stmt = $conn->prepare(
-            "SELECT oid, payment_method, payment_status, status, total, delivery_address, contact_number, created_at
-            FROM orders
-            ORDER BY oid DESC"
+            "SELECT o.oid, o.payment_method, o.payment_status, o.status, o.total, o.delivery_address,
+                o.contact_number, o.created_at, CONCAT(u.fname, ' ', u.lname) AS customer_name
+            FROM orders o
+            LEFT JOIN users u ON u.uid = o.uid
+            ORDER BY o.oid DESC"
         );
     }
 
@@ -44,4 +49,3 @@
     $stmt->close();
     $conn->close();
 ?>
- 

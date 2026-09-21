@@ -4,7 +4,6 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-import { getFname } from "../data/getFullName";
 import { paymentStatusStyles, statusStyles } from "../data/dashboard";
 import { NavLink } from "react-router-dom";
 import { useOrderItems } from "../data/useOrderItems";
@@ -17,7 +16,7 @@ function OrderDetail({ order, onBack, onStatusChange }) {
 
   const { user, loggedIn } = useAuth();
   const isRetailer = user?.role === "retailer";
-  const fullName = getFname();
+  const fullName = order.customer_name || "Customer";
   const { items } = useOrderItems(order.oid);
 
   const [busy, setBusy] = useState(false);
