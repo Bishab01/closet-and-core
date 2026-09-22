@@ -222,7 +222,7 @@ function Checkout() {
                         {cartItems.map((item) => (
                             <div key={item.cid} className="flex items-center gap-3 mb-1">
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium truncate">{item.pname}</p>
+                                    <p className="text-sm w-50 font-medium truncate">{item.pname}</p>
                                     <p className="text-xs text-gray-500 flex items-center gap-1">
                                         {item.color && (
                                         <>
