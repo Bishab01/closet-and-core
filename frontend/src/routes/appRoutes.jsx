@@ -6,10 +6,13 @@ import Home from "../pages/home";
 import Products from '../pages/products';
 import Cart from '../pages/cart';
 import Dashboard from '../pages/retailer/dashboard';
+import AdminProducts from '../pages/retailer/products';
 import About from '../pages/about';
 import Contact from '../pages/contact';
 import { CustomerOnlyRoute, RetailerRoute } from './roleGuard';
 import { Routes, Route, Navigate} from 'react-router-dom';
+import Checkout from '../pages/checkout';
+import Orders from '../pages/orders';
 
 function Approutes() {
   return (
@@ -26,12 +29,15 @@ function Approutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/orders" element={<Orders />} />
 
         {/* Open to customers */}
         <Route path="/cart" element={<CustomerOnlyRoute><Cart /></CustomerOnlyRoute>} />
+        <Route path="/checkout" element={<CustomerOnlyRoute><Checkout /></CustomerOnlyRoute>} />
 
         {/* Open to retailer */}
         <Route path="/dashboard" element={<RetailerRoute><Dashboard /></RetailerRoute>} />
+        <Route path="/productsRetailer" element={<RetailerRoute><AdminProducts /></RetailerRoute>} />
       </Route>
     </Routes>
   );

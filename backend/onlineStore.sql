@@ -101,9 +101,9 @@ CREATE TABLE IF NOT EXISTS cart_items (
 CREATE TABLE IF NOT EXISTS orders (
   oid INT AUTO_INCREMENT PRIMARY KEY,
   uid INT NOT NULL,
-  payment_method ENUM('cod', 'eSewa') NOT NULL,
+  payment_method ENUM('cod', 'esewa', 'khalti') NOT NULL,
   payment_status ENUM('paid', 'unpaid') NOT NULL DEFAULT 'unpaid',
-  status ENUM('pending', 'shipped', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',
+  status ENUM('pending', 'processing', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',
   total DECIMAL(10,2) NOT NULL,
   delivery_address VARCHAR(255) NOT NULL,
   contact_number VARCHAR(15) NOT NULL,
@@ -123,15 +123,15 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS retailer_contacts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   uid INT NOT NULL,
-  title ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
-  detail VARCHAR(150) NULL,
+  platform ENUM('instagram', 'whatsapp', 'email', 'phone') NOT NULL,
+  handle VARCHAR(150) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_retailer_contacts_users
     FOREIGN KEY (uid) REFERENCES users(uid)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  UNIQUE KEY uid_title_UNIQUE (uid, title)
+  UNIQUE KEY uid_title_UNIQUE (uid, platform)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS retailer_contacts (
 CREATE TABLE IF NOT EXISTS order_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   oid INT NOT NULL,
-  vid INT NOT NULL,
+  vid INT NULL,
   pname_snapshot VARCHAR(40) NOT NULL,
   size_snapshot VARCHAR(10) NULL,
   color_snapshot VARCHAR(20) NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   CONSTRAINT fk_orderItems_variant
     FOREIGN KEY (vid)
     REFERENCES product_variant (vid)
-    ON DELETE RESTRICT
+    ON DELETE SET NULL
     ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4

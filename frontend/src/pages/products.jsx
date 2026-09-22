@@ -1,23 +1,34 @@
 import ProductCatalog from "../components/productCatalog";
-import Categories from "../components/categories";
 import { useState } from "react";
-import { useProducts } from "../hooks/useProducts";
+import Categories from "../components/categories";
+import { useProducts } from "../data/useProducts";
+import { useCategories } from "../data/useCategories";
 import Footer from "../components/footer";
+import { useContext } from "react";
+import { SearchContext } from "../context/SearchContext";
 
 function Products(){
     const[selectedCategory, setSelectedCategory] = useState("all");
     const { products, loading, error } = useProducts();
+    const { categories } = useCategories();
+    const { searchTerm } = useContext(SearchContext);
 
-    const filteredProducts =
-        selectedCategory === "all"
-            ? products
-            : products.filter(
-                (product) => product.category === selectedCategory
-            );
+    const filteredProducts = products.filter(product => {
+        const matchesCategory =
+            selectedCategory === "all" ||
+            product.cat_name === selectedCategory;
+
+        const matchesSearch =
+            product.pname
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
 
     return(
-        <div className="body">
-            <div>
+        <div className="body flex flex-col">
+            <div className="flex-1">
             <div className="responsiveM">
                 <p className="text-xl md:text-2xl font-serif font-bold">Categories</p>
                 <p className="text-sm text-gray-600">Everything orgainized to help you find what you need faster.</p>
@@ -26,10 +37,16 @@ function Products(){
             <Categories
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                products={products}
+                categories={categories}
             />
+
             {loading ? (
-                <div className="responsiveM py-12 text-center text-gray-500">
-                    Loading products...
+                <div className="flex justify-center py-16">
+                    <div className="responsiveM flex items-center gap-2 justify-center py-12 text-gray-500">
+                        <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                        Loading products...
+                    </div>
                 </div>
             ) : error ? (
                 <div className="responsiveM py-12 text-center text-red-600">
@@ -39,9 +56,9 @@ function Products(){
                 <ProductCatalog
                     products={filteredProducts}
                 />
-            )} 
-            </div>       
-            
+            )}   
+            </div>
+
             <Footer/>
         </div>
     )

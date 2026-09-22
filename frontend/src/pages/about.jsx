@@ -1,7 +1,6 @@
 import {
   Users,
   Store,
-  ArrowRight,
   Check,
   X,
 } from "lucide-react";
@@ -11,9 +10,9 @@ import Footer from "../components/footer";
 
 function About() {
   return (
-    <div className="body">
+    <div className="body flex flex-col">
 
-      <div>
+      <div className="flex-1">
       {/* HERO */}
       <section className="m-6 sm:m-10">
         <div className="relative overflow-hidden rounded-3xl bg-[#1B4332] min-h-105">
@@ -335,6 +334,11 @@ function About() {
                 <li className="flex gap-2">
                   <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
                   Manage orders
+                </li>
+
+                <li className="flex gap-2">
+                  <Check className="w-4 h-4 text-green-800 shrink-0 mt-0.5" />
+                  Add Contact Information
                 </li>
 
               </ul>

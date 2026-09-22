@@ -4,7 +4,7 @@ function ColorPicker({ colors, selectedColor, onChange }) {
   return (
     <>
       <p className="text-xs tracking-[0.15em] uppercase text-gray-500 font-medium mb-2">
-        Color — <span className="normal-case text-gray-800">{selectedColor || "Unavailable"}</span>
+        Color — <span className="upper-case text-gray-800">{selectedColor || "Unavailable"}</span>
       </p>
       <div className="flex items-center gap-2.5 mb-5">
         {colors.map((color) => (

@@ -6,38 +6,42 @@ import { ShoppingBag } from "lucide-react";
 function ProductCatalog({products}){
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    // Message for when cart is empty
+    // Message for when there's nothing to show
     if (products.length === 0) {
         return (
-            <div className="body">
-                <div className="responsiveM">
-                    <div 
-                        className="flex flex-col items-center justify-center text-center p-20 gap-4
-                        border border-dashed bg-white/60 rounded-3xl"
-                    >
-                        <ShoppingBag className="w-14 h-14 text-gray-400" />
-                        <p className="text-xl sm:text-2xl font-serif font-bold">
-                            No products to display
-                        </p>
-                        <p className="text-gray-600">
-                            Products are yet to be added. They will be added soon.
-                        </p>
-                    </div>
+            <div className="responsiveM">
+                <div 
+                    className="flex flex-col items-center justify-center text-center p-20 gap-4
+                    border border-dashed bg-white/60 rounded-3xl"
+                >
+                    <ShoppingBag className="w-14 h-14 text-gray-400" />
+                    <p className="text-xl sm:text-2xl font-serif font-bold">
+                        No products to display
+                    </p>
+                    <p className="text-gray-600">
+                        They will be available soon. Please check back later.
+                    </p>
                 </div>
             </div>
         );
     }
 
+    // Remounting the grid whenever the visible set of products changes (new
+    // search term, category, etc.) makes every card replay its entrance
+    // animation instead of only the ones that are brand new to the DOM.
+    const resultsKey = products.map((product) => product.pid).join(",");
+
     return (
         <div className="responsiveM">
-            <div className="gridLayout my-6 ">
-                {products.map((product)=>
+            <div className="gridLayout my-6" key={resultsKey}>
+                {products.map((product,index)=>
                     <ProductCard
-                        key={product.id} 
-                        category={product.category}
-                        productName={product.productName}
-                        productPrice={product.productPrice}
+                        key={product.pid} 
+                        category={product.cat_name}
+                        pname={product.pname}
+                        price={product.price}
                         image={product.image}
+                        index={index}
                         click={() => setSelectedProduct(product)}
                     />
                 )}

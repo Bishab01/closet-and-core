@@ -1,17 +1,18 @@
 import {Search, ShoppingCart,Menu} from 'lucide-react'
 import { useState } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 import logo from '../assets/logos/logo.png'
 import SideMenu from './sidemenu';
 import { useAuth } from "../context/AuthContext";
 import LoginRequest from './loginRequest';
+import { useContext } from 'react';
+import { SearchContext } from '../context/SearchContext';
+import { useCartItems } from '../data/useCartItems';
 
 function Header(){
-    const { cartCount } = useCart();
     const { loggedIn, user } = useAuth();
     const isRetailer = user?.role === "retailer";
-    
+    const {cartCount} = useCartItems();
     const navigate = useNavigate();
 
     const [menuOpen,setMenuOpen] = useState(false);
@@ -20,8 +21,10 @@ function Header(){
     const location = useLocation();
 
     const showSearch =
-        location.pathname === "/home" ||
-        location.pathname === "/products";
+        location.pathname === "/products" ||
+        location.pathname === "/productsRetailer";
+
+    const {searchTerm, setSearchTerm} = useContext(SearchContext);
 
     const handleCartClick = (e) => {
         if(!loggedIn){
@@ -79,6 +82,8 @@ function Header(){
                             <Search className='w-4 h-4'/>
                             <input 
                                 type='text'
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className='outline-none w-20 md:w-25 lg:w-35'
                                 placeholder='Search...'
                             />

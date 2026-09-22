@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronsRight } from "lucide-react";
 import ProductCatalog from "../components/productCatalog";
-import {useProducts} from "../hooks/useProducts";
+import {useProducts} from "../data/useProducts";
 import Footer from "../components/footer";
+import banner from "../assets/images/banner.jpg";
 
 function Home(){
     const [productLimit, setProductLimit] = useState(15); 
@@ -33,11 +34,18 @@ function Home(){
     const visibleProducts = products.slice(0, productLimit);
 
     return(
-        <div className="body">
-            <div className="flex justify-start items-end responsiveM border-green-800 border-2 rounded-3xl h-60 md:h-90 bg-white/60">
-                <div className="ml-8 mb-8 md:ml-15 md:mb-15 text-xl sm:text-2xl md:text-3xl uppercase leading-8 md:leading-11">
-                    New Arrivals <br/>
-                    Summer 2026
+        <div className="body flex flex-col">
+            <div className="flex-1">
+            <div 
+                style={{ backgroundImage: `url(${banner})` }}
+                className="responsiveM overflow-hidden border-green-700 border-2 rounded-3xl h-60 md:h-90 bg-white/60 bg-cover bg-center bg-no-repeat"
+            >
+                <div className="flex justify-start items-end h-full w-full bg-black/30">
+                    <div className="ml-8 mb-8 md:ml-15 md:mb-15 text-xl text-white/90 font-medium sm:text-2xl md:text-3xl 
+                     uppercase leading-8 md:leading-11">
+                        New Arrivals <br/>
+                        Summer 2026
+                    </div>
                 </div>
             </div>
 
@@ -46,32 +54,40 @@ function Home(){
             </h1>
 
             {loading ? (
-                <div className="responsiveM py-12 text-center text-gray-500">
-                    Loading products...
+                <div className="flex justify-center py-16">
+                    <div className="responsiveM flex items-center gap-2 justify-center py-12 text-gray-500">
+                        <div className="size-8 rounded-full border-2 border-green-900 border-t-transparent animate-spin" />
+                        Loading products...
+                    </div>
                 </div>
             ) : error ? (
                 <div className="responsiveM py-12 text-center text-red-600">
                     {error}
                 </div>
             ) : (
+                <>
                 <ProductCatalog
                     products={visibleProducts}
                 />
-            )}
 
-            <div
-                className="text-gray-500 font-medium flex items-center justify-center
-                -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
-            >
-                <NavLink
-                    to="/products"
-                    className="flex items-center w-fit hover:text-gray-700"
+                <div
+                    className="text-gray-500 font-medium flex items-center justify-center
+                    -mt-1 sm:-mt-2 lg:-mt-4 mb-4 sm:mb-6 lg:mb-10"
                 >
-                    See more 
-                    <ChevronsRight className="size-5"/>
-                </NavLink>
+                    <NavLink
+                        to="/products"
+                        className="flex items-center w-fit hover:text-gray-700"
+                    >
+                        See more 
+                        <ChevronsRight className="size-5"/>
+                    </NavLink>
+                </div>
+                </>
+            )}
             </div>
+
             <Footer/>
+
         </div>
     )
 }

@@ -1,21 +1,21 @@
-function ProductInfoCard({ product }) {
+function ProductInfoCard({ product, description }) {
     return (
         <>
             <p className="text-xs tracking-[0.2em] uppercase text-green-900 font-medium">
-                {product.category}
+                {product.cat_name}
             </p>
 
             <h1 className="font-serif text-2xl sm:text-3xl font-bold leading-snug mt-2">
-                {product.productName}
+                {product.pname}
             </h1>
 
             <p className="text-lg font-semibold mt-3">
-                Rs {product.productPrice}
+                Rs {product.price}
             </p>
 
-            {product.description && (
+            {description && (
                 <p className="text-gray-700 leading-relaxed mt-5 text-sm sm:text-base">
-                    {product.description}
+                    {description}
                 </p>
             )}
         </>

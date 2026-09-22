@@ -6,9 +6,9 @@ function StockStatus({ hasVariants, selectedVariant, stock }) {
     }
 
     const message = !selectedVariant
-        ? <p className="text-red-400">This variant is currently unavailable.</p>
+        ? <span className="text-red-400">Currently unavailable.</span>
         : stock === 0
-        ? <p className="text-red-400">This is out of stock.</p>
+        ? <span className="text-red-400">Out of stock.</span>
         : `${stock} pieces currently in stock.`;
 
     return <p className="text-sm text-gray-700 mb-5 font-semibold">

@@ -30,11 +30,10 @@ function Setting({changePass, deleteAcc}){
             className=" bg-gray-500 text-gray-100 shadow-xl rounded-xl overflow-hidden w-45 mx-5 shrink-0"
         >
             {!loggedIn &&
-            <div className="p-1.5">
+            <div className="p-1.5 hover:bg-gray-300/30">
                 <button 
                     onClick={()=>navigate("/login")}
-                    className="flex w-full items-center text-[14.5px] font-medium gap-2 rounded-lg p-2
-                    hover:bg-gray-300/30"
+                    className="flex w-full items-center text-[14.5px] font-medium gap-2 rounded-lg p-2"
                 >
                     <LogIn className="size-5"/>
                     Login

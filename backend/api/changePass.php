@@ -21,6 +21,22 @@
         exit;
     }
 
+    //check old password
+    $check = $conn->prepare ("SELECT password FROM users WHERE uid = ?");
+    $check->bind_param("i", $uid);
+    $check->execute();
+
+    $result = $check->get_result();
+    $user = $result->fetch_assoc();
+
+    if (!password_verify($oldPass, $user["password"])) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Old password is incorrect"
+        ]);
+        exit;
+    }
+  
     //validate password length
     if (strlen($newPass) < 8) {
         echo json_encode([
@@ -38,18 +54,10 @@
         exit;
     }
 
-    //check old password
-    $check = $conn->prepare ("SELECT password FROM users WHERE uid = ?");
-    $check->bind_param("i", $uid);
-    $check->execute();
-
-    $result = $check->get_result();
-    $user = $result->fetch_assoc();
-
-    if (!password_verify($oldPass, $user["password"])) {
+    if (password_verify($newPass, $user["password"])) {
         echo json_encode([
             "success" => false,
-            "message" => "Incorrect password"
+            "message" => "Please enter a new password."
         ]);
         exit;
     }
@@ -79,5 +87,4 @@
 
     $stmt->close();
     $conn->close();
-
 ?>

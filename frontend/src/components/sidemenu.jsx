@@ -1,4 +1,4 @@
-import { X, House, ShoppingBag, Info, Phone, Settings } from "lucide-react";
+import { X, House, ShoppingBag, Info, Phone, Settings, NotebookPen } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
@@ -10,13 +10,15 @@ function SideMenu({ isOpen, onClose }) {
     const customerNav = [
         { icon: House, name: "Home", path: "/home" },
         { icon: ShoppingBag, name: "Products", path: "/products" },
+        { icon: NotebookPen, name: "Orders", path: "/orders" },
         { icon: Phone, name: "Contact", path: "/contact" },
         { icon: Info, name: "About Us", path: "/about" },
     ];
 
     const retailerNav = [
         { icon: House, name: "Dashboard", path: "/dashboard" },
-        { icon: ShoppingBag, name: "Products", path: "/products" },
+        { icon: ShoppingBag, name: "Products", path: "/productsRetailer" },
+        { icon: NotebookPen, name: "Orders", path: "/orders" },
         { icon: Phone, name: "Contact", path: "/contact" },
         { icon: Info, name: "About Us", path: "/about" },
     ];
@@ -96,8 +98,8 @@ function SideMenu({ isOpen, onClose }) {
                             deleteAcc={()=>setShowDeleteAcc(prev=>!prev)}
                         />
                     }
-                    <div className="w-full flex items-center justify-between gap-1.5 border-t p-5 border-gray-200">
-                        <div className="flex items-center gap-1.5"> 
+                    <div className="w-full flex items-center justify-between gap-2 border-t p-5 border-gray-200">
+                        <div className="flex items-center w-50 gap-1.5"> 
                             <div 
                                 className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
                                 ${
@@ -111,7 +113,7 @@ function SideMenu({ isOpen, onClose }) {
                             >
                                 {char}
                             </div>
-                            <div className="text-gray-500 text-[13.5px] md:text-[14.5px] tracking-wide font-medium">
+                            <div className="text-gray-500 text-[13.5px] md:text-[14.5px] tracking-wide font-medium truncate">
                                 {email}
                             </div>
                         </div>
