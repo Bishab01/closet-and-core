@@ -99,7 +99,7 @@ function SideMenu({ isOpen, onClose }) {
                         />
                     }
                     <div className="w-full flex items-center justify-between gap-2 border-t p-5 border-gray-200">
-                        <div className="flex items-center w-50 gap-1.5"> 
+                        <div className="flex items-center w-45 gap-1.5"> 
                             <div 
                                 className={`flex items-center justify-center uppercase font-medium rounded-full size-9 text-white
                                 ${
