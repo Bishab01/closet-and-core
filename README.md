@@ -1,6 +1,6 @@
 # Closet & Core
 
-A web-based e-commerce platform for a clothing retailer. Customers can browse, search, and order products; the retailer manages products, orders, and contact details from a dashboard.
+A web-based e-commerce platform for a retailer. Customers can browse, search, and order products; the retailer manages products, orders, and contact details from a dashboard.
 
 ## Tech Stack
 
@@ -62,7 +62,7 @@ frontend/
 
 Three-tier client-server:
 
-- **Presentation** — React SPA. Handles routing, forms, and rendering; never talks to the database directly.
+- **Presentation** — React JS. Handles routing, forms, and rendering; never talks to the database directly.
 - **Application** — PHP API in `backend/api/`. One file per operation (login, place order, add product, ...), each returning JSON. Holds all business logic, validation, and role checks.
 - **Data** — MySQL. Tables: `users`, `category`, `products`, `product_variant`, `cart_items`, `orders`, `order_items`, `retailer_contacts`.
 
@@ -70,4 +70,4 @@ Three-tier client-server:
 
 - **Session-based auth:** on login, PHP stores `uid`, `role`, and name in `$_SESSION` . Every protected endpoint calls `session_start()` (via `config/session.php`) to reload that session, so the server is the source of truth for who's logged in.
 - **Passwords:** hashed with `password_hash`, checked with `password_verify`.
-- **Role-based access control (RBAC):** roles are `customer` and `retailer` (guests have no session). `requireRole([...])` on each endpoint returns 401 if not logged in, 403 if the role doesn't match. Frontend route guards (`CustomerOnlyRoute`, `RetailerRoute`) re-routes the user if failed to verify respective role.
+- **Role-based access control (RBAC):** roles are `customer` and `retailer` (guests have no session). Frontend route guards (`CustomerOnlyRoute`, `RetailerRoute`) re-routes the user if failed to verify respective role.
